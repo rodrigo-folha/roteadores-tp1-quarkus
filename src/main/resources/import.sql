@@ -53,18 +53,13 @@ insert into roteador (nome, descricao, preco, id_sinalWireless, id_sistemaOperac
 insert into roteador (nome, descricao, preco, id_sinalWireless, id_sistemaOperacional, id_bandaFrequencia, id_protocoloSeguranca, id_quantidadeAntena) values ('TP-Link AC 1350 Archer C60 Roteador Wireless Dual Band, Branco', 'Roteador Tplink Archer C60 D.Band AC1350 4P Lan 1WAN 5Antena - PN # Archer C60.Um produto de verdadeiro desempenho. Fácilidade no manuseio e conforto ao uso.Fabricante líder de produtos e acessórios de alta qualidade.', 467.58, 1, 3, 3, 7, 5);
 insert into roteador (nome, descricao, preco, id_sinalWireless, id_sistemaOperacional, id_bandaFrequencia, id_protocoloSeguranca, id_quantidadeAntena) values ('Roteador Wireless N TL-WR949N', 'O Roteador Wireless N TL-WR949N oferece velocidade de até 450Mbps, ideal para streaming, jogos online e conexões simultâneas. Possui 3 antenas de alto ganho, proporcionando cobertura Wi-Fi estável.M&E', 289.98, 1, 3, 4, 7, 3);
 
-insert into endereco(logradouro, bairro, numero, cep, complemento, id_cidade) values ('Av. Teotônio Segurado', 'Plano Diretor Norte', '01', '77006470', 'Edificio Nobre Empresarial', 1);
-insert into endereco(logradouro, bairro, numero, cep, complemento, id_cidade) values ('Esplanada Praça dos Girassóis', 'Plano Diretor Norte', '01', '77001902', 'Esplanada das Secretarias', 1);
-
 insert into fornecedor (nome, cnpj, email) values ('Prefeitura de Palmas', '24851511000185', 'palmas@to.gov.br');
 insert into fornecedor (nome, cnpj, email) values ('Estado do Tocantins', '04592992000144', 'estado@to.gov.br');
 
-insert into telefone(codigoarea, numero) values ('63', '32127144');
-insert into telefone(codigoarea, numero) values ('63', '32181111');
+insert into endereco(logradouro, bairro, numero, cep, complemento, id_cidade, id_fornecedor) values ('Av. Teotônio Segurado', 'Plano Diretor Norte', '01', '77006470', 'Edificio Nobre Empresarial', 1, 1);
+insert into endereco(logradouro, bairro, numero, cep, complemento, id_cidade, id_fornecedor) values ('Esplanada Praça dos Girassóis', 'Plano Diretor Norte', '01', '77001902', 'Esplanada das Secretarias', 1, 2);
 
-insert into fornecedor_telefone(id_fornecedor, id_telefone) values (1, 1);
-insert into fornecedor_telefone(id_fornecedor, id_telefone) values (2, 2);
-
-insert into fornecedor_endereco(id_fornecedor, id_endereco) values (1, 1);
-insert into fornecedor_endereco(id_fornecedor, id_endereco) values (2, 2);
-
+insert into telefone(codigoarea, numero, id_fornecedor) values ('63', '32127144', 1);
+insert into telefone(codigoarea, numero, id_fornecedor) values ('63', '32127145', 1);
+insert into telefone(codigoarea, numero, id_fornecedor) values ('63', '32127146', 1);
+insert into telefone(codigoarea, numero, id_fornecedor) values ('63', '32181111', 2);

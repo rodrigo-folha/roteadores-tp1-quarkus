@@ -5,53 +5,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
-/*
-Classe da banda de frequência 
-BandaFrequencia
-
-Single-Band
-Dual-Band
-Tri-Band
-Quad-Band
-
---------------------------------
-Protocolo de Segurança
-ProtocoloSeguranca
-
-WPA2-PSK
-WPA3
-WEP
-WPA-Enterprise
-WPA-PSK
-WPA2-Enterprise
-WPS
-
---------------------------------
-Quantidade de Antenas
-QuantidadeAntena
-
-1
-2
-3
-4
-5
-
---------------------------------
-Sinal Wireless
-Sinalwireless
-
-Wi-Fi 5
-Wi-Fi 6
-
---------------------------------
-Sistema operacional
-
-Cisco IOS
-Junos OS
-RouterOS
-ZyNOS
- */
-
 @Entity
 public class Roteador extends DefaultEntity {
 
