@@ -4,6 +4,8 @@ import static io.restassured.RestAssured.given;
 import static org.hamcrest.CoreMatchers.everyItem;
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matchers.greaterThanOrEqualTo;
+import static org.hamcrest.Matchers.lessThanOrEqualTo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
@@ -88,6 +90,20 @@ public class RoteadorResourceTest {
             .body("protocoloSeguranca.id", everyItem(is(7)),
                   "protocoloSeguranca.nome", everyItem(is("WPS")));
     }
+
+    @Test
+    public void testFindByPreco() {
+        given()
+            .when()
+                .pathParam("min", 500)
+                .pathParam("max", 1000)
+            .get("/roteadores/search/preco/{min}/{max}")
+            .then().statusCode(200)
+            .body("preco", everyItem(greaterThanOrEqualTo(500f)),
+                  "preco", everyItem(lessThanOrEqualTo(1000f)),
+                  "nome", hasItem(is("Roteador de Firewall Cisco RV110W-A-NA-K9 Small Business RV110W Wireless N VPN")));
+    }
+
 
     @Test
     public void testFindAll() {

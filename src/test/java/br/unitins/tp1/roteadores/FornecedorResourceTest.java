@@ -1,8 +1,10 @@
 package br.unitins.tp1.roteadores;
 
 import static io.restassured.RestAssured.given;
+import static org.hamcrest.CoreMatchers.everyItem;
 import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
@@ -40,6 +42,26 @@ public class FornecedorResourceTest {
             .get("/fornecedores/search/{nome}")
             .then().statusCode(200)
             .body("nome", hasItem(is("Prefeitura de Palmas")));
+    }
+
+    @Test
+    public void testFindByCnpj() {
+        given()
+            .when().pathParam("cnpj", "24851")
+            .get("/fornecedores/search/cnpj/{cnpj}")
+            .then().statusCode(200)
+            .body("bandaFrequencia.id", everyItem(is(notNullValue())),
+                  "bandaFrequencia.nome", everyItem(is("24851")));
+    }
+
+    @Test
+    public void testFindByEmail() {
+        given()
+            .when().pathParam("email", "@to.gov.br")
+            .get("/fornecedores/search/email/{email}")
+            .then().statusCode(200)
+            .body("bandaFrequencia.id", everyItem(is(notNullValue())),
+                  "bandaFrequencia.nome", everyItem(is("@to.gov.br")));
     }
 
     @Test
