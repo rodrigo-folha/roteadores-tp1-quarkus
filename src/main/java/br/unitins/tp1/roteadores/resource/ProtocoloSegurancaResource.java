@@ -23,7 +23,7 @@ import jakarta.ws.rs.core.Response.Status;
 public class ProtocoloSegurancaResource {
 
     @Inject
-    ProtocoloSegurancaService protocoloSegurancaService;
+    public ProtocoloSegurancaService protocoloSegurancaService;
 
     @GET
     @Path("/{id}")

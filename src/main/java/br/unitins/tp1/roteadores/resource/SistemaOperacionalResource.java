@@ -23,7 +23,7 @@ import jakarta.ws.rs.core.Response.Status;
 public class SistemaOperacionalResource {
     
     @Inject
-    SistemaOperacionalService sistemaOperacionalService;
+    public SistemaOperacionalService sistemaOperacionalService;
 
     @GET
     @Path("/{id}")

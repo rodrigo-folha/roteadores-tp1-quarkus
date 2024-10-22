@@ -23,7 +23,7 @@ import jakarta.ws.rs.core.Response.Status;
 public class CidadeResource {
 
     @Inject
-    CidadeService cidadeService;
+    public CidadeService cidadeService;
 
     @GET
     @Path("/{id}")

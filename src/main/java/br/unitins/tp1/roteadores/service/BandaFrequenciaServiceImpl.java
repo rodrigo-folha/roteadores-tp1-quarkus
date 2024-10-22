@@ -13,7 +13,7 @@ import jakarta.transaction.Transactional;
 public class BandaFrequenciaServiceImpl implements BandaFrequenciaService{
 
     @Inject
-    BandaFrequenciaRepository bandaFrequenciaRepository;
+    public BandaFrequenciaRepository bandaFrequenciaRepository;
 
     @Override
     public BandaFrequencia findById(Long id) {

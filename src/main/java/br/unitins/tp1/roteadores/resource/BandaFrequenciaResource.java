@@ -23,7 +23,7 @@ import jakarta.ws.rs.core.Response.Status;
 public class BandaFrequenciaResource {
     
     @Inject
-    BandaFrequenciaService bandaFrequenciaService;
+    public BandaFrequenciaService bandaFrequenciaService;
 
     @GET
     @Path("/{id}")

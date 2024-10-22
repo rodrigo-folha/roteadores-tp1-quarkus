@@ -13,7 +13,7 @@ import jakarta.transaction.Transactional;
 public class QuantidadeAntenaServiceImpl implements QuantidadeAntenaService {
 
     @Inject
-    QuantidadeAntenaRepository quantidadeAntenaRepository;
+    public QuantidadeAntenaRepository quantidadeAntenaRepository;
 
     @Override
     public QuantidadeAntena findById(Long id) {

@@ -23,7 +23,7 @@ import jakarta.ws.rs.core.Response.Status;
 public class QuantidadeAntenaResource {
 
     @Inject
-    QuantidadeAntenaService quantidadeAntenaService;
+    public QuantidadeAntenaService quantidadeAntenaService;
 
     @GET
     @Path("/{id}")

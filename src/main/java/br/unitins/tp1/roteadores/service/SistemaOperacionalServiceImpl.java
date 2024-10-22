@@ -13,7 +13,7 @@ import jakarta.transaction.Transactional;
 public class SistemaOperacionalServiceImpl implements SistemaOperacionalService {
 
     @Inject
-    SistemaOperacionalRepository sistemaOperacionalRepository;
+    public SistemaOperacionalRepository sistemaOperacionalRepository;
 
     @Override
     public SistemaOperacional findById(Long id) {

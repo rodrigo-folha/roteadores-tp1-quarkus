@@ -22,7 +22,7 @@ import jakarta.ws.rs.core.Response.Status;
 public class RoteadorResource {
 
     @Inject
-    RoteadorService roteadorService;
+    public RoteadorService roteadorService;
 
     @GET
     @Path("/{id}")

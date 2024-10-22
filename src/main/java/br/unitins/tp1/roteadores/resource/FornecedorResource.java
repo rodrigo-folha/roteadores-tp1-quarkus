@@ -23,7 +23,7 @@ import jakarta.ws.rs.core.Response.Status;
 public class FornecedorResource {
     
     @Inject
-    FornecedorService fornecedorService;
+    public FornecedorService fornecedorService;
 
     @GET
     @Path("/{id}")

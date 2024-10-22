@@ -13,7 +13,7 @@ import jakarta.transaction.Transactional;
 public class ProtocoloSegurancaServiceImpl implements ProtocoloSegurancaService{
 
     @Inject
-    ProtocoloSegurancaRepository protocoloSegurancaRepository;
+    public ProtocoloSegurancaRepository protocoloSegurancaRepository;
 
     @Override
     public ProtocoloSeguranca findById(Long id) {

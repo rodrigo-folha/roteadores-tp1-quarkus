@@ -23,7 +23,7 @@ import jakarta.ws.rs.core.Response.Status;
 public class SinalWirelessResource {
     
     @Inject
-    SinalWirelessService sinalWirelessService;
+    public SinalWirelessService sinalWirelessService;
 
     @GET
     @Path("/{id}")

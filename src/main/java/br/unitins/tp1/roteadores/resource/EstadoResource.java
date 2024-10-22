@@ -24,7 +24,7 @@ import jakarta.ws.rs.core.Response.Status;
 public class EstadoResource {
     
     @Inject
-    EstadoService estadoService;
+    public EstadoService estadoService;
 
     @GET
     @Path("/{id}")
