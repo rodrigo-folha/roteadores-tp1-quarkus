@@ -53,6 +53,11 @@ insert into roteador (nome, descricao, preco, id_sinalWireless, id_sistemaOperac
 insert into roteador (nome, descricao, preco, id_sinalWireless, id_sistemaOperacional, id_bandaFrequencia, id_protocoloSeguranca, id_quantidadeAntena) values ('TP-Link AC 1350 Archer C60 Roteador Wireless Dual Band, Branco', 'Roteador Tplink Archer C60 D.Band AC1350 4P Lan 1WAN 5Antena - PN # Archer C60.Um produto de verdadeiro desempenho. Fácilidade no manuseio e conforto ao uso.Fabricante líder de produtos e acessórios de alta qualidade.', 467.58, 1, 3, 3, 7, 5);
 insert into roteador (nome, descricao, preco, id_sinalWireless, id_sistemaOperacional, id_bandaFrequencia, id_protocoloSeguranca, id_quantidadeAntena) values ('Roteador Wireless N TL-WR949N', 'O Roteador Wireless N TL-WR949N oferece velocidade de até 450Mbps, ideal para streaming, jogos online e conexões simultâneas. Possui 3 antenas de alto ganho, proporcionando cobertura Wi-Fi estável.M&E', 289.98, 1, 3, 4, 7, 3);
 
+insert into lote (codigo, estoque, data, id_roteador) values ('1111', 10, '2024-11-07', 1);
+insert into lote (codigo, estoque, data, id_roteador) values ('1112', 5, '2024-11-06', 1);
+insert into lote (codigo, estoque, data, id_roteador) values ('2221', 15, '2024-11-07', 2);
+insert into lote (codigo, estoque, data, id_roteador) values ('2222', 10, '2024-11-06', 2);
+
 insert into fornecedor (nome, cnpj, email) values ('Prefeitura de Palmas', '24851511000185', 'palmas@to.gov.br');
 insert into fornecedor (nome, cnpj, email) values ('Estado do Tocantins', '04592992000144', 'estado@to.gov.br');
 
@@ -63,3 +68,9 @@ insert into telefone(codigoarea, numero, id_fornecedor) values ('63', '32127144'
 insert into telefone(codigoarea, numero, id_fornecedor) values ('63', '32127145', 1);
 insert into telefone(codigoarea, numero, id_fornecedor) values ('63', '32127146', 1);
 insert into telefone(codigoarea, numero, id_fornecedor) values ('63', '32181111', 2);
+
+insert into usuario(nome, cpf, dataNascimento, email, senha, perfil) values ('rodrigo','12345678900','1997-04-28', 'rodrigo@email.com', '0cctg7WgpEz7kC/AzVC+KX+bZLPXDtgJDqWWZWnmzHH+7Na2YVxYYSFPxcf7ImAjqfNckx0aT4n5qKM7WEoeEQ==', 1);
+insert into usuario(nome, cpf, dataNascimento, email, senha, perfil) values ('joao','34567891200','2004-01-12', 'joao@email.com', '0cctg7WgpEz7kC/AzVC+KX+bZLPXDtgJDqWWZWnmzHH+7Na2YVxYYSFPxcf7ImAjqfNckx0aT4n5qKM7WEoeEQ==', 2);
+
+insert into cliente(id_usuario, datacadastro) values (1, '01-10-2024');
+insert into cliente(id_usuario, datacadastro) values (2, '02-10-2024');
