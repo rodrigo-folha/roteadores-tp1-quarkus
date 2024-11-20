@@ -3,24 +3,24 @@ package br.unitins.tp1.roteadores.service;
 import java.time.LocalDate;
 import java.util.List;
 
-import br.unitins.tp1.roteadores.dto.ClienteRequestDTO;
+import br.unitins.tp1.roteadores.dto.FuncionarioRequestDTO;
 import br.unitins.tp1.roteadores.dto.EnderecoRequestDTO;
 import br.unitins.tp1.roteadores.dto.TelefoneRequestDTO;
-import br.unitins.tp1.roteadores.model.Cliente;
+import br.unitins.tp1.roteadores.model.Funcionario;
 import br.unitins.tp1.roteadores.model.Endereco;
 import br.unitins.tp1.roteadores.model.Telefone;
 import br.unitins.tp1.roteadores.model.Usuario;
-import br.unitins.tp1.roteadores.repository.ClienteRepository;
+import br.unitins.tp1.roteadores.repository.FuncionarioRepository;
 import br.unitins.tp1.roteadores.repository.UsuarioRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 
 @ApplicationScoped
-public class ClienteServiceImpl implements ClienteService {
+public class FuncionarioServiceImpl implements FuncionarioService {
 
     @Inject
-    public ClienteRepository clienteRepository;
+    public FuncionarioRepository funcionarioRepository;
 
     @Inject
     public UsuarioRepository usuarioRepository;
@@ -32,29 +32,29 @@ public class ClienteServiceImpl implements ClienteService {
     public HashService hashService;
 
     @Override
-    public Cliente findById(Long id) {
-        return clienteRepository.findById(id);
+    public Funcionario findById(Long id) {
+        return funcionarioRepository.findById(id);
     }
 
     @Override
-    public List<Cliente> findByNome(String nome) {
-        return clienteRepository.findByNome(nome);
+    public List<Funcionario> findByNome(String nome) {
+        return funcionarioRepository.findByNome(nome);
     }
 
     @Override
-    public Cliente findByUsuario(String email) {
-        return clienteRepository.findByUsuario(email);
+    public Funcionario findByUsuario(String email) {
+        return funcionarioRepository.findByUsuario(email);
     }
 
     @Override
-    public List<Cliente> findAll() {
-        return clienteRepository.findAll().list();
+    public List<Funcionario> findAll() {
+        return funcionarioRepository.findAll().list();
     }
 
     @Override
     @Transactional
-    public Cliente create(ClienteRequestDTO dto) {
-        Cliente cliente = new Cliente();
+    public Funcionario create(FuncionarioRequestDTO dto) {
+        Funcionario funcionario = new Funcionario();
         Usuario usuario = new Usuario();
 
         usuario.setNome(dto.usuario().nome());
@@ -67,19 +67,19 @@ public class ClienteServiceImpl implements ClienteService {
         usuario.setEnderecos(dto.usuario().enderecos().stream().map(this::converterEndereco).toList());
         
         usuarioRepository.persist(usuario);
-        cliente.setUsuario(usuario);
-        cliente.setDataCadastro(LocalDate.now());
-        clienteRepository.persist(cliente);
+        funcionario.setUsuario(usuario);
+        funcionario.setSalario(dto.salario());;
+        funcionarioRepository.persist(funcionario);
 
-        return cliente;
+        return funcionario;
     }
 
     @Override
     @Transactional
-    public Cliente update(Long id, ClienteRequestDTO dto) {
-        Cliente cliente = clienteRepository.findById(id);
-        Usuario usuario = cliente.getUsuario();
-
+    public Funcionario update(Long id, FuncionarioRequestDTO dto) {
+        Funcionario funcionario = funcionarioRepository.findById(id);
+        Usuario usuario = funcionario.getUsuario();
+        
         usuario.setNome(dto.usuario().nome());
         usuario.setCpf(dto.usuario().cpf());
         usuario.setDataNascimento(dto.usuario().dataNascimento());
@@ -88,23 +88,25 @@ public class ClienteServiceImpl implements ClienteService {
         usuario.setPerfil(dto.usuario().perfil());
         updateTelefones(usuario, dto.usuario().telefones());
         updateEnderecos(usuario, dto.usuario().enderecos());
-
-        return cliente;
+        
+        funcionario.setSalario(dto.salario());
+        
+        return funcionario;
     }
 
     @Override
     @Transactional
-    public Cliente updateNomeImagem(Long id, String nomeImagem) {
-        Cliente cliente = clienteRepository.findById(id);
+    public Funcionario updateNomeImagem(Long id, String nomeImagem) {
+        Funcionario funcionario = funcionarioRepository.findById(id);
 
-        cliente.setNomeImagem(nomeImagem);
-        return cliente;
+        funcionario.setNomeImagem(nomeImagem);
+        return funcionario;
     }
 
     @Override
     @Transactional
     public void delete(Long id) {
-        clienteRepository.deleteById(id);
+        funcionarioRepository.deleteById(id);
     }
 
     private Endereco converterEndereco(EnderecoRequestDTO enderecoDto) {

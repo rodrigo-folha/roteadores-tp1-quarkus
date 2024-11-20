@@ -1,14 +1,12 @@
 package br.unitins.tp1.roteadores.model;
 
-import java.time.LocalDate;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 
 @Entity
-public class Cliente extends DefaultEntity {
-    private LocalDate dataCadastro;
+public class Funcionario extends DefaultEntity {
+    private Double salario;
 
     @OneToOne
     @JoinColumn(name = "id_usuario", unique = true)
@@ -16,12 +14,12 @@ public class Cliente extends DefaultEntity {
 
     private String nomeImagem;
 
-    public LocalDate getDataCadastro() {
-        return dataCadastro;
+    public Double getSalario() {
+        return salario;
     }
 
-    public void setDataCadastro(LocalDate dataCadastro) {
-        this.dataCadastro = dataCadastro;
+    public void setSalario(Double salario) {
+        this.salario = salario;
     }
 
     public Usuario getUsuario() {

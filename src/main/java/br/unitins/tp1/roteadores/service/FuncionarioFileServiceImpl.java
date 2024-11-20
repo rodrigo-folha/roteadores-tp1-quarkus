@@ -13,9 +13,9 @@ import java.util.UUID;
 import jakarta.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
-public class ClienteFileServiceImpl implements FileService{
+public class FuncionarioFileServiceImpl implements FileService{
     
-    private final String PATH_CLIENTE = "D:\\Arquivos\\quarkus\\ecommerce-roteadores\\cliente\\";
+    private final String PATH_FUNCIONARIO = "D:\\Arquivos\\quarkus\\ecommerce-roteadores\\funcionario\\";
 
     private static final List<String> SUPPORTED_MIME_TYPES =
         Arrays.asList("image/jpeg", "image/jpg", "image/png", "image/gif");
@@ -30,8 +30,8 @@ public class ClienteFileServiceImpl implements FileService{
 
         // verificarTamanhoArquivo(arquivo);
 
-        Path diretorio = Paths.get(PATH_CLIENTE);
-        if(!new File(PATH_CLIENTE).exists())
+        Path diretorio = Paths.get(PATH_FUNCIONARIO);
+        if(!new File(PATH_FUNCIONARIO).exists())
             Files.createDirectory(diretorio);
 
         String mimeType = Files.probeContentType(Paths.get(nomeArquivo));
@@ -60,7 +60,7 @@ public class ClienteFileServiceImpl implements FileService{
     @Override
     public File find(String nomeArquivo) {
         // eh ideal verificar se existe para nao retornar um file vazio
-        return new File(PATH_CLIENTE + nomeArquivo);
+        return new File(PATH_FUNCIONARIO + nomeArquivo);
     }
 
     public static void main(String[] args) {

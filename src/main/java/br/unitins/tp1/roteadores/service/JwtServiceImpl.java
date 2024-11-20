@@ -11,7 +11,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
 public class JwtServiceImpl implements JwtService {
-    
+
     private static final Duration EXPIRATION_TIME = Duration.ofHours(24);
 
     @Override
@@ -29,4 +29,5 @@ public class JwtServiceImpl implements JwtService {
             .sign();
 
     }
+    
 }

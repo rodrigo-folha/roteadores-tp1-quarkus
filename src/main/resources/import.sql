@@ -61,16 +61,60 @@ insert into lote (codigo, estoque, data, id_roteador) values ('2222', 10, '2024-
 insert into fornecedor (nome, cnpj, email) values ('Prefeitura de Palmas', '24851511000185', 'palmas@to.gov.br');
 insert into fornecedor (nome, cnpj, email) values ('Estado do Tocantins', '04592992000144', 'estado@to.gov.br');
 
-insert into endereco(logradouro, bairro, numero, cep, complemento, id_cidade, id_fornecedor) values ('Av. Teotônio Segurado', 'Plano Diretor Norte', '01', '77006470', 'Edificio Nobre Empresarial', 1, 1);
-insert into endereco(logradouro, bairro, numero, cep, complemento, id_cidade, id_fornecedor) values ('Esplanada Praça dos Girassóis', 'Plano Diretor Norte', '01', '77001902', 'Esplanada das Secretarias', 1, 2);
+insert into endereco(logradouro, bairro, numero, cep, complemento, id_cidade) values ('Av. Teotônio Segurado', 'Plano Diretor Norte', '01', '77006470', 'Edificio Nobre Empresarial', 1);
+insert into endereco(logradouro, bairro, numero, cep, complemento, id_cidade) values ('Esplanada Praça dos Girassóis', 'Plano Diretor Norte', '01', '77001902', 'Esplanada das Secretarias', 1);
 
-insert into telefone(codigoarea, numero, id_fornecedor) values ('63', '32127144', 1);
-insert into telefone(codigoarea, numero, id_fornecedor) values ('63', '32127145', 1);
-insert into telefone(codigoarea, numero, id_fornecedor) values ('63', '32127146', 1);
-insert into telefone(codigoarea, numero, id_fornecedor) values ('63', '32181111', 2);
+insert into endereco_fornecedor(id_fornecedor, enderecos_id) values (1, 1);
+insert into endereco_fornecedor(id_fornecedor, enderecos_id) values (2, 2);
 
-insert into usuario(nome, cpf, dataNascimento, email, senha, perfil) values ('rodrigo','12345678900','1997-04-28', 'rodrigo@email.com', '0cctg7WgpEz7kC/AzVC+KX+bZLPXDtgJDqWWZWnmzHH+7Na2YVxYYSFPxcf7ImAjqfNckx0aT4n5qKM7WEoeEQ==', 1);
-insert into usuario(nome, cpf, dataNascimento, email, senha, perfil) values ('joao','34567891200','2004-01-12', 'joao@email.com', '0cctg7WgpEz7kC/AzVC+KX+bZLPXDtgJDqWWZWnmzHH+7Na2YVxYYSFPxcf7ImAjqfNckx0aT4n5qKM7WEoeEQ==', 2);
+insert into telefone(codigoarea, numero) values ('63', '32127144');
+insert into telefone(codigoarea, numero) values ('63', '32127145');
+insert into telefone(codigoarea, numero) values ('63', '32127146');
+insert into telefone(codigoarea, numero) values ('63', '32181111');
+
+insert into telefone_fornecedor(id_fornecedor, telefones_id) values (1, 1);
+insert into telefone_fornecedor(id_fornecedor, telefones_id) values (1, 2);
+insert into telefone_fornecedor(id_fornecedor, telefones_id) values (1, 3);
+insert into telefone_fornecedor(id_fornecedor, telefones_id) values (2, 4);
+
+-- Inserindo Cliente
+insert into usuario(nome, cpf, dataNascimento, email, senha, perfil) values ('miguel','12345678900','1995-03-18', 'miguel@cliente.com', '0cctg7WgpEz7kC/AzVC+KX+bZLPXDtgJDqWWZWnmzHH+7Na2YVxYYSFPxcf7ImAjqfNckx0aT4n5qKM7WEoeEQ==', 2);
+insert into usuario(nome, cpf, dataNascimento, email, senha, perfil) values ('joao','34567891200','2004-01-12', 'joao@cliente.com', '0cctg7WgpEz7kC/AzVC+KX+bZLPXDtgJDqWWZWnmzHH+7Na2YVxYYSFPxcf7ImAjqfNckx0aT4n5qKM7WEoeEQ==', 2);
 
 insert into cliente(id_usuario, datacadastro) values (1, '01-10-2024');
 insert into cliente(id_usuario, datacadastro) values (2, '02-10-2024');
+
+insert into telefone(codigoarea, numero) values ('63', '92001122');
+insert into telefone(codigoarea, numero) values ('63', '92001133');
+insert into telefone(codigoarea, numero) values ('63', '99224466');
+insert into telefone(codigoarea, numero) values ('63', '99224477');
+
+insert into telefone_usuario(id_usuario, telefones_id) values (1, 5);
+insert into telefone_usuario(id_usuario, telefones_id) values (1, 6);
+insert into telefone_usuario(id_usuario, telefones_id) values (2, 7);
+insert into telefone_usuario(id_usuario, telefones_id) values (2, 8);
+
+insert into endereco(logradouro, bairro, numero, cep, complemento, id_cidade) values ('906 Sul, Alameda 11', 'Plano Diretor Sul', '01', '77000111', 'S/C', 1);
+insert into endereco(logradouro, bairro, numero, cep, complemento, id_cidade) values ('506 Sul, Alameda 10', 'Plano Diretor Sul', '01', '77000222', 'S/C', 1);
+
+insert into endereco_usuario(id_usuario, enderecos_id) values (1, 3);
+insert into endereco_usuario(id_usuario, enderecos_id) values (2, 4);
+
+-- Inserindo Funcionario
+insert into usuario(nome, cpf, dataNascimento, email, senha, perfil) values ('rodrigo','55566677788800','1997-04-28', 'rodrigo@email.com', '0cctg7WgpEz7kC/AzVC+KX+bZLPXDtgJDqWWZWnmzHH+7Na2YVxYYSFPxcf7ImAjqfNckx0aT4n5qKM7WEoeEQ==', 1);
+insert into usuario(nome, cpf, dataNascimento, email, senha, perfil) values ('thiago','11122233344400','1999-03-02', 'thiago@email.com', '0cctg7WgpEz7kC/AzVC+KX+bZLPXDtgJDqWWZWnmzHH+7Na2YVxYYSFPxcf7ImAjqfNckx0aT4n5qKM7WEoeEQ==', 1);
+
+insert into funcionario(id_usuario, salario) values (3, '12000.00');
+insert into funcionario(id_usuario, salario) values (4, '6000');
+
+insert into telefone(codigoarea, numero) values ('63', '52665544');
+insert into telefone(codigoarea, numero) values ('63', '52665533');
+
+insert into telefone_usuario(id_usuario, telefones_id) values (3, 9);
+insert into telefone_usuario(id_usuario, telefones_id) values (4, 10);
+
+insert into endereco(logradouro, bairro, numero, cep, complemento, id_cidade) values ('106 Sul, Alameda 05', 'Plano Diretor Sul', '01', '77000333', 'S/C', 1);
+insert into endereco(logradouro, bairro, numero, cep, complemento, id_cidade) values ('206 Sul, Alameda 06', 'Plano Diretor Sul', '01', '77000444', 'S/C', 1);
+
+insert into endereco_usuario(id_usuario, enderecos_id) values (3, 5);
+insert into endereco_usuario(id_usuario, enderecos_id) values (4, 6);

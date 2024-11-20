@@ -4,11 +4,11 @@ import java.io.IOException;
 
 import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
 
-import br.unitins.tp1.roteadores.dto.ClienteRequestDTO;
-import br.unitins.tp1.roteadores.dto.ClienteResponseDTO;
+import br.unitins.tp1.roteadores.dto.FuncionarioRequestDTO;
+import br.unitins.tp1.roteadores.dto.FuncionarioResponseDTO;
 import br.unitins.tp1.roteadores.form.ImageForm;
-import br.unitins.tp1.roteadores.service.ClienteFileServiceImpl;
-import br.unitins.tp1.roteadores.service.ClienteService;
+import br.unitins.tp1.roteadores.service.FuncionarioFileServiceImpl;
+import br.unitins.tp1.roteadores.service.FuncionarioService;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.Consumes;
@@ -25,67 +25,67 @@ import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.ResponseBuilder;
 import jakarta.ws.rs.core.Response.Status;
 
-@Path("/clientes")
+@Path("/funcionarios")
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-public class ClienteResource {
+public class FuncionarioResource {
 
     @Inject
-    public ClienteService clienteService;
+    public FuncionarioService funcionarioService;
 
     @Inject
-    public ClienteFileServiceImpl clienteFileService;
+    public FuncionarioFileServiceImpl funcionarioFileService;
 
     @GET
     @Path("/{id}")
     public Response findById(@PathParam("id") Long id) {
-        return Response.ok(ClienteResponseDTO.valueOf(clienteService.findById(id))).build();
+        return Response.ok(FuncionarioResponseDTO.valueOf(funcionarioService.findById(id))).build();
     }
 
     @GET
     @Path("/search/{nome}")
     public Response findByNome(@PathParam("nome") String nome) {
-        return Response.ok(clienteService.findByNome(nome)
+        return Response.ok(funcionarioService.findByNome(nome)
                 .stream()
-                .map(ClienteResponseDTO::valueOf)
+                .map(FuncionarioResponseDTO::valueOf)
                 .toList()).build();
     }
 
     @GET
     @Path("/search/{email}")
     public Response findByUsuario(@PathParam("email") String email) {
-        return Response.ok(clienteService.findByNome(email)
+        return Response.ok(funcionarioService.findByNome(email)
                 .stream()
-                .map(ClienteResponseDTO::valueOf)
+                .map(FuncionarioResponseDTO::valueOf)
                 .toList()).build();
     }
 
     @GET
     public Response findAll() {
-        return Response.ok(clienteService.findAll()
+        return Response.ok(funcionarioService.findAll()
                 .stream()
-                .map(o -> ClienteResponseDTO.valueOf(o))
+                .map(o -> FuncionarioResponseDTO.valueOf(o))
                 .toList()).build();
     }
 
     @POST
-    public Response create(@Valid ClienteRequestDTO dto) {
+    public Response create(@Valid FuncionarioRequestDTO dto) {
         return Response.status(Status.CREATED)
-                .entity(ClienteResponseDTO.valueOf(clienteService.create(dto)))
+                .entity(FuncionarioResponseDTO.valueOf(funcionarioService.create(dto)))
                 .build();
     }
 
     @PUT
     @Path("/{id}")
-    public Response update(@PathParam("id") Long id, ClienteRequestDTO cliente) {
-        clienteService.update(id, cliente);
+    public Response update(@PathParam("id") Long id, FuncionarioRequestDTO funcionario) {
+        funcionarioService.update(id, funcionario);
         return Response.noContent().build();
     }
 
     @DELETE
     @Path("/{id}")
     public Response delete(@PathParam("id") Long id) {
-        clienteService.delete(id);
+        funcionarioService.delete(id);
         return Response.noContent().build();
     }
 
@@ -95,9 +95,9 @@ public class ClienteResource {
     public Response uploadImage(@PathParam("id") Long id, @MultipartForm ImageForm form) {
 
         try {
-            String nomeImagem = clienteFileService.save(form.getNomeImagem(), form.getImagem());
+            String nomeImagem = funcionarioFileService.save(form.getNomeImagem(), form.getImagem());
 
-            clienteService.updateNomeImagem(id, nomeImagem);
+            funcionarioService.updateNomeImagem(id, nomeImagem);
         } catch (IOException e) {
             Response.status(500).build();
         }
@@ -108,7 +108,7 @@ public class ClienteResource {
     @Path("/download/imagem/{nomeImagem}")
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
     public Response downloadImagem(@PathParam("nomeImagem") String nomeImagem) {
-        ResponseBuilder response = Response.ok(clienteFileService.find(nomeImagem));
+        ResponseBuilder response = Response.ok(funcionarioFileService.find(nomeImagem));
         response.header("Content-Disposition", "attachment; filename=" + nomeImagem);
         return response.build();
     }

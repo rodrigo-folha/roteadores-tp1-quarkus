@@ -1,6 +1,7 @@
 package br.unitins.tp1.roteadores.dto;
 
 import java.time.LocalDate;
+import java.util.List;
 
 import br.unitins.tp1.roteadores.model.Perfil;
 import jakarta.validation.constraints.NotBlank;
@@ -13,10 +14,12 @@ public record UsuarioRequestDTO(
     LocalDate dataNascimento,
     @NotBlank(message = "O campo email deve ser informado.")
     String email,
-    @NotBlank(message = "O campo email deve ser informado.")
+    @NotBlank(message = "O campo senha deve ser informado.")
     String senha,
-    @NotBlank(message = "O campo email deve ser informado.")
-    Perfil perfil
+    @NotBlank(message = "O campo perfil deve ser informado.")
+    Perfil perfil,
+    List<TelefoneRequestDTO> telefones,
+    List<EnderecoRequestDTO> enderecos
 ) {
     
 }
