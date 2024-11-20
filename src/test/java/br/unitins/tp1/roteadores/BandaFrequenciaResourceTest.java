@@ -9,10 +9,10 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 import org.junit.jupiter.api.Test;
 
-import br.unitins.tp1.roteadores.dto.BandaFrequenciaRequestDTO;
-import br.unitins.tp1.roteadores.model.BandaFrequencia;
+import br.unitins.tp1.roteadores.dto.roteador.BandaFrequenciaRequestDTO;
+import br.unitins.tp1.roteadores.model.roteador.BandaFrequencia;
 import br.unitins.tp1.roteadores.resource.BandaFrequenciaResource;
-import br.unitins.tp1.roteadores.service.BandaFrequenciaService;
+import br.unitins.tp1.roteadores.service.roteador.BandaFrequenciaService;
 import io.quarkus.test.common.http.TestHTTPEndpoint;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.ContentType;

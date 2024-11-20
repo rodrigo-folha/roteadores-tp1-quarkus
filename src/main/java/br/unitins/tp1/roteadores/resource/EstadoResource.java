@@ -1,9 +1,9 @@
 package br.unitins.tp1.roteadores.resource;
 
 
-import br.unitins.tp1.roteadores.dto.EstadoRequestDTO;
-import br.unitins.tp1.roteadores.dto.EstadoResponseDTO;
-import br.unitins.tp1.roteadores.service.EstadoService;
+import br.unitins.tp1.roteadores.dto.endereco.EstadoRequestDTO;
+import br.unitins.tp1.roteadores.dto.endereco.EstadoResponseDTO;
+import br.unitins.tp1.roteadores.service.endereco.EstadoService;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.Consumes;

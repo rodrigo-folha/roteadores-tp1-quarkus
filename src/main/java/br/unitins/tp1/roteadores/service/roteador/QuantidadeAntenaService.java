@@ -1,9 +1,9 @@
-package br.unitins.tp1.roteadores.service;
+package br.unitins.tp1.roteadores.service.roteador;
 
 import java.util.List;
 
-import br.unitins.tp1.roteadores.dto.QuantidadeAntenaRequestDTO;
-import br.unitins.tp1.roteadores.model.QuantidadeAntena;
+import br.unitins.tp1.roteadores.dto.roteador.QuantidadeAntenaRequestDTO;
+import br.unitins.tp1.roteadores.model.roteador.QuantidadeAntena;
 
 public interface QuantidadeAntenaService {
     QuantidadeAntena findById(Long id);

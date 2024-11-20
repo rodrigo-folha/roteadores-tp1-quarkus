@@ -1,6 +1,6 @@
-package br.unitins.tp1.roteadores.dto;
+package br.unitins.tp1.roteadores.dto.usuario;
 
-import br.unitins.tp1.roteadores.model.Funcionario;
+import br.unitins.tp1.roteadores.model.usuario.Funcionario;
 
 public record FuncionarioResponseDTO(
     Long id,

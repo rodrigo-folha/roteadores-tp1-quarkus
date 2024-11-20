@@ -1,9 +1,9 @@
-package br.unitins.tp1.roteadores.service;
+package br.unitins.tp1.roteadores.service.roteador;
 
 import java.util.List;
 
-import br.unitins.tp1.roteadores.dto.SistemaOperacionalRequestDTO;
-import br.unitins.tp1.roteadores.model.SistemaOperacional;
+import br.unitins.tp1.roteadores.dto.roteador.SistemaOperacionalRequestDTO;
+import br.unitins.tp1.roteadores.model.roteador.SistemaOperacional;
 
 public interface SistemaOperacionalService {
     SistemaOperacional findById(Long id);

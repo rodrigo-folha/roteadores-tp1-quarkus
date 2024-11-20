@@ -2,6 +2,7 @@ package br.unitins.tp1.roteadores.dto;
 
 import java.util.List;
 
+import br.unitins.tp1.roteadores.dto.endereco.EnderecoResponseDTO;
 import br.unitins.tp1.roteadores.model.Fornecedor;
 
 public record FornecedorResponseDTO(

@@ -1,8 +1,8 @@
 package br.unitins.tp1.roteadores.resource;
 
-import br.unitins.tp1.roteadores.dto.BandaFrequenciaRequestDTO;
-import br.unitins.tp1.roteadores.dto.BandaFrequenciaResponseDTO;
-import br.unitins.tp1.roteadores.service.BandaFrequenciaService;
+import br.unitins.tp1.roteadores.dto.roteador.BandaFrequenciaRequestDTO;
+import br.unitins.tp1.roteadores.dto.roteador.BandaFrequenciaResponseDTO;
+import br.unitins.tp1.roteadores.service.roteador.BandaFrequenciaService;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.Consumes;

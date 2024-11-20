@@ -1,8 +1,8 @@
 package br.unitins.tp1.roteadores.resource;
 
-import br.unitins.tp1.roteadores.dto.ProtocoloSegurancaRequestDTO;
-import br.unitins.tp1.roteadores.dto.ProtocoloSegurancaResponseDTO;
-import br.unitins.tp1.roteadores.service.ProtocoloSegurancaService;
+import br.unitins.tp1.roteadores.dto.roteador.ProtocoloSegurancaRequestDTO;
+import br.unitins.tp1.roteadores.dto.roteador.ProtocoloSegurancaResponseDTO;
+import br.unitins.tp1.roteadores.service.roteador.ProtocoloSegurancaService;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.Consumes;

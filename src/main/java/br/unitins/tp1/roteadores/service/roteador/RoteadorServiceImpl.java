@@ -1,9 +1,9 @@
-package br.unitins.tp1.roteadores.service;
+package br.unitins.tp1.roteadores.service.roteador;
 
 import java.util.List;
 
-import br.unitins.tp1.roteadores.dto.RoteadorRequestDTO;
-import br.unitins.tp1.roteadores.model.Roteador;
+import br.unitins.tp1.roteadores.dto.roteador.RoteadorRequestDTO;
+import br.unitins.tp1.roteadores.model.roteador.Roteador;
 import br.unitins.tp1.roteadores.repository.RoteadorRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;

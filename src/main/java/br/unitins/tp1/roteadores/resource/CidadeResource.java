@@ -1,8 +1,8 @@
 package br.unitins.tp1.roteadores.resource;
 
-import br.unitins.tp1.roteadores.dto.CidadeRequestDTO;
-import br.unitins.tp1.roteadores.dto.CidadeResponseDTO;
-import br.unitins.tp1.roteadores.service.CidadeService;
+import br.unitins.tp1.roteadores.dto.endereco.CidadeRequestDTO;
+import br.unitins.tp1.roteadores.dto.endereco.CidadeResponseDTO;
+import br.unitins.tp1.roteadores.service.endereco.CidadeService;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.Consumes;

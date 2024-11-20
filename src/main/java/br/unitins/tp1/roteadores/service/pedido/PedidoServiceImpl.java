@@ -1,15 +1,16 @@
-package br.unitins.tp1.roteadores.service;
+package br.unitins.tp1.roteadores.service.pedido;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.unitins.tp1.roteadores.dto.ItemPedidoRequestDTO;
-import br.unitins.tp1.roteadores.dto.PedidoRequestDTO;
-import br.unitins.tp1.roteadores.model.ItemPedido;
-import br.unitins.tp1.roteadores.model.Lote;
-import br.unitins.tp1.roteadores.model.Pedido;
+import br.unitins.tp1.roteadores.dto.pedido.ItemPedidoRequestDTO;
+import br.unitins.tp1.roteadores.dto.pedido.PedidoRequestDTO;
+import br.unitins.tp1.roteadores.model.pedido.ItemPedido;
+import br.unitins.tp1.roteadores.model.pedido.Lote;
+import br.unitins.tp1.roteadores.model.pedido.Pedido;
 import br.unitins.tp1.roteadores.repository.PedidoRepository;
+import br.unitins.tp1.roteadores.service.usuario.ClienteService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;

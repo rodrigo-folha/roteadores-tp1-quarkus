@@ -1,5 +1,6 @@
-package br.unitins.tp1.roteadores.model;
+package br.unitins.tp1.roteadores.model.endereco;
 
+import br.unitins.tp1.roteadores.model.DefaultEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 

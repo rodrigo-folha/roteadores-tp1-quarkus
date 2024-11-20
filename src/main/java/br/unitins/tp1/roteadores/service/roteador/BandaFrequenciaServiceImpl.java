@@ -1,9 +1,9 @@
-package br.unitins.tp1.roteadores.service;
+package br.unitins.tp1.roteadores.service.roteador;
 
 import java.util.List;
 
-import br.unitins.tp1.roteadores.dto.BandaFrequenciaRequestDTO;
-import br.unitins.tp1.roteadores.model.BandaFrequencia;
+import br.unitins.tp1.roteadores.dto.roteador.BandaFrequenciaRequestDTO;
+import br.unitins.tp1.roteadores.model.roteador.BandaFrequencia;
 import br.unitins.tp1.roteadores.repository.BandaFrequenciaRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;

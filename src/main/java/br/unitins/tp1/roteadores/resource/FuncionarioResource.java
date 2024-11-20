@@ -4,11 +4,11 @@ import java.io.IOException;
 
 import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
 
-import br.unitins.tp1.roteadores.dto.FuncionarioRequestDTO;
-import br.unitins.tp1.roteadores.dto.FuncionarioResponseDTO;
+import br.unitins.tp1.roteadores.dto.usuario.FuncionarioRequestDTO;
+import br.unitins.tp1.roteadores.dto.usuario.FuncionarioResponseDTO;
 import br.unitins.tp1.roteadores.form.ImageForm;
-import br.unitins.tp1.roteadores.service.FuncionarioFileServiceImpl;
-import br.unitins.tp1.roteadores.service.FuncionarioService;
+import br.unitins.tp1.roteadores.service.usuario.FuncionarioFileServiceImpl;
+import br.unitins.tp1.roteadores.service.usuario.FuncionarioService;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.Consumes;

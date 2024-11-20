@@ -1,11 +1,11 @@
 package br.unitins.tp1.roteadores.resource;
 
-import br.unitins.tp1.roteadores.dto.AuthRequestDTO;
-import br.unitins.tp1.roteadores.dto.UsuarioResponseDTO;
-import br.unitins.tp1.roteadores.model.Usuario;
-import br.unitins.tp1.roteadores.service.HashService;
-import br.unitins.tp1.roteadores.service.JwtService;
-import br.unitins.tp1.roteadores.service.UsuarioService;
+import br.unitins.tp1.roteadores.dto.usuario.AuthRequestDTO;
+import br.unitins.tp1.roteadores.dto.usuario.UsuarioResponseDTO;
+import br.unitins.tp1.roteadores.model.usuario.Usuario;
+import br.unitins.tp1.roteadores.service.jwt.JwtService;
+import br.unitins.tp1.roteadores.service.usuario.HashService;
+import br.unitins.tp1.roteadores.service.usuario.UsuarioService;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.POST;

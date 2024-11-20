@@ -1,10 +1,11 @@
-package br.unitins.tp1.roteadores.service;
+package br.unitins.tp1.roteadores.service.pedido;
 
 import java.util.List;
 
-import br.unitins.tp1.roteadores.dto.LoteRequestDTO;
-import br.unitins.tp1.roteadores.model.Lote;
+import br.unitins.tp1.roteadores.dto.pedido.LoteRequestDTO;
+import br.unitins.tp1.roteadores.model.pedido.Lote;
 import br.unitins.tp1.roteadores.repository.LoteRepository;
+import br.unitins.tp1.roteadores.service.roteador.RoteadorService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;

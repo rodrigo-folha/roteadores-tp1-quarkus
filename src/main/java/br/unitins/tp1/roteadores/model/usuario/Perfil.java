@@ -1,4 +1,4 @@
-package br.unitins.tp1.roteadores.model;
+package br.unitins.tp1.roteadores.model.usuario;
 
 public enum Perfil {
     

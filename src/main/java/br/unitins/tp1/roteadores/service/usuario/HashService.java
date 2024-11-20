@@ -1,4 +1,4 @@
-package br.unitins.tp1.roteadores.service;
+package br.unitins.tp1.roteadores.service.usuario;
 
 public interface HashService {
 

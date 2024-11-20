@@ -1,10 +1,12 @@
-package br.unitins.tp1.roteadores.dto;
+package br.unitins.tp1.roteadores.dto.usuario;
 
 import java.time.LocalDate;
 import java.util.List;
 
-import br.unitins.tp1.roteadores.model.Perfil;
-import br.unitins.tp1.roteadores.model.Usuario;
+import br.unitins.tp1.roteadores.dto.TelefoneResponseDTO;
+import br.unitins.tp1.roteadores.dto.endereco.EnderecoResponseDTO;
+import br.unitins.tp1.roteadores.model.usuario.Perfil;
+import br.unitins.tp1.roteadores.model.usuario.Usuario;
 
 public record UsuarioResponseDTO(
     Long id,

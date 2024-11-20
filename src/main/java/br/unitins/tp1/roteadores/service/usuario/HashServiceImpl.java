@@ -1,4 +1,4 @@
-package br.unitins.tp1.roteadores.service;
+package br.unitins.tp1.roteadores.service.usuario;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;

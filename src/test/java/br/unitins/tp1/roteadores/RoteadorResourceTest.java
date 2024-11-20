@@ -11,9 +11,9 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 import org.junit.jupiter.api.Test;
 
-import br.unitins.tp1.roteadores.dto.RoteadorRequestDTO;
-import br.unitins.tp1.roteadores.model.Roteador;
-import br.unitins.tp1.roteadores.service.RoteadorService;
+import br.unitins.tp1.roteadores.dto.roteador.RoteadorRequestDTO;
+import br.unitins.tp1.roteadores.model.roteador.Roteador;
+import br.unitins.tp1.roteadores.service.roteador.RoteadorService;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.ContentType;
 import jakarta.inject.Inject;

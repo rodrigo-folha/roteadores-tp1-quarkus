@@ -1,8 +1,8 @@
-package br.unitins.tp1.roteadores.service;
+package br.unitins.tp1.roteadores.service.usuario;
 
 import java.util.List;
 
-import br.unitins.tp1.roteadores.model.Usuario;
+import br.unitins.tp1.roteadores.model.usuario.Usuario;
 
 public interface UsuarioService {
     

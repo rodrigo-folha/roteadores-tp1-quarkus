@@ -1,9 +1,11 @@
-package br.unitins.tp1.roteadores.dto;
+package br.unitins.tp1.roteadores.dto.usuario;
 
 import java.time.LocalDate;
 import java.util.List;
 
-import br.unitins.tp1.roteadores.model.Perfil;
+import br.unitins.tp1.roteadores.dto.TelefoneRequestDTO;
+import br.unitins.tp1.roteadores.dto.endereco.EnderecoRequestDTO;
+import br.unitins.tp1.roteadores.model.usuario.Perfil;
 import jakarta.validation.constraints.NotBlank;
 
 public record UsuarioRequestDTO(

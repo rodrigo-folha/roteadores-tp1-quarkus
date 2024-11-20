@@ -1,6 +1,6 @@
 package br.unitins.tp1.roteadores.repository;
 
-import br.unitins.tp1.roteadores.model.Usuario;
+import br.unitins.tp1.roteadores.model.usuario.Usuario;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 

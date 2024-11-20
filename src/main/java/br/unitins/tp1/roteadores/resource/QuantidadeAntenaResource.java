@@ -1,8 +1,8 @@
 package br.unitins.tp1.roteadores.resource;
 
-import br.unitins.tp1.roteadores.dto.QuantidadeAntenaRequestDTO;
-import br.unitins.tp1.roteadores.dto.QuantidadeAntenaResponseDTO;
-import br.unitins.tp1.roteadores.service.QuantidadeAntenaService;
+import br.unitins.tp1.roteadores.dto.roteador.QuantidadeAntenaRequestDTO;
+import br.unitins.tp1.roteadores.dto.roteador.QuantidadeAntenaResponseDTO;
+import br.unitins.tp1.roteadores.service.roteador.QuantidadeAntenaService;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.Consumes;

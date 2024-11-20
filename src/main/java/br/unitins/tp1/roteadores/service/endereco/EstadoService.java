@@ -1,9 +1,9 @@
-package br.unitins.tp1.roteadores.service;
+package br.unitins.tp1.roteadores.service.endereco;
 
 import java.util.List;
 
-import br.unitins.tp1.roteadores.dto.EstadoRequestDTO;
-import br.unitins.tp1.roteadores.model.Estado;
+import br.unitins.tp1.roteadores.dto.endereco.EstadoRequestDTO;
+import br.unitins.tp1.roteadores.model.endereco.Estado;
 
 public interface EstadoService {
 

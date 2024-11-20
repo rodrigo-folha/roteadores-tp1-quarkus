@@ -2,7 +2,7 @@ package br.unitins.tp1.roteadores.repository;
 
 import java.util.List;
 
-import br.unitins.tp1.roteadores.model.Pedido;
+import br.unitins.tp1.roteadores.model.pedido.Pedido;
 import io.quarkus.hibernate.orm.panache.PanacheRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 

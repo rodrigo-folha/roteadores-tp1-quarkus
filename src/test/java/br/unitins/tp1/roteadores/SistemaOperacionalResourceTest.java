@@ -8,9 +8,9 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 import org.junit.jupiter.api.Test;
 
-import br.unitins.tp1.roteadores.dto.SistemaOperacionalRequestDTO;
-import br.unitins.tp1.roteadores.model.SistemaOperacional;
-import br.unitins.tp1.roteadores.service.SistemaOperacionalService;
+import br.unitins.tp1.roteadores.dto.roteador.SistemaOperacionalRequestDTO;
+import br.unitins.tp1.roteadores.model.roteador.SistemaOperacional;
+import br.unitins.tp1.roteadores.service.roteador.SistemaOperacionalService;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.ContentType;
 import jakarta.inject.Inject;

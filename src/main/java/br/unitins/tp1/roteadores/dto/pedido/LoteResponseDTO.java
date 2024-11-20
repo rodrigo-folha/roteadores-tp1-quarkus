@@ -1,8 +1,9 @@
-package br.unitins.tp1.roteadores.dto;
+package br.unitins.tp1.roteadores.dto.pedido;
 
 import java.time.LocalDate;
 
-import br.unitins.tp1.roteadores.model.Lote;
+import br.unitins.tp1.roteadores.dto.roteador.RoteadorResponseDTO;
+import br.unitins.tp1.roteadores.model.pedido.Lote;
 
 public record LoteResponseDTO(
     Long id,

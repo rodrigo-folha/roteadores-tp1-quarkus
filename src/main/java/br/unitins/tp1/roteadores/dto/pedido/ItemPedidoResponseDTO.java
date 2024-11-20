@@ -1,6 +1,6 @@
-package br.unitins.tp1.roteadores.dto;
+package br.unitins.tp1.roteadores.dto.pedido;
 
-import br.unitins.tp1.roteadores.model.ItemPedido;
+import br.unitins.tp1.roteadores.model.pedido.ItemPedido;
 
 public record ItemPedidoResponseDTO(
     Long idProduto,

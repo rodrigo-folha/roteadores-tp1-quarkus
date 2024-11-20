@@ -1,6 +1,6 @@
-package br.unitins.tp1.roteadores.dto;
+package br.unitins.tp1.roteadores.dto.roteador;
 
-import br.unitins.tp1.roteadores.model.Roteador;
+import br.unitins.tp1.roteadores.model.roteador.Roteador;
 
 public record RoteadorResponseDTO(
     Long id,

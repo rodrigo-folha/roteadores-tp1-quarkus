@@ -1,6 +1,6 @@
-package br.unitins.tp1.roteadores.dto;
+package br.unitins.tp1.roteadores.dto.endereco;
 
-import br.unitins.tp1.roteadores.model.Endereco;
+import br.unitins.tp1.roteadores.model.endereco.Endereco;
 
 public record EnderecoResponseDTO(
     Long id,

@@ -8,9 +8,9 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 import org.junit.jupiter.api.Test;
 
-import br.unitins.tp1.roteadores.dto.QuantidadeAntenaRequestDTO;
-import br.unitins.tp1.roteadores.model.QuantidadeAntena;
-import br.unitins.tp1.roteadores.service.QuantidadeAntenaService;
+import br.unitins.tp1.roteadores.dto.roteador.QuantidadeAntenaRequestDTO;
+import br.unitins.tp1.roteadores.model.roteador.QuantidadeAntena;
+import br.unitins.tp1.roteadores.service.roteador.QuantidadeAntenaService;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.ContentType;
 import jakarta.inject.Inject;

@@ -1,9 +1,9 @@
-package br.unitins.tp1.roteadores.service;
+package br.unitins.tp1.roteadores.service.endereco;
 
 import java.util.List;
 
-import br.unitins.tp1.roteadores.dto.CidadeRequestDTO;
-import br.unitins.tp1.roteadores.model.Cidade;
+import br.unitins.tp1.roteadores.dto.endereco.CidadeRequestDTO;
+import br.unitins.tp1.roteadores.model.endereco.Cidade;
 
 public interface CidadeService {
 

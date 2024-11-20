@@ -9,10 +9,10 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 import org.junit.jupiter.api.Test;
 
-import br.unitins.tp1.roteadores.dto.CidadeRequestDTO;
-import br.unitins.tp1.roteadores.model.Cidade;
+import br.unitins.tp1.roteadores.dto.endereco.CidadeRequestDTO;
+import br.unitins.tp1.roteadores.model.endereco.Cidade;
 import br.unitins.tp1.roteadores.resource.CidadeResource;
-import br.unitins.tp1.roteadores.service.CidadeService;
+import br.unitins.tp1.roteadores.service.endereco.CidadeService;
 import io.quarkus.test.common.http.TestHTTPEndpoint;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.ContentType;

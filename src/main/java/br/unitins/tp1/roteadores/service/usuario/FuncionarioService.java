@@ -1,9 +1,9 @@
-package br.unitins.tp1.roteadores.service;
+package br.unitins.tp1.roteadores.service.usuario;
 
 import java.util.List;
 
-import br.unitins.tp1.roteadores.dto.FuncionarioRequestDTO;
-import br.unitins.tp1.roteadores.model.Funcionario;
+import br.unitins.tp1.roteadores.dto.usuario.FuncionarioRequestDTO;
+import br.unitins.tp1.roteadores.model.usuario.Funcionario;
 
 public interface FuncionarioService {
 

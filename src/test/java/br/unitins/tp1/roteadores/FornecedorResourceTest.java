@@ -11,9 +11,9 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import org.junit.jupiter.api.Test;
 import java.util.List;
 
-import br.unitins.tp1.roteadores.dto.EnderecoRequestDTO;
 import br.unitins.tp1.roteadores.dto.FornecedorRequestDTO;
 import br.unitins.tp1.roteadores.dto.TelefoneRequestDTO;
+import br.unitins.tp1.roteadores.dto.endereco.EnderecoRequestDTO;
 import br.unitins.tp1.roteadores.model.Fornecedor;
 import br.unitins.tp1.roteadores.service.FornecedorService;
 import io.quarkus.test.junit.QuarkusTest;

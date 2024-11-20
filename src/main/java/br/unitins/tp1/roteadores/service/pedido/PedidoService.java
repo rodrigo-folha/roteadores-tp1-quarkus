@@ -1,9 +1,9 @@
-package br.unitins.tp1.roteadores.service;
+package br.unitins.tp1.roteadores.service.pedido;
 
 import java.util.List;
 
-import br.unitins.tp1.roteadores.dto.PedidoRequestDTO;
-import br.unitins.tp1.roteadores.model.Pedido;
+import br.unitins.tp1.roteadores.dto.pedido.PedidoRequestDTO;
+import br.unitins.tp1.roteadores.model.pedido.Pedido;
 
 public interface PedidoService {
 

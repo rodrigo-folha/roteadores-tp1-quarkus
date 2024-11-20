@@ -1,8 +1,8 @@
 package br.unitins.tp1.roteadores.resource;
 
-import br.unitins.tp1.roteadores.dto.RoteadorRequestDTO;
-import br.unitins.tp1.roteadores.dto.RoteadorResponseDTO;
-import br.unitins.tp1.roteadores.service.RoteadorService;
+import br.unitins.tp1.roteadores.dto.roteador.RoteadorRequestDTO;
+import br.unitins.tp1.roteadores.dto.roteador.RoteadorResponseDTO;
+import br.unitins.tp1.roteadores.service.roteador.RoteadorService;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;

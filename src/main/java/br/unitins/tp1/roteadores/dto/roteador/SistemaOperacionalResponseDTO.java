@@ -1,6 +1,6 @@
-package br.unitins.tp1.roteadores.dto;
+package br.unitins.tp1.roteadores.dto.roteador;
 
-import br.unitins.tp1.roteadores.model.SistemaOperacional;
+import br.unitins.tp1.roteadores.model.roteador.SistemaOperacional;
 
 public record SistemaOperacionalResponseDTO(Long id, String nome) {
     public static SistemaOperacionalResponseDTO valueOf(SistemaOperacional sistemaOperacional) {

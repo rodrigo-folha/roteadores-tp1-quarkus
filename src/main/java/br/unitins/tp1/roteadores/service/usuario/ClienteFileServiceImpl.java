@@ -1,4 +1,4 @@
-package br.unitins.tp1.roteadores.service;
+package br.unitins.tp1.roteadores.service.usuario;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
+import br.unitins.tp1.roteadores.service.file.FileService;
 import jakarta.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped

@@ -1,8 +1,8 @@
 package br.unitins.tp1.roteadores.resource;
 
-import br.unitins.tp1.roteadores.dto.SistemaOperacionalRequestDTO;
-import br.unitins.tp1.roteadores.dto.SistemaOperacionalResponseDTO;
-import br.unitins.tp1.roteadores.service.SistemaOperacionalService;
+import br.unitins.tp1.roteadores.dto.roteador.SistemaOperacionalRequestDTO;
+import br.unitins.tp1.roteadores.dto.roteador.SistemaOperacionalResponseDTO;
+import br.unitins.tp1.roteadores.service.roteador.SistemaOperacionalService;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.Consumes;

@@ -8,9 +8,9 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 
 import org.junit.jupiter.api.Test;
 
-import br.unitins.tp1.roteadores.dto.SinalWirelessRequestDTO;
-import br.unitins.tp1.roteadores.model.SinalWireless;
-import br.unitins.tp1.roteadores.service.SinalWirelessService;
+import br.unitins.tp1.roteadores.dto.roteador.SinalWirelessRequestDTO;
+import br.unitins.tp1.roteadores.model.roteador.SinalWireless;
+import br.unitins.tp1.roteadores.service.roteador.SinalWirelessService;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.ContentType;
 import jakarta.inject.Inject;

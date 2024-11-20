@@ -2,6 +2,7 @@ package br.unitins.tp1.roteadores.model;
 
 import java.util.List;
 
+import br.unitins.tp1.roteadores.model.endereco.Endereco;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

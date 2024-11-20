@@ -1,8 +1,10 @@
-package br.unitins.tp1.roteadores.model;
+package br.unitins.tp1.roteadores.model.pedido;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+import br.unitins.tp1.roteadores.model.DefaultEntity;
+import br.unitins.tp1.roteadores.model.usuario.Cliente;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;

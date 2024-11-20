@@ -1,8 +1,11 @@
-package br.unitins.tp1.roteadores.model;
+package br.unitins.tp1.roteadores.model.usuario;
 
 import java.time.LocalDate;
 import java.util.List;
 
+import br.unitins.tp1.roteadores.model.DefaultEntity;
+import br.unitins.tp1.roteadores.model.Telefone;
+import br.unitins.tp1.roteadores.model.endereco.Endereco;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

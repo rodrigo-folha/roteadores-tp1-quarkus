@@ -1,9 +1,9 @@
-package br.unitins.tp1.roteadores.service;
+package br.unitins.tp1.roteadores.service.pedido;
 
 import java.util.List;
 
-import br.unitins.tp1.roteadores.dto.LoteRequestDTO;
-import br.unitins.tp1.roteadores.model.Lote;
+import br.unitins.tp1.roteadores.dto.pedido.LoteRequestDTO;
+import br.unitins.tp1.roteadores.model.pedido.Lote;
 
 public interface LoteService {
     

@@ -1,9 +1,9 @@
-package br.unitins.tp1.roteadores.service;
+package br.unitins.tp1.roteadores.service.roteador;
 
 import java.util.List;
 
-import br.unitins.tp1.roteadores.dto.SinalWirelessRequestDTO;
-import br.unitins.tp1.roteadores.model.SinalWireless;
+import br.unitins.tp1.roteadores.dto.roteador.SinalWirelessRequestDTO;
+import br.unitins.tp1.roteadores.model.roteador.SinalWireless;
 import br.unitins.tp1.roteadores.repository.SinalWirelessRepository;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;

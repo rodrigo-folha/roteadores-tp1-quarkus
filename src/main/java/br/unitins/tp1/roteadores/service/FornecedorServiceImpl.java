@@ -3,13 +3,14 @@ package br.unitins.tp1.roteadores.service;
 import java.util.ArrayList;
 import java.util.List;
 
-import br.unitins.tp1.roteadores.dto.EnderecoRequestDTO;
 import br.unitins.tp1.roteadores.dto.FornecedorRequestDTO;
 import br.unitins.tp1.roteadores.dto.TelefoneRequestDTO;
-import br.unitins.tp1.roteadores.model.Endereco;
+import br.unitins.tp1.roteadores.dto.endereco.EnderecoRequestDTO;
 import br.unitins.tp1.roteadores.model.Fornecedor;
 import br.unitins.tp1.roteadores.model.Telefone;
+import br.unitins.tp1.roteadores.model.endereco.Endereco;
 import br.unitins.tp1.roteadores.repository.FornecedorRepository;
+import br.unitins.tp1.roteadores.service.endereco.CidadeService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;

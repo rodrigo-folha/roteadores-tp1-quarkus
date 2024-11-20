@@ -1,6 +1,6 @@
-package br.unitins.tp1.roteadores.service;
+package br.unitins.tp1.roteadores.service.jwt;
 
-import br.unitins.tp1.roteadores.dto.UsuarioResponseDTO;
+import br.unitins.tp1.roteadores.dto.usuario.UsuarioResponseDTO;
 
 public interface JwtService {
 

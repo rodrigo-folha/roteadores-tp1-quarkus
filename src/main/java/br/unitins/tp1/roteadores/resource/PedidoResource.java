@@ -2,9 +2,9 @@ package br.unitins.tp1.roteadores.resource;
 
 import org.eclipse.microprofile.jwt.JsonWebToken;
 
-import br.unitins.tp1.roteadores.dto.PedidoRequestDTO;
-import br.unitins.tp1.roteadores.dto.PedidoResponseDTO;
-import br.unitins.tp1.roteadores.service.PedidoService;
+import br.unitins.tp1.roteadores.dto.pedido.PedidoRequestDTO;
+import br.unitins.tp1.roteadores.dto.pedido.PedidoResponseDTO;
+import br.unitins.tp1.roteadores.service.pedido.PedidoService;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;

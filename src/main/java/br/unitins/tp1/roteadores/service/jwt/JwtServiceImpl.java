@@ -1,11 +1,11 @@
-package br.unitins.tp1.roteadores.service;
+package br.unitins.tp1.roteadores.service.jwt;
 
 import java.time.Duration;
 import java.time.Instant;
 import java.util.HashSet;
 import java.util.Set;
 
-import br.unitins.tp1.roteadores.dto.UsuarioResponseDTO;
+import br.unitins.tp1.roteadores.dto.usuario.UsuarioResponseDTO;
 import io.smallrye.jwt.build.Jwt;
 import jakarta.enterprise.context.ApplicationScoped;
 

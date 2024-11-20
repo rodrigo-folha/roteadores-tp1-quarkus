@@ -1,8 +1,8 @@
 package br.unitins.tp1.roteadores.resource;
 
-import br.unitins.tp1.roteadores.dto.SinalWirelessRequestDTO;
-import br.unitins.tp1.roteadores.dto.SinalWirelessResponseDTO;
-import br.unitins.tp1.roteadores.service.SinalWirelessService;
+import br.unitins.tp1.roteadores.dto.roteador.SinalWirelessRequestDTO;
+import br.unitins.tp1.roteadores.dto.roteador.SinalWirelessResponseDTO;
+import br.unitins.tp1.roteadores.service.roteador.SinalWirelessService;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.Consumes;

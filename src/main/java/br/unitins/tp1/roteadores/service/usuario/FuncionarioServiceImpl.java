@@ -1,17 +1,18 @@
-package br.unitins.tp1.roteadores.service;
+package br.unitins.tp1.roteadores.service.usuario;
 
 import java.time.LocalDate;
 import java.util.List;
 
-import br.unitins.tp1.roteadores.dto.FuncionarioRequestDTO;
-import br.unitins.tp1.roteadores.dto.EnderecoRequestDTO;
 import br.unitins.tp1.roteadores.dto.TelefoneRequestDTO;
-import br.unitins.tp1.roteadores.model.Funcionario;
-import br.unitins.tp1.roteadores.model.Endereco;
+import br.unitins.tp1.roteadores.dto.endereco.EnderecoRequestDTO;
+import br.unitins.tp1.roteadores.dto.usuario.FuncionarioRequestDTO;
 import br.unitins.tp1.roteadores.model.Telefone;
-import br.unitins.tp1.roteadores.model.Usuario;
+import br.unitins.tp1.roteadores.model.endereco.Endereco;
+import br.unitins.tp1.roteadores.model.usuario.Funcionario;
+import br.unitins.tp1.roteadores.model.usuario.Usuario;
 import br.unitins.tp1.roteadores.repository.FuncionarioRepository;
 import br.unitins.tp1.roteadores.repository.UsuarioRepository;
+import br.unitins.tp1.roteadores.service.endereco.CidadeService;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
