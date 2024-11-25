@@ -9,10 +9,12 @@ public interface LoteService {
     
     Lote findById(Long id);
 
-    Lote findByCodigo(String codigos);
+    Lote findByCodigo(String codigo);
 
     Lote findByIdRoteador(Long idRoteador);
 
+    List<Lote> findByIdRoteadorQtdeTotal(Long idRoteador);
+    
     List<Lote> findAll();
 
     Lote create(LoteRequestDTO dto);

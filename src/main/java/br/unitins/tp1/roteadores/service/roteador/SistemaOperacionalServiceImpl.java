@@ -5,6 +5,7 @@ import java.util.List;
 import br.unitins.tp1.roteadores.dto.roteador.SistemaOperacionalRequestDTO;
 import br.unitins.tp1.roteadores.model.roteador.SistemaOperacional;
 import br.unitins.tp1.roteadores.repository.SistemaOperacionalRepository;
+import br.unitins.tp1.roteadores.validation.ValidationException;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -17,6 +18,9 @@ public class SistemaOperacionalServiceImpl implements SistemaOperacionalService 
 
     @Override
     public SistemaOperacional findById(Long id) {
+        if (sistemaOperacionalRepository.findById(id) == null)
+            throw new ValidationException("id", "Id nao encontrado");
+
         return sistemaOperacionalRepository.findById(id);
     }
 
@@ -44,6 +48,9 @@ public class SistemaOperacionalServiceImpl implements SistemaOperacionalService 
     @Override
     @Transactional
     public SistemaOperacional update(Long id, SistemaOperacionalRequestDTO dto) {
+        if (sistemaOperacionalRepository.findById(id) == null)
+            throw new ValidationException("id", "Id nao encontrado");
+            
         SistemaOperacional sistemaOperacional = sistemaOperacionalRepository.findById(id);
 
         sistemaOperacional.setNome(dto.nome());

@@ -12,6 +12,8 @@ public interface UsuarioService {
 
     Usuario findByEmail(String email);
 
+    Usuario findByCpf(String cpf);
+
     List<Usuario> findAll();
 
     void delete(Long id); 

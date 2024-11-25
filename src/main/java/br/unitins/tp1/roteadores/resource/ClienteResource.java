@@ -9,6 +9,7 @@ import br.unitins.tp1.roteadores.dto.usuario.ClienteResponseDTO;
 import br.unitins.tp1.roteadores.form.ImageForm;
 import br.unitins.tp1.roteadores.service.usuario.ClienteFileServiceImpl;
 import br.unitins.tp1.roteadores.service.usuario.ClienteService;
+import br.unitins.tp1.roteadores.service.usuario.UsuarioService;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.Consumes;
@@ -33,6 +34,9 @@ public class ClienteResource {
     @Inject
     public ClienteService clienteService;
 
+    @Inject 
+    public UsuarioService usuarioService;
+
     @Inject
     public ClienteFileServiceImpl clienteFileService;
 
@@ -52,9 +56,18 @@ public class ClienteResource {
     }
 
     @GET
-    @Path("/search/{email}")
-    public Response findByUsuario(@PathParam("email") String email) {
-        return Response.ok(clienteService.findByNome(email)
+    @Path("/search/email/{email}")
+    public Response findByEmail(@PathParam("email") String email) {
+        return Response.ok(clienteService.findByNome(usuarioService.findByEmail(email).getNome())
+                .stream()
+                .map(ClienteResponseDTO::valueOf)
+                .toList()).build();
+    }
+
+    @GET
+    @Path("/search/cpf/{cpf}")
+    public Response findByCpf(@PathParam("cpf") String cpf) {
+        return Response.ok(clienteService.findByNome(usuarioService.findByCpf(cpf).getNome())
                 .stream()
                 .map(ClienteResponseDTO::valueOf)
                 .toList()).build();

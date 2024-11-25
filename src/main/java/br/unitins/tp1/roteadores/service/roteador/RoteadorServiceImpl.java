@@ -5,6 +5,7 @@ import java.util.List;
 import br.unitins.tp1.roteadores.dto.roteador.RoteadorRequestDTO;
 import br.unitins.tp1.roteadores.model.roteador.Roteador;
 import br.unitins.tp1.roteadores.repository.RoteadorRepository;
+import br.unitins.tp1.roteadores.validation.ValidationException;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -32,6 +33,9 @@ public class RoteadorServiceImpl implements RoteadorService {
 
     @Override
     public Roteador findById(Long id) {
+        if (roteadorRepository.findById(id) == null)
+            throw new ValidationException("id", "Id nao encontrado");
+
         return roteadorRepository.findById(id);
     }
 
@@ -95,6 +99,9 @@ public class RoteadorServiceImpl implements RoteadorService {
     @Override
     @Transactional
     public Roteador update(Long id, RoteadorRequestDTO dto) {
+        if (roteadorRepository.findById(id) == null)
+            throw new ValidationException("id", "Id nao encontrado");
+            
         Roteador roteador = roteadorRepository.findById(id);
         roteador.setNome(dto.nome());
         roteador.setDescricao(dto.descricao());

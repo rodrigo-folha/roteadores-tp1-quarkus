@@ -53,10 +53,25 @@ insert into roteador (nome, descricao, preco, id_sinalWireless, id_sistemaOperac
 insert into roteador (nome, descricao, preco, id_sinalWireless, id_sistemaOperacional, id_bandaFrequencia, id_protocoloSeguranca, id_quantidadeAntena) values ('TP-Link AC 1350 Archer C60 Roteador Wireless Dual Band, Branco', 'Roteador Tplink Archer C60 D.Band AC1350 4P Lan 1WAN 5Antena - PN # Archer C60.Um produto de verdadeiro desempenho. Fácilidade no manuseio e conforto ao uso.Fabricante líder de produtos e acessórios de alta qualidade.', 467.58, 1, 3, 3, 7, 5);
 insert into roteador (nome, descricao, preco, id_sinalWireless, id_sistemaOperacional, id_bandaFrequencia, id_protocoloSeguranca, id_quantidadeAntena) values ('Roteador Wireless N TL-WR949N', 'O Roteador Wireless N TL-WR949N oferece velocidade de até 450Mbps, ideal para streaming, jogos online e conexões simultâneas. Possui 3 antenas de alto ganho, proporcionando cobertura Wi-Fi estável.M&E', 289.98, 1, 3, 4, 7, 3);
 
-insert into lote (codigo, estoque, data, id_roteador) values ('1111', 10, '2024-11-07', 1);
-insert into lote (codigo, estoque, data, id_roteador) values ('1112', 5, '2024-11-06', 1);
-insert into lote (codigo, estoque, data, id_roteador) values ('2221', 15, '2024-11-07', 2);
-insert into lote (codigo, estoque, data, id_roteador) values ('2222', 10, '2024-11-06', 2);
+insert into lote (codigo, estoque, data, id_roteador) values ('1111', 10, '2024-01-11', 1);
+insert into lote (codigo, estoque, data, id_roteador) values ('1112', 5, '2023-06-09', 1);
+insert into lote (codigo, estoque, data, id_roteador) values ('2111', 10, '2023-01-07', 2);
+insert into lote (codigo, estoque, data, id_roteador) values ('2112', 15, '2024-05-10', 2);
+
+insert into lote (codigo, estoque, data, id_roteador) values ('3111', 25, '2023-02-11', 3);
+insert into lote (codigo, estoque, data, id_roteador) values ('3112', 10, '2023-06-20', 3);
+
+insert into lote (codigo, estoque, data, id_roteador) values ('4111', 20, '2023-04-11', 4);
+insert into lote (codigo, estoque, data, id_roteador) values ('4112', 25, '2023-09-11', 4);
+
+insert into lote (codigo, estoque, data, id_roteador) values ('5111', 20, '2023-03-08', 5);
+insert into lote (codigo, estoque, data, id_roteador) values ('5112', 25, '2023-09-15', 5);
+
+insert into lote (codigo, estoque, data, id_roteador) values ('6111', 20, '2023-04-01', 6);
+insert into lote (codigo, estoque, data, id_roteador) values ('6112', 25, '2024-02-11', 6);
+
+insert into lote (codigo, estoque, data, id_roteador) values ('7111', 10, '2023-07-01', 7);
+insert into lote (codigo, estoque, data, id_roteador) values ('7112', 25, '2024-03-11', 7);
 
 insert into fornecedor (nome, cnpj, email) values ('Prefeitura de Palmas', '24851511000185', 'palmas@to.gov.br');
 insert into fornecedor (nome, cnpj, email) values ('Estado do Tocantins', '04592992000144', 'estado@to.gov.br');
@@ -118,3 +133,7 @@ insert into endereco(logradouro, bairro, numero, cep, complemento, id_cidade) va
 
 insert into endereco_usuario(id_usuario, enderecos_id) values (3, 5);
 insert into endereco_usuario(id_usuario, enderecos_id) values (4, 6);
+
+-- inserindo cupom de desconto
+insert into cupomdesconto(codigo, percentualDesconto, validade) values ('10OFF', 0.10, '2025-12-31');
+insert into cupomdesconto(codigo, percentualDesconto, validade) values ('15OFF', 0.15, '2025-01-01');

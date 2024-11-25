@@ -5,6 +5,7 @@ import java.util.List;
 import br.unitins.tp1.roteadores.dto.roteador.ProtocoloSegurancaRequestDTO;
 import br.unitins.tp1.roteadores.model.roteador.ProtocoloSeguranca;
 import br.unitins.tp1.roteadores.repository.ProtocoloSegurancaRepository;
+import br.unitins.tp1.roteadores.validation.ValidationException;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -17,6 +18,9 @@ public class ProtocoloSegurancaServiceImpl implements ProtocoloSegurancaService{
 
     @Override
     public ProtocoloSeguranca findById(Long id) {
+        if (protocoloSegurancaRepository.findById(id) == null)
+            throw new ValidationException("id", "Id nao encontrado");
+
         return protocoloSegurancaRepository.findById(id);
     }
 
@@ -44,6 +48,9 @@ public class ProtocoloSegurancaServiceImpl implements ProtocoloSegurancaService{
     @Override
     @Transactional
     public ProtocoloSeguranca update(Long id, ProtocoloSegurancaRequestDTO dto) {
+        if (protocoloSegurancaRepository.findById(id) == null)
+            throw new ValidationException("id", "Id nao encontrado");
+
         ProtocoloSeguranca protocoloSeguranca = protocoloSegurancaRepository.findById(id);
         protocoloSeguranca.setNome(dto.nome());
 

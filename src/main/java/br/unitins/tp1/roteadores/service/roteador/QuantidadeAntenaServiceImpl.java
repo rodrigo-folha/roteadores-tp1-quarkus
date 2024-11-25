@@ -5,6 +5,7 @@ import java.util.List;
 import br.unitins.tp1.roteadores.dto.roteador.QuantidadeAntenaRequestDTO;
 import br.unitins.tp1.roteadores.model.roteador.QuantidadeAntena;
 import br.unitins.tp1.roteadores.repository.QuantidadeAntenaRepository;
+import br.unitins.tp1.roteadores.validation.ValidationException;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -17,6 +18,9 @@ public class QuantidadeAntenaServiceImpl implements QuantidadeAntenaService {
 
     @Override
     public QuantidadeAntena findById(Long id) {
+        if (quantidadeAntenaRepository.findById(id) == null)
+            throw new ValidationException("id", "Id nao encontrado");
+
         return quantidadeAntenaRepository.findById(id);
     }
 
@@ -44,6 +48,9 @@ public class QuantidadeAntenaServiceImpl implements QuantidadeAntenaService {
     @Override
     @Transactional
     public QuantidadeAntena update(Long id, QuantidadeAntenaRequestDTO dto) {
+        if (quantidadeAntenaRepository.findById(id) == null)
+            throw new ValidationException("id", "Id nao encontrado");
+            
         QuantidadeAntena quantidadeAntena = quantidadeAntenaRepository.findById(id);
         quantidadeAntena.setQuantidade(dto.quantidade());
 

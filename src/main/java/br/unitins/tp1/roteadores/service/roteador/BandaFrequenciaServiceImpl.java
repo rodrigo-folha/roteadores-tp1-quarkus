@@ -5,6 +5,7 @@ import java.util.List;
 import br.unitins.tp1.roteadores.dto.roteador.BandaFrequenciaRequestDTO;
 import br.unitins.tp1.roteadores.model.roteador.BandaFrequencia;
 import br.unitins.tp1.roteadores.repository.BandaFrequenciaRepository;
+import br.unitins.tp1.roteadores.validation.ValidationException;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -17,6 +18,9 @@ public class BandaFrequenciaServiceImpl implements BandaFrequenciaService{
 
     @Override
     public BandaFrequencia findById(Long id) {
+        if (bandaFrequenciaRepository.findById(id) == null)
+            throw new ValidationException("id", "Id nao encontrado");
+
         return bandaFrequenciaRepository.findById(id);
     }
 
@@ -43,6 +47,9 @@ public class BandaFrequenciaServiceImpl implements BandaFrequenciaService{
     @Override
     @Transactional
     public BandaFrequencia update(Long id, BandaFrequenciaRequestDTO dto) {
+        if (bandaFrequenciaRepository.findById(id) == null)
+            throw new ValidationException("id", "Id nao encontrado");
+            
         BandaFrequencia bandaFrequencia = bandaFrequenciaRepository.findById(id);
         bandaFrequencia.setNome(dto.nome());
 

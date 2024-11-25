@@ -26,10 +26,8 @@ public class ClienteFileServiceImpl implements FileService{
 
     @Override
     public String save(String nomeArquivo, byte[] arquivo) throws IOException {
-
-        // verificarTipopArquivo(nomeArquivo);
-
-        // verificarTamanhoArquivo(arquivo);
+        verificarTipoArquivo(nomeArquivo);
+        verificarTamanhoArquivo(arquivo);
 
         Path diretorio = Paths.get(PATH_CLIENTE);
         if(!new File(PATH_CLIENTE).exists())
@@ -44,9 +42,8 @@ public class ClienteFileServiceImpl implements FileService{
         // caminho final do arquivo
         Path filePath = diretorio.resolve(novoNomeArquivo);
 
-        if (filePath.toFile().exists()) {
-            // o ideal eh gerar um novo nome para o arquivo
-            throw new IOException("O nome do arquivo (gerado) ja existe: " + novoNomeArquivo);
+        while (filePath.toFile().exists()) {
+            novoNomeArquivo = UUID.randomUUID() + "." + extensao;
         }
 
         // salvando a imagem
@@ -57,6 +54,21 @@ public class ClienteFileServiceImpl implements FileService{
         return novoNomeArquivo;
         
     }
+
+    private void verificarTipoArquivo(String nomeArquivo) throws IOException {
+        String mimeType = Files.probeContentType(Paths.get(nomeArquivo));
+        if (!SUPPORTED_MIME_TYPES.contains(mimeType)) {
+            throw new IOException("Formato de arquivo nao suportado pelo sistema.");
+        }
+    }
+
+    private void verificarTamanhoArquivo(byte[] arquivo) throws IOException {
+        if (arquivo.length > MAX_FILE_SIZE) {
+            throw new IOException("O arquivo excede o limite maximo de 10 MB.");
+        }
+    }
+
+    
 
     @Override
     public File find(String nomeArquivo) {

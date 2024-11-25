@@ -11,6 +11,7 @@ import br.unitins.tp1.roteadores.model.Telefone;
 import br.unitins.tp1.roteadores.model.endereco.Endereco;
 import br.unitins.tp1.roteadores.repository.FornecedorRepository;
 import br.unitins.tp1.roteadores.service.endereco.CidadeService;
+import br.unitins.tp1.roteadores.validation.ValidationException;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -26,6 +27,8 @@ public class FornecedorServiceImpl implements FornecedorService {
 
     @Override
     public Fornecedor findById(Long id) {
+        if (fornecedorRepository.findById(id) == null)
+            throw new ValidationException("id", "Id nao encontrado");
         return fornecedorRepository.findById(id);
     }
 
@@ -52,6 +55,12 @@ public class FornecedorServiceImpl implements FornecedorService {
     @Override
     @Transactional
     public Fornecedor create(FornecedorRequestDTO dto) {
+        if (!fornecedorRepository.findByCnpj(dto.cnpj()).isEmpty())
+            throw new ValidationException("cnpj", "cnpj já cadastrado.");
+
+        if (!fornecedorRepository.findByEmail(dto.email()).isEmpty())
+            throw new ValidationException("email", "email já cadastrado.");
+
         Fornecedor fornecedor = new Fornecedor();
         fornecedor.setNome(dto.nome());
         fornecedor.setCnpj(dto.cnpj());
@@ -67,6 +76,12 @@ public class FornecedorServiceImpl implements FornecedorService {
     @Override
     @Transactional
     public Fornecedor update(Long id, FornecedorRequestDTO dto) {
+        if (!fornecedorRepository.findByCnpj(dto.cnpj()).isEmpty())
+            throw new ValidationException("cnpj", "cnpj já cadastrado.");
+
+        if (!fornecedorRepository.findByEmail(dto.email()).isEmpty())
+            throw new ValidationException("email", "email já cadastrado.");
+            
         Fornecedor fornecedor = fornecedorRepository.findById(id);
         fornecedor.setNome(dto.nome());
         fornecedor.setCnpj(dto.cnpj());

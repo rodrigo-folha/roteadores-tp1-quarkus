@@ -5,6 +5,7 @@ import java.util.List;
 import br.unitins.tp1.roteadores.dto.endereco.CidadeRequestDTO;
 import br.unitins.tp1.roteadores.model.endereco.Cidade;
 import br.unitins.tp1.roteadores.repository.CidadeRepository;
+import br.unitins.tp1.roteadores.validation.ValidationException;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -20,6 +21,8 @@ public class CidadeServiceImpl implements CidadeService {
 
     @Override
     public Cidade findById(Long id) {
+        if (cidadeRepository.findById(id) == null)
+            throw new ValidationException("id", "Id nao encontrado");
         return cidadeRepository.findById(id);
     }
 
@@ -36,6 +39,9 @@ public class CidadeServiceImpl implements CidadeService {
     @Override
     @Transactional
     public Cidade create(CidadeRequestDTO dto) {
+        if (estadoService.findById(dto.idEstado()) == null)
+            throw new ValidationException("idEstado", "O id do estado nao foi encontrado");
+
         Cidade cidade = new Cidade();
         cidade.setNome(dto.nome());
         cidade.setEstado(estadoService.findById(dto.idEstado()));
@@ -47,6 +53,12 @@ public class CidadeServiceImpl implements CidadeService {
     @Override
     @Transactional
     public Cidade update(Long id, CidadeRequestDTO dto) {
+        if (cidadeRepository.findById(id) == null)
+            throw new ValidationException("id", "Id nao encontrado");
+
+        if (estadoService.findById(dto.idEstado()) == null)
+            throw new ValidationException("idEstado", "O id do estado nao foi encontrado");
+            
         Cidade cidade = cidadeRepository.findById(id);
         cidade.setNome(dto.nome());
         cidade.setEstado(estadoService.findById(dto.idEstado()));

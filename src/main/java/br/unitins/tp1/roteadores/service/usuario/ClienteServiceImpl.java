@@ -13,6 +13,7 @@ import br.unitins.tp1.roteadores.model.usuario.Usuario;
 import br.unitins.tp1.roteadores.repository.ClienteRepository;
 import br.unitins.tp1.roteadores.repository.UsuarioRepository;
 import br.unitins.tp1.roteadores.service.endereco.CidadeService;
+import br.unitins.tp1.roteadores.validation.ValidationException;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -34,6 +35,9 @@ public class ClienteServiceImpl implements ClienteService {
 
     @Override
     public Cliente findById(Long id) {
+        if (clienteRepository.findById(id) == null)
+            throw new ValidationException("id", "Id nao encontrado");
+
         return clienteRepository.findById(id);
     }
 
@@ -55,6 +59,12 @@ public class ClienteServiceImpl implements ClienteService {
     @Override
     @Transactional
     public Cliente create(ClienteRequestDTO dto) {
+        if (usuarioRepository.findByEmail(dto.usuario().email()) != null)
+            throw new ValidationException("email", "email já cadastrado.");
+
+        if (usuarioRepository.findByCpf(dto.usuario().cpf()) != null)
+            throw new ValidationException("cpf", "cpf já cadastrado.");
+
         Cliente cliente = new Cliente();
         Usuario usuario = new Usuario();
 
@@ -78,6 +88,15 @@ public class ClienteServiceImpl implements ClienteService {
     @Override
     @Transactional
     public Cliente update(Long id, ClienteRequestDTO dto) {
+        if (clienteRepository.findById(id) == null)
+            throw new ValidationException("id", "Id nao encontrado");
+
+        if (usuarioRepository.findByEmail(dto.usuario().email()) != null)
+            throw new ValidationException("email", "email já cadastrado.");
+
+        if (usuarioRepository.findByCpf(dto.usuario().cpf()) != null)
+            throw new ValidationException("cpf", "cpf já cadastrado.");
+
         Cliente cliente = clienteRepository.findById(id);
         Usuario usuario = cliente.getUsuario();
 

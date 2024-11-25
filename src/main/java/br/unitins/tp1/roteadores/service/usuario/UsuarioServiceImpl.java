@@ -4,6 +4,7 @@ import java.util.List;
 
 import br.unitins.tp1.roteadores.model.usuario.Usuario;
 import br.unitins.tp1.roteadores.repository.UsuarioRepository;
+import br.unitins.tp1.roteadores.validation.ValidationException;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -26,7 +27,16 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Override
     public Usuario findByEmail(String email) {
+        if (usuarioRepository.findByEmail(email) == null)
+            throw new ValidationException("email", "email nao encontrado");
         return usuarioRepository.findByEmail(email);
+    }
+
+    @Override
+    public Usuario findByCpf(String cpf) {
+        if (usuarioRepository.findByCpf(cpf) == null)
+            throw new ValidationException("cpf", "cpf nao encontrado");
+        return usuarioRepository.findByCpf(cpf);
     }
 
     @Override

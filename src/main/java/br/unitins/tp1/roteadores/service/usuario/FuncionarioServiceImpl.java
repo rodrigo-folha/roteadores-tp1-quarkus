@@ -1,6 +1,5 @@
 package br.unitins.tp1.roteadores.service.usuario;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import br.unitins.tp1.roteadores.dto.TelefoneRequestDTO;
@@ -13,6 +12,7 @@ import br.unitins.tp1.roteadores.model.usuario.Usuario;
 import br.unitins.tp1.roteadores.repository.FuncionarioRepository;
 import br.unitins.tp1.roteadores.repository.UsuarioRepository;
 import br.unitins.tp1.roteadores.service.endereco.CidadeService;
+import br.unitins.tp1.roteadores.validation.ValidationException;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -34,6 +34,9 @@ public class FuncionarioServiceImpl implements FuncionarioService {
 
     @Override
     public Funcionario findById(Long id) {
+        if (funcionarioRepository.findById(id) == null)
+            throw new ValidationException("id", "Id nao encontrado");
+            
         return funcionarioRepository.findById(id);
     }
 
@@ -55,6 +58,12 @@ public class FuncionarioServiceImpl implements FuncionarioService {
     @Override
     @Transactional
     public Funcionario create(FuncionarioRequestDTO dto) {
+        if (usuarioRepository.findByEmail(dto.usuario().email()) != null)
+            throw new ValidationException("email", "email já cadastrado.");
+
+        if (usuarioRepository.findByCpf(dto.usuario().cpf()) != null)
+            throw new ValidationException("cpf", "cpf já cadastrado.");
+
         Funcionario funcionario = new Funcionario();
         Usuario usuario = new Usuario();
 
@@ -78,6 +87,15 @@ public class FuncionarioServiceImpl implements FuncionarioService {
     @Override
     @Transactional
     public Funcionario update(Long id, FuncionarioRequestDTO dto) {
+        if (funcionarioRepository.findById(id) == null)
+            throw new ValidationException("id", "Id nao encontrado");
+
+        if (usuarioRepository.findByEmail(dto.usuario().email()) != null)
+            throw new ValidationException("email", "email já cadastrado.");
+
+        if (usuarioRepository.findByCpf(dto.usuario().cpf()) != null)
+            throw new ValidationException("cpf", "cpf já cadastrado.");
+
         Funcionario funcionario = funcionarioRepository.findById(id);
         Usuario usuario = funcionario.getUsuario();
         

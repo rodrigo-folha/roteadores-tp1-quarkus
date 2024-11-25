@@ -14,39 +14,34 @@ import br.unitins.tp1.roteadores.service.file.FileService;
 import jakarta.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
-public class FuncionarioFileServiceImpl implements FileService{
-    
+public class FuncionarioFileServiceImpl implements FileService {
+
     private final String PATH_FUNCIONARIO = "D:\\Arquivos\\quarkus\\ecommerce-roteadores\\funcionario\\";
 
-    private static final List<String> SUPPORTED_MIME_TYPES =
-        Arrays.asList("image/jpeg", "image/jpg", "image/png", "image/gif");
+    private static final List<String> SUPPORTED_MIME_TYPES = Arrays.asList("image/jpeg", "image/jpg", "image/png",
+            "image/gif");
 
     private static final int MAX_FILE_SIZE = 1024 * 1024 * 10; // 10 MB
-
 
     @Override
     public String save(String nomeArquivo, byte[] arquivo) throws IOException {
 
-        // verificarTipopArquivo(nomeArquivo);
-
-        // verificarTamanhoArquivo(arquivo);
+        verificarTipoArquivo(nomeArquivo);
+        verificarTamanhoArquivo(arquivo);
 
         Path diretorio = Paths.get(PATH_FUNCIONARIO);
-        if(!new File(PATH_FUNCIONARIO).exists())
+        if (!new File(PATH_FUNCIONARIO).exists())
             Files.createDirectory(diretorio);
 
         String mimeType = Files.probeContentType(Paths.get(nomeArquivo));
         String extensao = mimeType.substring(mimeType.lastIndexOf("/") + 1);
         String novoNomeArquivo = UUID.randomUUID() + "." + extensao;
 
-        // Criar funcao para se existir, rodar o UUID random de novo e gerar aleatorio, até não ter mais nenhum com mesmo nome
-
         // caminho final do arquivo
         Path filePath = diretorio.resolve(novoNomeArquivo);
 
-        if (filePath.toFile().exists()) {
-            // o ideal eh gerar um novo nome para o arquivo
-            throw new IOException("O nome do arquivo (gerado) ja existe: " + novoNomeArquivo);
+        while (filePath.toFile().exists()) {
+            novoNomeArquivo = UUID.randomUUID() + "." + extensao;
         }
 
         // salvando a imagem
@@ -55,7 +50,20 @@ public class FuncionarioFileServiceImpl implements FileService{
         }
 
         return novoNomeArquivo;
-        
+
+    }
+
+    private void verificarTipoArquivo(String nomeArquivo) throws IOException {
+        String mimeType = Files.probeContentType(Paths.get(nomeArquivo));
+        if (!SUPPORTED_MIME_TYPES.contains(mimeType)) {
+            throw new IOException("Formato de arquivo nao suportado pelo sistema.");
+        }
+    }
+
+    private void verificarTamanhoArquivo(byte[] arquivo) throws IOException {
+        if (arquivo.length > MAX_FILE_SIZE) {
+            throw new IOException("O arquivo excede o limite maximo de 10 MB.");
+        }
     }
 
     @Override

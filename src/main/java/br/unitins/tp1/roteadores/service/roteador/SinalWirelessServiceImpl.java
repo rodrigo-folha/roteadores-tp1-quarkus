@@ -5,6 +5,7 @@ import java.util.List;
 import br.unitins.tp1.roteadores.dto.roteador.SinalWirelessRequestDTO;
 import br.unitins.tp1.roteadores.model.roteador.SinalWireless;
 import br.unitins.tp1.roteadores.repository.SinalWirelessRepository;
+import br.unitins.tp1.roteadores.validation.ValidationException;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -17,6 +18,9 @@ public class SinalWirelessServiceImpl implements SinalWirelessService {
 
     @Override
     public SinalWireless findById(Long id) {
+        if (sinalwirelessRepository.findById(id) == null)
+            throw new ValidationException("id", "Id nao encontrado");
+
         return sinalwirelessRepository.findById(id);
     }
 
@@ -43,6 +47,8 @@ public class SinalWirelessServiceImpl implements SinalWirelessService {
     @Override
     @Transactional
     public SinalWireless update(Long id, SinalWirelessRequestDTO dto) {
+        if (sinalwirelessRepository.findById(id) == null)
+            throw new ValidationException("id", "Id nao encontrado");
         SinalWireless sinalwireless = sinalwirelessRepository.findById(id);
         
         sinalwireless.setNome(dto.nome());

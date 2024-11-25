@@ -30,6 +30,11 @@ public class LoteServiceImpl implements LoteService {
     }
 
     @Override
+    public List<Lote> findByIdRoteadorQtdeTotal(Long idRoteador) {
+        return loteRepository.findByIdRoteadorQtdeTotal(idRoteador);
+    }
+
+    @Override
     public Lote findByCodigo(String codigo) {
         return loteRepository.findByCodigo(codigo);
     } 
@@ -56,6 +61,7 @@ public class LoteServiceImpl implements LoteService {
     }
 
     @Override
+    @Transactional
     public Lote update(Long id, LoteRequestDTO dto) {
         Lote lote = loteRepository.findById(id);
 
@@ -68,6 +74,7 @@ public class LoteServiceImpl implements LoteService {
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
         loteRepository.deleteById(id);
     }

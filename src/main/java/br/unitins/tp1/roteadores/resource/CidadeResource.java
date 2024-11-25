@@ -28,6 +28,7 @@ public class CidadeResource {
     @GET
     @Path("/{id}")
     public Response findById(@PathParam("id") Long id) {
+        
         return Response.ok(CidadeResponseDTO.valueOf(cidadeService.findById(id))).build();
     }
 

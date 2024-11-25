@@ -2,9 +2,13 @@ package br.unitins.tp1.roteadores.dto.pedido;
 
 import java.util.List;
 
+import br.unitins.tp1.roteadores.dto.endereco.EnderecoRequestDTO;
+import jakarta.validation.Valid;
+
 public record PedidoRequestDTO(
-
-        Double valorTotal,
-        List<ItemPedidoRequestDTO> listaItemPedido) {
-
+        @Valid
+        List<ItemPedidoRequestDTO> listaItemPedido,
+        @Valid
+        EnderecoRequestDTO enderecoEntrega
+) {
 }
