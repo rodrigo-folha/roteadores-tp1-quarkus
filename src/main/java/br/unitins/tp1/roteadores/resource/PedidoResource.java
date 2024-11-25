@@ -10,8 +10,10 @@ import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
+import jakarta.ws.rs.PATCH;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
@@ -52,6 +54,36 @@ public class PedidoResource {
             PedidoResponseDTO.valueOf(pedidoService.create(dto, username))
         ).build();
     
+    }
+
+    @POST
+    @RolesAllowed("User")
+    @Path("/{idPedido}/pagamento/gerar/pix")
+    public Response gerarPix(@PathParam("idPedido") Long id) {
+        return Response.status(Status.CREATED).entity(pedidoService.gerarCodigoPix(id)).build();
+    }
+
+    @POST
+    @RolesAllowed("User")
+    @Path("/{idPedido}/pagamento/gerar/boleto")
+    public Response gerarBoleto(@PathParam("idPedido") Long id) {
+        return Response.status(Status.CREATED).entity(pedidoService.gerarBoleto(id)).build();
+    }
+
+    @PATCH
+    @RolesAllowed("User")
+    @Path("/{idPedido}/pagamento/pagar/pix/{idpix}")
+    public Response registrarPagamentoPix(@PathParam("idPedido") Long idPedido, @PathParam("idpix") Long idPix) {
+        pedidoService.registrarPagamentoPix(idPedido, idPix);
+        return Response.status(Status.NO_CONTENT).build();
+    }
+
+    @PATCH
+    @RolesAllowed("User")
+    @Path("/{idPedido}/pagamento/pagar/boleto/{idboleto}")
+    public Response registrarPagamentoBoleto(@PathParam("idPedido") Long idPedido, @PathParam("idboleto") Long idBoleto) {
+        pedidoService.registrarPagamentoBoleto(idPedido, idBoleto);
+        return Response.status(Status.NO_CONTENT).build();
     }
     
 }

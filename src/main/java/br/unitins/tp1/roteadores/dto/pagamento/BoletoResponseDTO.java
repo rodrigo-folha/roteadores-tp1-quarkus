@@ -1,13 +1,13 @@
 package br.unitins.tp1.roteadores.dto.pagamento;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import br.unitins.tp1.roteadores.model.pagamento.Boleto;
 
 public record BoletoResponseDTO(
     Long id,
     String codigoBarras,
-    LocalDate validade,
+    LocalDateTime validade,
     Double valor
 ){
 

@@ -1,6 +1,6 @@
 package br.unitins.tp1.roteadores.model.pagamento;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import jakarta.persistence.Entity;
 
@@ -8,7 +8,7 @@ import jakarta.persistence.Entity;
 public class Boleto extends Pagamento {
 
     private String codigoBarras;
-    private LocalDate validade;
+    private LocalDateTime validade;
 
     public String getCodigoBarras() {
         return codigoBarras;
@@ -18,11 +18,11 @@ public class Boleto extends Pagamento {
         this.codigoBarras = codigoBarras;
     }
 
-    public LocalDate getValidade() {
+    public LocalDateTime getValidade() {
         return validade;
     }
 
-    public void setValidade(LocalDate validade) {
+    public void setValidade(LocalDateTime validade) {
         this.validade = validade;
     }
 

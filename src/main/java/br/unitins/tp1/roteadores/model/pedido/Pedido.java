@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import br.unitins.tp1.roteadores.model.DefaultEntity;
+import br.unitins.tp1.roteadores.model.pagamento.Pagamento;
 import br.unitins.tp1.roteadores.model.usuario.Cliente;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
@@ -33,6 +34,10 @@ public class Pedido extends DefaultEntity {
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "id_enderecoEntrega")
     private EnderecoEntrega enderecoEntrega;
+
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "id_pagamento")
+    private Pagamento pagamento;
 
     public LocalDateTime getData() {
         return data;
@@ -80,6 +85,14 @@ public class Pedido extends DefaultEntity {
 
     public void setEnderecoEntrega(EnderecoEntrega enderecoEntrega) {
         this.enderecoEntrega = enderecoEntrega;
+    }
+
+    public Pagamento getPagamento() {
+        return pagamento;
+    }
+
+    public void setPagamento(Pagamento pagamento) {
+        this.pagamento = pagamento;
     }
 
 }

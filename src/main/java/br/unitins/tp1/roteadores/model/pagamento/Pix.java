@@ -1,6 +1,6 @@
 package br.unitins.tp1.roteadores.model.pagamento;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import jakarta.persistence.Entity;
 
@@ -8,7 +8,7 @@ import jakarta.persistence.Entity;
 public class Pix extends Pagamento {
 
     private String chave;
-    private LocalDate validade;
+    private LocalDateTime validade;
 
     public String getChave() {
         return chave;
@@ -18,11 +18,11 @@ public class Pix extends Pagamento {
         this.chave = chave;
     }
 
-    public LocalDate getValidade() {
+    public LocalDateTime getValidade() {
         return validade;
     }
 
-    public void setValidade(LocalDate validade) {
+    public void setValidade(LocalDateTime validade) {
         this.validade = validade;
     }
 
