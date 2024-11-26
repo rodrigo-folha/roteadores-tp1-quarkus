@@ -35,9 +35,6 @@ public class ClienteServiceImpl implements ClienteService {
 
     @Override
     public Cliente findById(Long id) {
-        if (clienteRepository.findById(id) == null)
-            throw new ValidationException("id", "Id nao encontrado");
-
         return clienteRepository.findById(id);
     }
 
@@ -116,6 +113,8 @@ public class ClienteServiceImpl implements ClienteService {
     @Transactional
     public Cliente updateNomeImagem(Long id, String nomeImagem) {
         Cliente cliente = clienteRepository.findById(id);
+        if (cliente == null)
+            throw new ValidationException("idCliente", "Cliente nao encontrado");
 
         cliente.setNomeImagem(nomeImagem);
         return cliente;

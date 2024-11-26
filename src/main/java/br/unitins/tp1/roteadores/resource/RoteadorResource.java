@@ -1,12 +1,19 @@
 package br.unitins.tp1.roteadores.resource;
 
+import java.io.IOException;
+
+import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
+
 import br.unitins.tp1.roteadores.dto.roteador.RoteadorRequestDTO;
 import br.unitins.tp1.roteadores.dto.roteador.RoteadorResponseDTO;
+import br.unitins.tp1.roteadores.form.ImageForm;
+import br.unitins.tp1.roteadores.service.roteador.RoteadorFileServiceImpl;
 import br.unitins.tp1.roteadores.service.roteador.RoteadorService;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
+import jakarta.ws.rs.PATCH;
 import jakarta.ws.rs.POST;
 import jakarta.ws.rs.PUT;
 import jakarta.ws.rs.Path;
@@ -14,6 +21,7 @@ import jakarta.ws.rs.PathParam;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.Response.ResponseBuilder;
 import jakarta.ws.rs.core.Response.Status;
 
 @Path("/roteadores")
@@ -23,6 +31,9 @@ public class RoteadorResource {
 
     @Inject
     public RoteadorService roteadorService;
+
+    @Inject
+    public RoteadorFileServiceImpl roteadorFileService;
 
     @GET
     @Path("/{id}")
@@ -122,4 +133,27 @@ public class RoteadorResource {
         return Response.noContent().build();
     }
     
+    @PATCH
+    @Path("/{idRoteador}/upload/imagem")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    public Response uploadImage(@PathParam("idRoteador") Long id, @MultipartForm ImageForm form) {
+
+        try {
+            String nomeImagem = roteadorFileService.save(form.getNomeImagem(), form.getImagem());
+
+            roteadorService.updateNomeImagem(id, nomeImagem);
+        } catch (IOException e) {
+            Response.status(500).build();
+        }
+        return Response.noContent().build();
+    }
+
+    @GET
+    @Path("/download/imagem/{nomeImagem}")
+    @Produces(MediaType.APPLICATION_OCTET_STREAM)
+    public Response downloadImagem(@PathParam("nomeImagem") String nomeImagem) {
+        ResponseBuilder response = Response.ok(roteadorFileService.find(nomeImagem));
+        response.header("Content-Disposition", "attachment; filename=" + nomeImagem);
+        return response.build();
+    }
 }

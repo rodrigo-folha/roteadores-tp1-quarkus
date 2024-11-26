@@ -2,6 +2,7 @@ package br.unitins.tp1.roteadores.dto.roteador;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 
 public record RoteadorRequestDTO (
@@ -13,15 +14,15 @@ public record RoteadorRequestDTO (
     String descricao,
     @NotNull(message = "O campo nao pode ser nulo.")
     Double preco,
-    @NotNull(message = "O idSinalWireless não pode ser nulo.")
+    @Positive(message = "Informe um campo valido para o id de SinalWireless")
     Long idSinalWireless,
-    @NotNull(message = "O idSistemaOperacional não pode ser nulo.")
+    @Positive(message = "Informe um campo valido para o id de SistemaOperacional")
     Long idSistemaOperacional,
-    @NotNull(message = "O idBandaFrequencia não pode ser nulo.")
+    @Positive(message = "Informe um campo valido para o id de Banda de Frequencia")
     Long idBandaFrequencia,
-    @NotNull(message = "O idProtocoloSeguranca não pode ser nulo.")
+    @Positive(message = "Informe um campo valido para o id de Protocolo de Seguranca")
     Long idProtocoloSeguranca,
-    @NotNull(message = "O idQuantidadeAntena não pode ser nulo.")
+    @Positive(message = "Informe um campo valido para o id de Quantidade de Antenas")
     Long idQuantidadeAntena
     
 ){

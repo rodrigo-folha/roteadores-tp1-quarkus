@@ -3,8 +3,6 @@ package br.unitins.tp1.roteadores.model.pagamento;
 import java.time.LocalDate;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Cartao extends Pagamento {
@@ -16,10 +14,6 @@ public class Cartao extends Pagamento {
     private String cvc;
 
     private ModalidadeCartao modalidadeCartao;
-
-    @ManyToOne
-    @JoinColumn(name = "id_bandeira")
-    private BandeiraCartao bandeiraCartao;
 
     public String getTitular() {
         return titular;

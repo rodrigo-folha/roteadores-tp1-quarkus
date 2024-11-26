@@ -2,8 +2,10 @@ package br.unitins.tp1.roteadores.resource;
 
 import org.eclipse.microprofile.jwt.JsonWebToken;
 
+import br.unitins.tp1.roteadores.dto.pagamento.CartaoRequestDTO;
 import br.unitins.tp1.roteadores.dto.pedido.PedidoRequestDTO;
 import br.unitins.tp1.roteadores.dto.pedido.PedidoResponseDTO;
+import br.unitins.tp1.roteadores.dto.pedido.StatusPedidoRequestDTO;
 import br.unitins.tp1.roteadores.service.pedido.PedidoService;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
@@ -81,9 +83,26 @@ public class PedidoResource {
     @PATCH
     @RolesAllowed("User")
     @Path("/{idPedido}/pagamento/pagar/boleto/{idboleto}")
-    public Response registrarPagamentoBoleto(@PathParam("idPedido") Long idPedido, @PathParam("idboleto") Long idBoleto) {
+    public Response registrarPagamentoBoleto(@PathParam("idPedido") Long idPedido, @PathParam("idboleto") Long idBoleto) {     
         pedidoService.registrarPagamentoBoleto(idPedido, idBoleto);
         return Response.status(Status.NO_CONTENT).build();
     }
+
+    @PATCH
+    @RolesAllowed("User")
+    @Path("/{idPedido}/pagamento/pagar/cartao/")
+    public Response registrarPagamentoCartao(@PathParam("idPedido") Long idPedido, CartaoRequestDTO cartaoDTO) {     
+        pedidoService.registrarPagamentoCartao(idPedido, cartaoDTO);
+        return Response.status(Status.NO_CONTENT).build();
+    }
+
+    @PATCH
+    @RolesAllowed("Adm")
+    @Path("/statuspedido/{idPedido}")
+    public Response updateStatusPedido(@PathParam("idPedido")Long idPedido, StatusPedidoRequestDTO statusPedido) {
+        pedidoService.updateStatusPedido(idPedido, statusPedido);
+        return Response.status(Status.NO_CONTENT).build();
+    }
+
     
 }

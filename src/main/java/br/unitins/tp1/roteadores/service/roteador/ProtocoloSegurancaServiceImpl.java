@@ -18,9 +18,6 @@ public class ProtocoloSegurancaServiceImpl implements ProtocoloSegurancaService{
 
     @Override
     public ProtocoloSeguranca findById(Long id) {
-        if (protocoloSegurancaRepository.findById(id) == null)
-            throw new ValidationException("id", "Id nao encontrado");
-
         return protocoloSegurancaRepository.findById(id);
     }
 

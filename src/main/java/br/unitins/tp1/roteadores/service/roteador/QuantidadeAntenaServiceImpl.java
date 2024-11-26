@@ -18,9 +18,6 @@ public class QuantidadeAntenaServiceImpl implements QuantidadeAntenaService {
 
     @Override
     public QuantidadeAntena findById(Long id) {
-        if (quantidadeAntenaRepository.findById(id) == null)
-            throw new ValidationException("id", "Id nao encontrado");
-
         return quantidadeAntenaRepository.findById(id);
     }
 

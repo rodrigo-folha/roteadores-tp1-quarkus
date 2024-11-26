@@ -28,5 +28,7 @@ public interface RoteadorService {
 
     Roteador update(Long id, RoteadorRequestDTO dto);
 
+    Roteador updateNomeImagem(Long id, String nomeImagem);
+
     void delete(Long id);
 }

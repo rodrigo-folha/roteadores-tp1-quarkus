@@ -18,9 +18,6 @@ public class BandaFrequenciaServiceImpl implements BandaFrequenciaService{
 
     @Override
     public BandaFrequencia findById(Long id) {
-        if (bandaFrequenciaRepository.findById(id) == null)
-            throw new ValidationException("id", "Id nao encontrado");
-
         return bandaFrequenciaRepository.findById(id);
     }
 

@@ -18,9 +18,6 @@ public class SinalWirelessServiceImpl implements SinalWirelessService {
 
     @Override
     public SinalWireless findById(Long id) {
-        if (sinalwirelessRepository.findById(id) == null)
-            throw new ValidationException("id", "Id nao encontrado");
-
         return sinalwirelessRepository.findById(id);
     }
 

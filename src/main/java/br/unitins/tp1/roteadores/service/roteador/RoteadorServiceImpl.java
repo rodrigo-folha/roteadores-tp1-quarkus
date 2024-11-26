@@ -1,5 +1,6 @@
 package br.unitins.tp1.roteadores.service.roteador;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import br.unitins.tp1.roteadores.dto.roteador.RoteadorRequestDTO;
@@ -33,9 +34,6 @@ public class RoteadorServiceImpl implements RoteadorService {
 
     @Override
     public Roteador findById(Long id) {
-        if (roteadorRepository.findById(id) == null)
-            throw new ValidationException("id", "Id nao encontrado");
-
         return roteadorRepository.findById(id);
     }
 
@@ -119,6 +117,20 @@ public class RoteadorServiceImpl implements RoteadorService {
     @Transactional
     public void delete(Long id) {
         roteadorRepository.deleteById(id);
+    }
+
+    @Override
+    @Transactional
+    public Roteador updateNomeImagem(Long id, String nomeImagem) {
+        Roteador roteador = roteadorRepository.findById(id);
+        if (roteador == null)
+            throw new ValidationException("idRoteador", "Roteador nao encontrado");
+
+        if (roteador.getListaImagem() == null)
+            roteador.setListaImagem(new ArrayList<>());
+
+        roteador.getListaImagem().add(nomeImagem);
+        return roteador;
     }
 
 }

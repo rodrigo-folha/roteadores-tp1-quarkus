@@ -18,9 +18,6 @@ public class SistemaOperacionalServiceImpl implements SistemaOperacionalService 
 
     @Override
     public SistemaOperacional findById(Long id) {
-        if (sistemaOperacionalRepository.findById(id) == null)
-            throw new ValidationException("id", "Id nao encontrado");
-
         return sistemaOperacionalRepository.findById(id);
     }
 

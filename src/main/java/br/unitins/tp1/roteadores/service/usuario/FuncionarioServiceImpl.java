@@ -34,9 +34,6 @@ public class FuncionarioServiceImpl implements FuncionarioService {
 
     @Override
     public Funcionario findById(Long id) {
-        if (funcionarioRepository.findById(id) == null)
-            throw new ValidationException("id", "Id nao encontrado");
-            
         return funcionarioRepository.findById(id);
     }
 

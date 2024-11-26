@@ -27,8 +27,6 @@ public class FornecedorServiceImpl implements FornecedorService {
 
     @Override
     public Fornecedor findById(Long id) {
-        if (fornecedorRepository.findById(id) == null)
-            throw new ValidationException("id", "Id nao encontrado");
         return fornecedorRepository.findById(id);
     }
 

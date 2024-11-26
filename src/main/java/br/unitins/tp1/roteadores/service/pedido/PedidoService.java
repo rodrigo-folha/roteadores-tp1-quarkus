@@ -6,8 +6,8 @@ import br.unitins.tp1.roteadores.dto.pagamento.BoletoResponseDTO;
 import br.unitins.tp1.roteadores.dto.pagamento.CartaoRequestDTO;
 import br.unitins.tp1.roteadores.dto.pagamento.PixResponseDTO;
 import br.unitins.tp1.roteadores.dto.pedido.PedidoRequestDTO;
+import br.unitins.tp1.roteadores.dto.pedido.StatusPedidoRequestDTO;
 import br.unitins.tp1.roteadores.model.pedido.Pedido;
-import br.unitins.tp1.roteadores.model.pedido.StatusPedido;
 
 public interface PedidoService {
 
@@ -24,7 +24,7 @@ public interface PedidoService {
     void registrarPagamentoBoleto(Long idPedido, Long idBoleto);
     void registrarPagamentoCartao(Long idPedido, CartaoRequestDTO cartaoDTO);
 
-    void updateStatusPedido(Long idPedido, StatusPedido statusPedido);
+    void updateStatusPedido(Long idPedido, StatusPedidoRequestDTO statusPedido);
     
     // implementar os patches
 
