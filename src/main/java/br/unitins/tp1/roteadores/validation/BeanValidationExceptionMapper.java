@@ -1,5 +1,7 @@
 package br.unitins.tp1.roteadores.validation;
 
+import org.jboss.logging.Logger;
+
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
@@ -10,9 +12,14 @@ import jakarta.ws.rs.ext.Provider;
 @Provider
 @ApplicationScoped
 public class BeanValidationExceptionMapper implements ExceptionMapper<ConstraintViolationException> {
+
+    private static final Logger LOG = Logger.getLogger(BeanValidationExceptionMapper.class);
     
     @Override
     public Response toResponse(ConstraintViolationException exception) {
+
+        LOG.error("Bean Validation Error: " + exception.getMessage());
+        
         ValidationError error = new ValidationError("400", "Erro de Validação");
 
         for (ConstraintViolation<?> violation : exception.getConstraintViolations()) {

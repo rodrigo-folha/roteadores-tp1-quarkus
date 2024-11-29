@@ -8,6 +8,7 @@ import br.unitins.tp1.roteadores.dto.usuario.FuncionarioRequestDTO;
 import br.unitins.tp1.roteadores.model.Telefone;
 import br.unitins.tp1.roteadores.model.endereco.Endereco;
 import br.unitins.tp1.roteadores.model.usuario.Funcionario;
+import br.unitins.tp1.roteadores.model.usuario.Perfil;
 import br.unitins.tp1.roteadores.model.usuario.Usuario;
 import br.unitins.tp1.roteadores.repository.FuncionarioRepository;
 import br.unitins.tp1.roteadores.repository.UsuarioRepository;
@@ -69,7 +70,7 @@ public class FuncionarioServiceImpl implements FuncionarioService {
         usuario.setDataNascimento(dto.usuario().dataNascimento());
         usuario.setEmail(dto.usuario().email());
         usuario.setSenha(hashService.getHashSenha(dto.usuario().senha()));
-        usuario.setPerfil(dto.usuario().perfil());
+        usuario.setPerfil(Perfil.ADM);
         usuario.setTelefones(dto.usuario().telefones().stream().map(this::converterTelefone).toList());
         usuario.setEnderecos(dto.usuario().enderecos().stream().map(this::converterEndereco).toList());
         
@@ -101,7 +102,7 @@ public class FuncionarioServiceImpl implements FuncionarioService {
         usuario.setDataNascimento(dto.usuario().dataNascimento());
         usuario.setEmail(dto.usuario().email());
         usuario.setSenha(hashService.getHashSenha(dto.usuario().senha()));
-        usuario.setPerfil(dto.usuario().perfil());
+        usuario.setPerfil(Perfil.ADM);
         updateTelefones(usuario, dto.usuario().telefones());
         updateEnderecos(usuario, dto.usuario().enderecos());
         
@@ -117,6 +118,68 @@ public class FuncionarioServiceImpl implements FuncionarioService {
 
         funcionario.setNomeImagem(nomeImagem);
         return funcionario;
+    }
+
+    @Override
+    @Transactional
+    public void updateEnderecoEspecifico(Long id, Long idEndereco, EnderecoRequestDTO dto) {
+        Funcionario funcionario = funcionarioRepository.findById(id);
+
+        if (funcionario == null)
+            throw new ValidationException("idFuncionario", "Funcionario nao encontrado");
+
+        Endereco endereco = funcionario.getUsuario().getEnderecos().stream().filter(a -> a.getId().equals((idEndereco)))
+                .findFirst()
+                .orElseThrow(() -> new ValidationException("idEndereco", "Endereco nao encontrado"));
+
+        endereco.setLogradouro(dto.logradouro());
+        endereco.setNumero(dto.numero());
+        endereco.setComplemento(dto.complemento());
+        endereco.setBairro(dto.bairro());
+        endereco.setCep(dto.cep());
+        endereco.setCidade(cidadeService.findById(dto.idCidade()));
+
+        funcionario.getUsuario().setEnderecos(funcionario.getUsuario().getEnderecos());
+    }
+
+    @Override
+    @Transactional
+    public void updateEndereco(Long id, List<EnderecoRequestDTO> dto) {
+        Funcionario funcionario = funcionarioRepository.findById(id);
+
+        if (funcionario == null)
+            throw new ValidationException("idfuncionario", "Funcionario nao encontrado");
+
+        updateEnderecos(funcionario.getUsuario(), dto);
+    }
+
+    @Override
+    @Transactional
+    public void updateTelefoneEspecifico(Long id, Long idTelefone, TelefoneRequestDTO dto) {
+        Funcionario funcionario = funcionarioRepository.findById(id);
+
+        if (funcionario == null)
+            throw new ValidationException("idfuncionario", "Funcionario nao encontrado");
+
+        Telefone telefone = funcionario.getUsuario().getTelefones().stream().filter(a -> a.getId().equals((idTelefone)))
+                .findFirst()
+                .orElseThrow(() -> new ValidationException("idEndereco", "Endereco nao encontrado"));
+        
+        telefone.setCodigoArea(dto.codigoArea());
+        telefone.setNumero(dto.numero());
+
+        funcionario.getUsuario().setTelefones(funcionario.getUsuario().getTelefones());
+    }
+
+    @Override
+    @Transactional
+    public void updateTelefone(Long id, List<TelefoneRequestDTO> dto) {
+        Funcionario funcionario = funcionarioRepository.findById(id);
+
+        if (funcionario == null)
+            throw new ValidationException("idfuncionario", "funcionario nao encontrado");
+
+        updateTelefones(funcionario.getUsuario(), dto);
     }
 
     @Override

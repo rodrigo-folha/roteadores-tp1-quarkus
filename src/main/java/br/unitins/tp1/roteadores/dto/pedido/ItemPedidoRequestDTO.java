@@ -6,8 +6,7 @@ public record ItemPedidoRequestDTO(
     @Positive(message = "O campo id do produto deve ser informado corretamente.")
     Long idProduto,
     @Positive(message = "Informe a quantidade")
-    Integer quantidade,
-    String cupomDesconto
+    Integer quantidade
 ) {
     
 }

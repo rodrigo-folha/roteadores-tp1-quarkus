@@ -137,3 +137,6 @@ insert into endereco_usuario(id_usuario, enderecos_id) values (4, 6);
 -- inserindo cupom de desconto
 insert into cupomdesconto(codigo, percentualDesconto, validade) values ('10OFF', 0.10, '2025-12-31');
 insert into cupomdesconto(codigo, percentualDesconto, validade) values ('15OFF', 0.15, '2025-01-01');
+
+-- cadastrar cartao
+insert into cartao(titular, numero, cvc, cpfcartao, id_cliente, modalidadecartao, datavalidade) values ('Miguel Ferreira', '5530 2919 5703 9335', '675', '24772815007', 1, 1, '2029-02-02');

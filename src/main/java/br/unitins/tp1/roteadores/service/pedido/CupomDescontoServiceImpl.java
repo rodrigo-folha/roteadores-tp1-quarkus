@@ -64,6 +64,9 @@ public class CupomDescontoServiceImpl implements CupomDescontoService {
     @Override
     @Transactional
     public void delete(Long id) {
+        if (cupomdescontoRepository.findById(id) == null)
+            throw new ValidationException("id", "id nao encontrado");
+            
         cupomdescontoRepository.deleteById(id);
     }
     

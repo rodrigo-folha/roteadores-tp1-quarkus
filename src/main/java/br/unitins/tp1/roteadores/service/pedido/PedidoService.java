@@ -3,10 +3,10 @@ package br.unitins.tp1.roteadores.service.pedido;
 import java.util.List;
 
 import br.unitins.tp1.roteadores.dto.pagamento.BoletoResponseDTO;
-import br.unitins.tp1.roteadores.dto.pagamento.CartaoRequestDTO;
 import br.unitins.tp1.roteadores.dto.pagamento.PixResponseDTO;
 import br.unitins.tp1.roteadores.dto.pedido.PedidoRequestDTO;
 import br.unitins.tp1.roteadores.dto.pedido.StatusPedidoRequestDTO;
+import br.unitins.tp1.roteadores.model.endereco.Endereco;
 import br.unitins.tp1.roteadores.model.pedido.Pedido;
 
 public interface PedidoService {
@@ -17,17 +17,21 @@ public interface PedidoService {
 
     Pedido create(PedidoRequestDTO dto, String email);
 
-    BoletoResponseDTO gerarBoleto(Long idPedido);
-    PixResponseDTO gerarCodigoPix(Long idPedido);
+    BoletoResponseDTO gerarBoleto(Pedido pedido);
+    PixResponseDTO gerarCodigoPix(Pedido pedido);
 
     void registrarPagamentoPix(Long idPedido, Long idPix);
     void registrarPagamentoBoleto(Long idPedido, Long idBoleto);
-    void registrarPagamentoCartao(Long idPedido, CartaoRequestDTO cartaoDTO);
+    void registrarPagamentoCartao(Pedido pedido, Long idCartao);
 
     void updateStatusPedido(Long idPedido, StatusPedidoRequestDTO statusPedido);
+
+    List<Endereco> listarEnderecos(String email);
+
+    void cancelarPedido(Long idPedido);
     
     // implementar os patches
 
-    // pensasr no cancelar
+    // pensar no cancelar
 
 }

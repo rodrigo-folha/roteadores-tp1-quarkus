@@ -1,6 +1,6 @@
 package br.unitins.tp1.roteadores.service.usuario;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import br.unitins.tp1.roteadores.dto.TelefoneRequestDTO;
@@ -9,6 +9,7 @@ import br.unitins.tp1.roteadores.dto.usuario.ClienteRequestDTO;
 import br.unitins.tp1.roteadores.model.Telefone;
 import br.unitins.tp1.roteadores.model.endereco.Endereco;
 import br.unitins.tp1.roteadores.model.usuario.Cliente;
+import br.unitins.tp1.roteadores.model.usuario.Perfil;
 import br.unitins.tp1.roteadores.model.usuario.Usuario;
 import br.unitins.tp1.roteadores.repository.ClienteRepository;
 import br.unitins.tp1.roteadores.repository.UsuarioRepository;
@@ -70,13 +71,13 @@ public class ClienteServiceImpl implements ClienteService {
         usuario.setDataNascimento(dto.usuario().dataNascimento());
         usuario.setEmail(dto.usuario().email());
         usuario.setSenha(hashService.getHashSenha(dto.usuario().senha()));
-        usuario.setPerfil(dto.usuario().perfil());
+        usuario.setPerfil(Perfil.USER);
         usuario.setTelefones(dto.usuario().telefones().stream().map(this::converterTelefone).toList());
         usuario.setEnderecos(dto.usuario().enderecos().stream().map(this::converterEndereco).toList());
         
         usuarioRepository.persist(usuario);
         cliente.setUsuario(usuario);
-        cliente.setDataCadastro(LocalDate.now());
+        cliente.setDataCadastro(LocalDateTime.now());
         clienteRepository.persist(cliente);
 
         return cliente;
@@ -102,7 +103,7 @@ public class ClienteServiceImpl implements ClienteService {
         usuario.setDataNascimento(dto.usuario().dataNascimento());
         usuario.setEmail(dto.usuario().email());
         usuario.setSenha(hashService.getHashSenha(dto.usuario().senha()));
-        usuario.setPerfil(dto.usuario().perfil());
+        usuario.setPerfil(Perfil.USER);
         updateTelefones(usuario, dto.usuario().telefones());
         updateEnderecos(usuario, dto.usuario().enderecos());
 
@@ -118,6 +119,68 @@ public class ClienteServiceImpl implements ClienteService {
 
         cliente.setNomeImagem(nomeImagem);
         return cliente;
+    }
+
+    @Override
+    @Transactional
+    public void updateEnderecoEspecifico(Long id, Long idEndereco, EnderecoRequestDTO dto) {
+        Cliente cliente = clienteRepository.findById(id);
+
+        if (cliente == null)
+            throw new ValidationException("idCliente", "Cliente nao encontrado");
+
+        Endereco endereco = cliente.getUsuario().getEnderecos().stream().filter(a -> a.getId().equals((idEndereco)))
+                .findFirst()
+                .orElseThrow(() -> new ValidationException("idEndereco", "Endereco nao encontrado"));
+
+        endereco.setLogradouro(dto.logradouro());
+        endereco.setNumero(dto.numero());
+        endereco.setComplemento(dto.complemento());
+        endereco.setBairro(dto.bairro());
+        endereco.setCep(dto.cep());
+        endereco.setCidade(cidadeService.findById(dto.idCidade()));
+
+        cliente.getUsuario().setEnderecos(cliente.getUsuario().getEnderecos());
+    }
+
+    @Override
+    @Transactional
+    public void updateEndereco(Long id, List<EnderecoRequestDTO> dto) {
+        Cliente cliente = clienteRepository.findById(id);
+
+        if (cliente == null)
+            throw new ValidationException("idCliente", "Cliente nao encontrado");
+
+        updateEnderecos(cliente.getUsuario(), dto);
+    }
+
+    @Override
+    @Transactional
+    public void updateTelefoneEspecifico(Long id, Long idTelefone, TelefoneRequestDTO dto) {
+        Cliente cliente = clienteRepository.findById(id);
+
+        if (cliente == null)
+            throw new ValidationException("idCliente", "Cliente nao encontrado");
+
+        Telefone telefone = cliente.getUsuario().getTelefones().stream().filter(a -> a.getId().equals((idTelefone)))
+                .findFirst()
+                .orElseThrow(() -> new ValidationException("idEndereco", "Endereco nao encontrado"));
+        
+        telefone.setCodigoArea(dto.codigoArea());
+        telefone.setNumero(dto.numero());
+
+        cliente.getUsuario().setTelefones(cliente.getUsuario().getTelefones());
+    }
+
+    @Override
+    @Transactional
+    public void updateTelefone(Long id, List<TelefoneRequestDTO> dto) {
+        Cliente cliente = clienteRepository.findById(id);
+
+        if (cliente == null)
+            throw new ValidationException("idCliente", "Cliente nao encontrado");
+
+        updateTelefones(cliente.getUsuario(), dto);
     }
 
     @Override

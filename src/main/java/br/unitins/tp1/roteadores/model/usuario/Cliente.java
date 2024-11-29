@@ -1,15 +1,19 @@
 package br.unitins.tp1.roteadores.model.usuario;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
 
 import br.unitins.tp1.roteadores.model.DefaultEntity;
+import br.unitins.tp1.roteadores.model.pagamento.Cartao;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 
 @Entity
 public class Cliente extends DefaultEntity {
-    private LocalDate dataCadastro;
+    private LocalDateTime dataCadastro;
 
     @OneToOne
     @JoinColumn(name = "id_usuario", unique = true)
@@ -17,11 +21,15 @@ public class Cliente extends DefaultEntity {
 
     private String nomeImagem;
 
-    public LocalDate getDataCadastro() {
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "id_cliente")
+    private List<Cartao> cartoes;
+
+    public LocalDateTime getDataCadastro() {
         return dataCadastro;
     }
 
-    public void setDataCadastro(LocalDate dataCadastro) {
+    public void setDataCadastro(LocalDateTime dataCadastro) {
         this.dataCadastro = dataCadastro;
     }
 
@@ -39,6 +47,14 @@ public class Cliente extends DefaultEntity {
 
     public void setNomeImagem(String nomeImagem) {
         this.nomeImagem = nomeImagem;
+    }
+
+    public List<Cartao> getCartoes() {
+        return cartoes;
+    }
+
+    public void setCartoes(List<Cartao> cartoes) {
+        this.cartoes = cartoes;
     }
 
 }

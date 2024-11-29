@@ -2,6 +2,7 @@ package br.unitins.tp1.roteadores.resource;
 
 import java.io.IOException;
 
+import org.jboss.logging.Logger;
 import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
 
 import br.unitins.tp1.roteadores.dto.roteador.RoteadorRequestDTO;
@@ -9,6 +10,7 @@ import br.unitins.tp1.roteadores.dto.roteador.RoteadorResponseDTO;
 import br.unitins.tp1.roteadores.form.ImageForm;
 import br.unitins.tp1.roteadores.service.roteador.RoteadorFileServiceImpl;
 import br.unitins.tp1.roteadores.service.roteador.RoteadorService;
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
@@ -29,6 +31,8 @@ import jakarta.ws.rs.core.Response.Status;
 @Consumes(MediaType.APPLICATION_JSON)
 public class RoteadorResource {
 
+    private static final Logger LOG = Logger.getLogger(RoteadorResource.class);
+
     @Inject
     public RoteadorService roteadorService;
 
@@ -36,14 +40,18 @@ public class RoteadorResource {
     public RoteadorFileServiceImpl roteadorFileService;
 
     @GET
+    @RolesAllowed({"Adm", "User"})
     @Path("/{id}")
     public Response findById(@PathParam("id") Long id) {
+        LOG.info("Execucao do metodo findById. Id: " + id);
         return Response.ok(RoteadorResponseDTO.valueOf(roteadorService.findById(id))).build();
     }
 
     @GET
+    @RolesAllowed({"Adm", "User"})
     @Path("/search/{nome}")
     public Response findByNome(@PathParam("nome") String nome) {
+        LOG.info("Execucao do metodo findByNome. Nome: " + nome);
         return Response.ok(roteadorService.findByNome(nome)
             .stream()
             .map(o -> RoteadorResponseDTO.valueOf(o))
@@ -51,53 +59,65 @@ public class RoteadorResource {
     }
 
     @GET
-    @Path("/search/sinalwireless/{id}")
-    public Response findBySinalWireless(@PathParam("id") Long id) {
-        return Response.ok(roteadorService.findBySinalWireless(id)
+    @RolesAllowed({"Adm", "User"})
+    @Path("/search/sinalwireless/{idSinalWireless}")
+    public Response findBySinalWireless(@PathParam("idSinalWireless") Long idSinalWireless) {
+        LOG.info("Execucao do metodo findBysinalWireless. idSinalWireless: " + idSinalWireless);
+        return Response.ok(roteadorService.findBySinalWireless(idSinalWireless)
             .stream()
             .map(RoteadorResponseDTO::valueOf)
             .toList()).build();
     }
 
     @GET
-    @Path("/search/sistemasoperacionais/{id}")
-    public Response findBySistemaOperacional(@PathParam("id") Long id) {
-        return Response.ok(roteadorService.findBySistemaOperacional(id)
+    @RolesAllowed({"Adm", "User"})
+    @Path("/search/sistemasoperacionais/{idSistemaOperacional}")
+    public Response findBySistemaOperacional(@PathParam("idSistemaOperacional") Long idSistemaOperacional) {
+        LOG.info("Execucao do metodo findBySistemaOperacional. idSinalWireless: " + idSistemaOperacional);
+        return Response.ok(roteadorService.findBySistemaOperacional(idSistemaOperacional)
             .stream()
             .map(RoteadorResponseDTO::valueOf)
             .toList()).build();
     }
     
     @GET
-    @Path("/search/quantidadeantenas/{id}")
-    public Response findByQuantidadeAntena(@PathParam("id") Long id) {
-        return Response.ok(roteadorService.findByQuantidadeAntena(id)
+    @RolesAllowed({"Adm", "User"})
+    @Path("/search/quantidadeantenas/{idQuantidadeAntena}")
+    public Response findByQuantidadeAntena(@PathParam("idQuantidadeAntena") Long idQuantidadeAntena) {
+        LOG.info("Execucao do metodo findByQuantidadeAntena. idQuantidadeAntena: " + idQuantidadeAntena);
+        return Response.ok(roteadorService.findByQuantidadeAntena(idQuantidadeAntena)
             .stream()
             .map(RoteadorResponseDTO::valueOf)
             .toList()).build();
     }
 
     @GET
-    @Path("/search/bandafrequencias/{id}")
-    public Response findByBandaFrequencia(@PathParam("id") Long id) {
-        return Response.ok(roteadorService.findByBandaFrequencia(id)
+    @RolesAllowed({"Adm", "User"})
+    @Path("/search/bandafrequencias/{idBandaFrequencia}")
+    public Response findByBandaFrequencia(@PathParam("idBandaFrequencia") Long idBandaFrequencia) {
+        LOG.info("Execucao do metodo findByBandaFrequencia. idBandaFrequencia: " + idBandaFrequencia);
+        return Response.ok(roteadorService.findByBandaFrequencia(idBandaFrequencia)
             .stream()
             .map(RoteadorResponseDTO::valueOf)
             .toList()).build();
     }
 
     @GET
-    @Path("/search/protocolosseguranca/{id}")
-    public Response findByProtocoloSeguranca(@PathParam("id") Long id) {
-        return Response.ok(roteadorService.findByProtocoloSeguranca(id)
+    @RolesAllowed({"Adm", "User"})
+    @Path("/search/protocolosseguranca/{idProtocoloSeguranca}")
+    public Response findByProtocoloSeguranca(@PathParam("idProtocoloSeguranca") Long idProtocoloSeguranca) {
+        LOG.info("Execucao do metodo findByProtocoloSeguranca. idProtocoloSeguranca: " + idProtocoloSeguranca);
+        return Response.ok(roteadorService.findByProtocoloSeguranca(idProtocoloSeguranca)
             .stream()
             .map(RoteadorResponseDTO::valueOf)
             .toList()).build();
     }
 
     @GET
+    @RolesAllowed({"Adm", "User"})
     @Path("/search/preco/{min}/{max}")
     public Response findByPreco(@PathParam("min") Double min, @PathParam("max") Double max) {
+        LOG.info("Execucao do metodo findByPreco. Preco min: " + min + ", preco max: " + max);
         return Response.ok(roteadorService.findByPreco(min, max)
             .stream()
             .map(RoteadorResponseDTO::valueOf)
@@ -105,7 +125,9 @@ public class RoteadorResource {
     }
 
     @GET
+    @RolesAllowed({"Adm", "User"})
     public Response findAll() {
+        LOG.info("Execucao do metodo findAll");
         return Response.ok(roteadorService.findAll()
             .stream()
             .map(RoteadorResponseDTO::valueOf)
@@ -113,30 +135,38 @@ public class RoteadorResource {
     }
 
     @POST
+    @RolesAllowed({"Adm"})
     public Response create(RoteadorRequestDTO dto) {
+        LOG.info("Execucao do metodo create");
         return Response.status(Status.CREATED)
             .entity(RoteadorResponseDTO.valueOf(roteadorService.create(dto)))
             .build();
     }
 
     @PUT
+    @RolesAllowed({"Adm"})
     @Path("/{id}")
     public Response update(@PathParam("id") Long id, RoteadorRequestDTO roteador) {
+        LOG.info("Execucao do metodo update. Id do roteador: " + id);
         roteadorService.update(id, roteador);
         return Response.noContent().build();
     }
 
     @DELETE
+    @RolesAllowed({"Adm"})
     @Path("/{id}")
     public Response delete(@PathParam("id") Long id) {
+        LOG.info("Execucao do metodo delete. Id do roteador: " + id);
         roteadorService.delete(id);
         return Response.noContent().build();
     }
     
     @PATCH
+    @RolesAllowed({"Adm"})
     @Path("/{idRoteador}/upload/imagem")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public Response uploadImage(@PathParam("idRoteador") Long id, @MultipartForm ImageForm form) {
+        LOG.info("Execucao do uploadImage. Id do roteador: " + id);
 
         try {
             String nomeImagem = roteadorFileService.save(form.getNomeImagem(), form.getImagem());
@@ -149,9 +179,11 @@ public class RoteadorResource {
     }
 
     @GET
+    @RolesAllowed({"Adm"})
     @Path("/download/imagem/{nomeImagem}")
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
-    public Response downloadImagem(@PathParam("nomeImagem") String nomeImagem) {
+    public Response downloadImage(@PathParam("nomeImagem") String nomeImagem) {
+        LOG.info("Execucao do metodo downloadImage.");
         ResponseBuilder response = Response.ok(roteadorFileService.find(nomeImagem));
         response.header("Content-Disposition", "attachment; filename=" + nomeImagem);
         return response.build();

@@ -39,7 +39,7 @@ class SistemaOperacional {
 }
 
 class Cliente {
-    - dataCadastro: LocalDate
+    - dataCadastro: LocalDateTime
 }
 
 class Funcionario {
@@ -52,6 +52,11 @@ class Usuario {
     - dataNascimento: LocalDate
     - email: String
     - senha: String
+}
+
+enum Perfil {
+    + ADM: int
+    + USER: int
 }
 
 class Telefone {
@@ -112,12 +117,20 @@ abstract Pagamento {
 
 class Pix {
     - chave: String
-    - validade: LocalDate
+    - validade: LocalDateTime
 }
 
 class Boleto {
     - codigoBarras: String
     - validade: LocalDate
+}
+
+class CartaoPagamento {
+    - titular: String
+    - cpfCartao: String
+    - numero: String
+    - dataValidade: LocalDate
+    - cvc: String
 }
 
 class Cartao {
@@ -126,10 +139,6 @@ class Cartao {
     - numero: String
     - dataValidade: LocalDate
     - cvc: String
-}
-
-class BandeiraCartao {
-    - nome: String
 }
 
 enum Modalidade {
@@ -159,11 +168,13 @@ Lote "*" --> "1" Roteador
 
 Cliente "*" --> "*" Roteador: listaDesejos
 Cliente "1" --> "1" Usuario
+Cliente "1" --> "*" Cartao
 
 Funcionario "1" --> "1" Usuario
 
 Usuario "1" *-left-> "*" Endereco
 Usuario "1" *--> "*" Telefone
+Usuario "*" -right-> "1" Perfil
 
 Endereco "*" --> "1" Cidade
 EnderecoEntrega "*" --> "1" Cidade
@@ -175,16 +186,17 @@ Pedido "1" *--> "*" ItemPedido
 Pedido "1" *--> "1" EnderecoEntrega
 Pedido "1" --> "1" Pagamento
 Pedido "1" *--> "*" StatusPedido
+Pedido "*" o--> "1" CupomDesconto
 
 StatusPedido "*" --> "1" Status
 
 ItemPedido "*" --> "1" Lote
-ItemPedido "*" o--> "1" CupomDesconto
 
 Pix --|> Pagamento
 Boleto --|> Pagamento
-Cartao --|> Pagamento
-Cartao "*" --> "1" BandeiraCartao
-Cartao "1" --> "*" Modalidade
+CartaoPagamento --|> Pagamento
+CartaoPagamento "*" --> "1" Modalidade
+
+Cartao "*" -down-|> "1" Modalidade
 
 @enduml

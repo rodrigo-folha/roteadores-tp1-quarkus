@@ -1,9 +1,13 @@
 package br.unitins.tp1.roteadores.resource;
 
 import java.io.IOException;
+import java.util.List;
 
+import org.jboss.logging.Logger;
 import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
 
+import br.unitins.tp1.roteadores.dto.TelefoneRequestDTO;
+import br.unitins.tp1.roteadores.dto.endereco.EnderecoRequestDTO;
 import br.unitins.tp1.roteadores.dto.usuario.ClienteRequestDTO;
 import br.unitins.tp1.roteadores.dto.usuario.ClienteResponseDTO;
 import br.unitins.tp1.roteadores.form.ImageForm;
@@ -31,6 +35,8 @@ import jakarta.ws.rs.core.Response.Status;
 @Consumes(MediaType.APPLICATION_JSON)
 public class ClienteResource {
 
+    private static final Logger LOG = Logger.getLogger(ClienteResource.class);
+
     @Inject
     public ClienteService clienteService;
 
@@ -43,12 +49,14 @@ public class ClienteResource {
     @GET
     @Path("/{id}")
     public Response findById(@PathParam("id") Long id) {
+        LOG.info("Execucao do metodo findById. Id: " + id);
         return Response.ok(ClienteResponseDTO.valueOf(clienteService.findById(id))).build();
     }
 
     @GET
     @Path("/search/{nome}")
     public Response findByNome(@PathParam("nome") String nome) {
+        LOG.info("Execucao do metodo findByNome. Nome: " + nome);
         return Response.ok(clienteService.findByNome(nome)
                 .stream()
                 .map(ClienteResponseDTO::valueOf)
@@ -58,6 +66,7 @@ public class ClienteResource {
     @GET
     @Path("/search/email/{email}")
     public Response findByEmail(@PathParam("email") String email) {
+        LOG.info("Execucao do metodo findByEmail. Email: " + email);
         return Response.ok(clienteService.findByNome(usuarioService.findByEmail(email).getNome())
                 .stream()
                 .map(ClienteResponseDTO::valueOf)
@@ -67,6 +76,7 @@ public class ClienteResource {
     @GET
     @Path("/search/cpf/{cpf}")
     public Response findByCpf(@PathParam("cpf") String cpf) {
+        LOG.info("Execucao do metodo findByCpf. Cpf: " + cpf);
         return Response.ok(clienteService.findByNome(usuarioService.findByCpf(cpf).getNome())
                 .stream()
                 .map(ClienteResponseDTO::valueOf)
@@ -75,6 +85,7 @@ public class ClienteResource {
 
     @GET
     public Response findAll() {
+        LOG.info("Execucao do metodo findAll");
         return Response.ok(clienteService.findAll()
                 .stream()
                 .map(o -> ClienteResponseDTO.valueOf(o))
@@ -83,6 +94,7 @@ public class ClienteResource {
 
     @POST
     public Response create(@Valid ClienteRequestDTO dto) {
+        LOG.info("Execucao do metodo create");
         return Response.status(Status.CREATED)
                 .entity(ClienteResponseDTO.valueOf(clienteService.create(dto)))
                 .build();
@@ -91,13 +103,47 @@ public class ClienteResource {
     @PUT
     @Path("/{id}")
     public Response update(@PathParam("id") Long id, ClienteRequestDTO cliente) {
+        LOG.info("Execucao do metodo update. Id do Cliente: " + id);
         clienteService.update(id, cliente);
+        return Response.noContent().build();
+    }
+
+    @PATCH
+    @Path("/{id}/enderecos/{idEndereco}")
+    public Response updateEnderecoEspecifico(@PathParam("id") Long id, @PathParam("idEndereco") Long idEndereco, @Valid EnderecoRequestDTO endereco) {
+        LOG.info("Execucao do metodo updateEnderecoEspecifico. Id do cliente: " + id + ", id do endereco: " + idEndereco);
+        clienteService.updateEnderecoEspecifico(id, idEndereco, endereco);
+        return Response.noContent().build();
+    }
+
+    @PATCH
+    @Path("/{id}/enderecos")
+    public Response updateEndereco(@PathParam("id") Long id, @Valid List<EnderecoRequestDTO> endereco) {
+        LOG.info("Execucao do metodo updateEndereco. Id do cliente: " + id);
+        clienteService.updateEndereco(id, endereco);
+        return Response.noContent().build();
+    }
+
+    @PATCH
+    @Path("/{id}/telefones/{idTelefone}")
+    public Response updateTelefoneEspecifico(@PathParam("id") Long id, @PathParam("idTelefone") Long idTelefone, @Valid TelefoneRequestDTO telefone) {
+        LOG.info("Execucao do metodo updateTelefoneEspecifico. Id do cliente: " + id + ", id do telefone: " + idTelefone);
+        clienteService.updateTelefoneEspecifico(id, idTelefone, telefone);
+        return Response.noContent().build();
+    }
+    
+    @PATCH
+    @Path("/{id}/telefones")
+    public Response updateTelefone(@PathParam("id") Long id, @Valid List<TelefoneRequestDTO> telefone) {
+        LOG.info("Execucao do metodo updateTelefone. Id do cliente: " + id);
+        clienteService.updateTelefone(id, telefone);
         return Response.noContent().build();
     }
 
     @DELETE
     @Path("/{id}")
     public Response delete(@PathParam("id") Long id) {
+        LOG.info("Execucao do metodo delete. Id do cliente: " + id);
         clienteService.delete(id);
         return Response.noContent().build();
     }
@@ -106,6 +152,7 @@ public class ClienteResource {
     @Path("/{id}/upload/imagem")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public Response uploadImage(@PathParam("id") Long id, @MultipartForm ImageForm form) {
+        LOG.info("Execucao do metodo uploadImage. Id do cliente: " + id);
 
         try {
             String nomeImagem = clienteFileService.save(form.getNomeImagem(), form.getImagem());
@@ -120,7 +167,8 @@ public class ClienteResource {
     @GET
     @Path("/download/imagem/{nomeImagem}")
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
-    public Response downloadImagem(@PathParam("nomeImagem") String nomeImagem) {
+    public Response downloadImage(@PathParam("nomeImagem") String nomeImagem) {
+        LOG.info("Execucao do metodo DownloadImagem.");
         ResponseBuilder response = Response.ok(clienteFileService.find(nomeImagem));
         response.header("Content-Disposition", "attachment; filename=" + nomeImagem);
         return response.build();

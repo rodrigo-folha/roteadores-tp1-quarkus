@@ -5,9 +5,10 @@ public enum SituacaoPedido {
     AGUARDANDO_PAGAMENTO(1, "Aguardando Pagamento"),
     PAGAMENTO_AUTORIZADO(2, "Pagamento Autorizado"),
     PAGAMENTO_EXPIRADO(3, "Pagamento Expirado"),
-    ENVIADO(4, "Enviado"),
-    ENTREGUE(5, "Entregue"),
-    DEVOLVIDO(6, "Devolvido");
+    CANCELADO(4, "Cancelado"),
+    ENVIADO(5, "Enviado"),
+    ENTREGUE(6, "Entregue"),
+    DEVOLVIDO(7, "Devolvido");
 
     private final Integer id;
     private final String label;

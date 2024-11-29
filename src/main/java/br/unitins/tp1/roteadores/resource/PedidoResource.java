@@ -1,8 +1,8 @@
 package br.unitins.tp1.roteadores.resource;
 
 import org.eclipse.microprofile.jwt.JsonWebToken;
+import org.jboss.logging.Logger;
 
-import br.unitins.tp1.roteadores.dto.pagamento.CartaoRequestDTO;
 import br.unitins.tp1.roteadores.dto.pedido.PedidoRequestDTO;
 import br.unitins.tp1.roteadores.dto.pedido.PedidoResponseDTO;
 import br.unitins.tp1.roteadores.dto.pedido.StatusPedidoRequestDTO;
@@ -26,6 +26,8 @@ import jakarta.ws.rs.core.Response.Status;
 @Consumes(MediaType.APPLICATION_JSON)
 public class PedidoResource {
 
+    private static final Logger LOG = Logger.getLogger(PedidoResource.class);
+
     @Inject
     public PedidoService pedidoService;
 
@@ -35,6 +37,7 @@ public class PedidoResource {
     @GET
     @RolesAllowed("User")
     public Response findByEmail() {
+        LOG.info("Execucao do metodo findByEmail");
 
         // buscando o username do hash do jwt
         String username = jwt.getSubject();
@@ -48,6 +51,7 @@ public class PedidoResource {
     @POST
     @RolesAllowed("User")
     public Response create(@Valid PedidoRequestDTO dto) {
+        LOG.info("Execucao do metodo create");
 
         // buscando o username do hash do jwt
         String username = jwt.getSubject();
@@ -58,24 +62,11 @@ public class PedidoResource {
     
     }
 
-    @POST
-    @RolesAllowed("User")
-    @Path("/{idPedido}/pagamento/gerar/pix")
-    public Response gerarPix(@PathParam("idPedido") Long id) {
-        return Response.status(Status.CREATED).entity(pedidoService.gerarCodigoPix(id)).build();
-    }
-
-    @POST
-    @RolesAllowed("User")
-    @Path("/{idPedido}/pagamento/gerar/boleto")
-    public Response gerarBoleto(@PathParam("idPedido") Long id) {
-        return Response.status(Status.CREATED).entity(pedidoService.gerarBoleto(id)).build();
-    }
-
     @PATCH
     @RolesAllowed("User")
     @Path("/{idPedido}/pagamento/pagar/pix/{idpix}")
     public Response registrarPagamentoPix(@PathParam("idPedido") Long idPedido, @PathParam("idpix") Long idPix) {
+        LOG.info("Execucao do metodo registrarPagamentoPix. Id do pedido: " + idPedido + ", id do pix: " + idPix);
         pedidoService.registrarPagamentoPix(idPedido, idPix);
         return Response.status(Status.NO_CONTENT).build();
     }
@@ -84,25 +75,52 @@ public class PedidoResource {
     @RolesAllowed("User")
     @Path("/{idPedido}/pagamento/pagar/boleto/{idboleto}")
     public Response registrarPagamentoBoleto(@PathParam("idPedido") Long idPedido, @PathParam("idboleto") Long idBoleto) {     
+        LOG.info("Execucao do metodo registrarPagamentoBoleto. Id do pedido: " + idPedido + ", id do boleto: " + idBoleto);
         pedidoService.registrarPagamentoBoleto(idPedido, idBoleto);
         return Response.status(Status.NO_CONTENT).build();
     }
 
-    @PATCH
-    @RolesAllowed("User")
-    @Path("/{idPedido}/pagamento/pagar/cartao/")
-    public Response registrarPagamentoCartao(@PathParam("idPedido") Long idPedido, CartaoRequestDTO cartaoDTO) {     
-        pedidoService.registrarPagamentoCartao(idPedido, cartaoDTO);
-        return Response.status(Status.NO_CONTENT).build();
-    }
+    // @PATCH
+    // @RolesAllowed("User")
+    // @Path("/{idPedido}/pagamento/pagar/cartao/")
+    // public Response registrarPagamentoCartao(@PathParam("idPedido") Long idPedido, CartaoRequestDTO cartaoDTO) {   
+    //     LOG.info("Execucao do metodo registrarPagamentoCartao. Id do pedido: " + idPedido);  
+    //     pedidoService.registrarPagamentoCartao(idPedido, cartaoDTO);
+    //     return Response.status(Status.NO_CONTENT).build();
+    // }
 
     @PATCH
     @RolesAllowed("Adm")
     @Path("/statuspedido/{idPedido}")
     public Response updateStatusPedido(@PathParam("idPedido")Long idPedido, StatusPedidoRequestDTO statusPedido) {
+        LOG.info("Execucao do metodo updateStatusPedido. Id do pedido: " + idPedido);  
         pedidoService.updateStatusPedido(idPedido, statusPedido);
         return Response.status(Status.NO_CONTENT).build();
     }
+
+    @GET
+    @RolesAllowed("User")
+    @Path("/search/enderecos")
+    public Response listarEnderecos() {
+
+        LOG.info("Execucao do metodo listarEnderecos.");  
+
+        // buscando o username do hash do jwt
+        String username = jwt.getSubject();
+
+        return Response.ok(pedidoService.listarEnderecos(username)).build();
+    
+    }
+
+    @PATCH
+    @RolesAllowed("User")
+    @Path("/cancelar/{idPedido}")
+    public Response cancelarPedido(@PathParam("idPedido") Long idPedido) {
+        LOG.info("Execucao do metodo cancelar pedido. IdPedido: " + idPedido); 
+        pedidoService.cancelarPedido(idPedido);
+        return Response.status(Status.NO_CONTENT).build();
+    }
+
 
     
 }

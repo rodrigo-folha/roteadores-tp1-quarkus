@@ -92,6 +92,68 @@ public class FornecedorServiceImpl implements FornecedorService {
 
     @Override
     @Transactional
+    public void updateEnderecoEspecifico(Long id, Long idEndereco, EnderecoRequestDTO dto) {
+        Fornecedor fornecedor = fornecedorRepository.findById(id);
+
+        if (fornecedor == null)
+            throw new ValidationException("idFornecedor", "Fornecedor nao encontrado");
+
+        Endereco endereco = fornecedor.getEnderecos().stream().filter(a -> a.getId().equals((idEndereco)))
+                .findFirst()
+                .orElseThrow(() -> new ValidationException("idEndereco", "Endereco nao encontrado"));
+
+        endereco.setLogradouro(dto.logradouro());
+        endereco.setNumero(dto.numero());
+        endereco.setComplemento(dto.complemento());
+        endereco.setBairro(dto.bairro());
+        endereco.setCep(dto.cep());
+        endereco.setCidade(cidadeService.findById(dto.idCidade()));
+
+        fornecedor.setEnderecos(fornecedor.getEnderecos());
+    }
+
+    @Override
+    @Transactional
+    public void updateEndereco(Long id, List<EnderecoRequestDTO> dto) {
+        Fornecedor fornecedor = fornecedorRepository.findById(id);
+
+        if (fornecedor == null)
+            throw new ValidationException("idfornecedor", "Fornecedor nao encontrado");
+
+        updateEnderecos(fornecedor, dto);
+    }
+
+    @Override
+    @Transactional
+    public void updateTelefoneEspecifico(Long id, Long idTelefone, TelefoneRequestDTO dto) {
+        Fornecedor fornecedor = fornecedorRepository.findById(id);
+
+        if (fornecedor == null)
+            throw new ValidationException("idFornecedor", "Fornecedor nao encontrado");
+
+        Telefone telefone = fornecedor.getTelefones().stream().filter(a -> a.getId().equals((idTelefone)))
+                .findFirst()
+                .orElseThrow(() -> new ValidationException("idEndereco", "Endereco nao encontrado"));
+        
+        telefone.setCodigoArea(dto.codigoArea());
+        telefone.setNumero(dto.numero());
+
+        fornecedor.setTelefones(fornecedor.getTelefones());
+    }
+
+    @Override
+    @Transactional
+    public void updateTelefone(Long id, List<TelefoneRequestDTO> dto) {
+        Fornecedor fornecedor = fornecedorRepository.findById(id);
+
+        if (fornecedor == null)
+            throw new ValidationException("idFornecedor", "Fornecedor nao encontrado");
+
+        updateTelefones(fornecedor, dto);
+    }
+
+    @Override
+    @Transactional
     public void delete(Long id) {
         fornecedorRepository.deleteById(id);
     }

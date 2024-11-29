@@ -2,6 +2,7 @@ package br.unitins.tp1.roteadores.resource;
 
 import br.unitins.tp1.roteadores.dto.usuario.AuthRequestDTO;
 import br.unitins.tp1.roteadores.dto.usuario.UsuarioResponseDTO;
+import br.unitins.tp1.roteadores.model.usuario.Perfil;
 import br.unitins.tp1.roteadores.model.usuario.Usuario;
 import br.unitins.tp1.roteadores.service.jwt.JwtService;
 import br.unitins.tp1.roteadores.service.usuario.HashService;
@@ -40,6 +41,13 @@ public class AuthResource {
             return Response.status(Status.NO_CONTENT)
                 .entity("Usuario não encontrado").build();
         } 
+
+        // Permitir que apenas usuarios que tenham o perfil cliente, possam logar
+        // if (!usuario.getPerfil().equals(Perfil.USER)) {
+        //     return Response.status(Status.NO_CONTENT)
+        //         .entity("Usuario não encontrado").build();
+        // }
+
         return Response.ok()
             .header("Authorization", jwtService.generateJwt(UsuarioResponseDTO.valueOf(usuario)))
             .build();

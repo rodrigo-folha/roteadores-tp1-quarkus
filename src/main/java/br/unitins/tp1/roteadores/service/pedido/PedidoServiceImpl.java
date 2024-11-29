@@ -9,13 +9,14 @@ import java.util.UUID;
 
 import br.unitins.tp1.roteadores.dto.endereco.EnderecoRequestDTO;
 import br.unitins.tp1.roteadores.dto.pagamento.BoletoResponseDTO;
-import br.unitins.tp1.roteadores.dto.pagamento.CartaoRequestDTO;
 import br.unitins.tp1.roteadores.dto.pagamento.PixResponseDTO;
 import br.unitins.tp1.roteadores.dto.pedido.ItemPedidoRequestDTO;
 import br.unitins.tp1.roteadores.dto.pedido.PedidoRequestDTO;
 import br.unitins.tp1.roteadores.dto.pedido.StatusPedidoRequestDTO;
+import br.unitins.tp1.roteadores.model.endereco.Endereco;
 import br.unitins.tp1.roteadores.model.pagamento.Boleto;
 import br.unitins.tp1.roteadores.model.pagamento.Cartao;
+import br.unitins.tp1.roteadores.model.pagamento.CartaoPagamento;
 import br.unitins.tp1.roteadores.model.pagamento.Pix;
 import br.unitins.tp1.roteadores.model.pedido.CupomDesconto;
 import br.unitins.tp1.roteadores.model.pedido.EnderecoEntrega;
@@ -24,8 +25,11 @@ import br.unitins.tp1.roteadores.model.pedido.Lote;
 import br.unitins.tp1.roteadores.model.pedido.Pedido;
 import br.unitins.tp1.roteadores.model.pedido.SituacaoPedido;
 import br.unitins.tp1.roteadores.model.pedido.StatusPedido;
+import br.unitins.tp1.roteadores.model.usuario.Cliente;
+import br.unitins.tp1.roteadores.repository.CartaoPagamentoRepository;
 import br.unitins.tp1.roteadores.repository.PagamentoRepository;
 import br.unitins.tp1.roteadores.repository.PedidoRepository;
+import br.unitins.tp1.roteadores.service.CartaoService;
 import br.unitins.tp1.roteadores.service.endereco.CidadeService;
 import br.unitins.tp1.roteadores.service.usuario.ClienteService;
 import br.unitins.tp1.roteadores.validation.ValidationException;
@@ -47,6 +51,12 @@ public class PedidoServiceImpl implements PedidoService {
 
     @Inject
     public CidadeService cidadeService;
+
+    @Inject
+    public CartaoService cartaoService;
+
+    @Inject
+    public CartaoPagamentoRepository cartaoPagamentoRepository;
 
     @Inject
     public PagamentoRepository pagamentoRepository;
@@ -107,7 +117,7 @@ public class PedidoServiceImpl implements PedidoService {
 
         }
 
-        String cupom = dto.listaItemPedido().getFirst().cupomDesconto();
+        String cupom = dto.cupomDesconto();
         if (cupom != null) {
             verificarExistenciaCupom(cupom);
             verificarValidadeCupom(cupom);
@@ -117,14 +127,35 @@ public class PedidoServiceImpl implements PedidoService {
         EnderecoRequestDTO enderecoDTO = dto.enderecoEntrega();
         pedido.setEnderecoEntrega(converterEndereco(enderecoDTO));
 
+
         // eh importante validar se o total enviado via dto eh o mesmo gerado pelos
         // produtos
-        pedido.setValorTotal(calcularTotal(pedido) * (1 - desconto));
 
-        gerarStatusPedido(pedido);
+        double valorTotal = Math.round(calcularTotal(pedido) * (1 - desconto) * 100.0) / 100.0;
+
+        if (valorTotal != dto.valorTotal())
+            throw new ValidationException("valorTotal", "O valor total nao confere");
+
+        pedido.setValorTotal(valorTotal);
+    
+        switch(dto.tipoPagamento()) {
+            case "pix":
+                gerarCodigoPix(pedido);
+                gerarStatusPedido(pedido);
+                break;
+            case "boleto":
+                gerarBoleto(pedido);
+                gerarStatusPedido(pedido);
+                break;
+            case "cartao":
+                gerarStatusPedido(pedido);
+                registrarPagamentoCartao(pedido, dto.idCartao());
+                break;
+            default:
+                throw new ValidationException("tipoPagamento", "Escolha um tipo de pagamento valido");
+        }
 
         pedidoRepository.persist(pedido);
-
         return pedido;
     }
 
@@ -183,11 +214,10 @@ public class PedidoServiceImpl implements PedidoService {
 
     @Override
     @Transactional
-    public BoletoResponseDTO gerarBoleto(Long idPedido) {
-        Double valorTotal = pedidoRepository.findById(idPedido).getValorTotal();
+    public BoletoResponseDTO gerarBoleto(Pedido pedido) {
 
         Boleto boleto = new Boleto();
-        boleto.setValor(valorTotal);
+        boleto.setValor(pedido.getValorTotal());
         boleto.setCodigoBarras(UUID.randomUUID().toString());
         boleto.setValidade(LocalDateTime.now().plus(Duration.ofHours(24)));
 
@@ -198,11 +228,10 @@ public class PedidoServiceImpl implements PedidoService {
 
     @Override
     @Transactional
-    public PixResponseDTO gerarCodigoPix(Long idPedido) {
-        Double valorTotal = pedidoRepository.findById(idPedido).getValorTotal();
+    public PixResponseDTO gerarCodigoPix(Pedido pedido) {
 
         Pix pix = new Pix();
-        pix.setValor(valorTotal);
+        pix.setValor(pedido.getValorTotal());
         pix.setValidade(LocalDateTime.now().plus(Duration.ofHours(24)));
         pix.setChave(UUID.randomUUID().toString());
 
@@ -214,14 +243,21 @@ public class PedidoServiceImpl implements PedidoService {
     @Override
     @Transactional
     public void registrarPagamentoBoleto(Long idPedido, Long idBoleto) {
+        if (pedidoRepository.findById(idPedido) == null)
+            throw new ValidationException("idPedido", "Informe um pedido valido!");
+        
+        Pedido pedido = pedidoRepository.findById(idPedido);
+        
         if (pedidoRepository.findById(idPedido).getPagamento() != null)
             throw new ValidationException("pagamento", "Este pedido ja foi pago.");
 
-        Pedido pedido = pedidoRepository.findById(idPedido);
+        if (pagamentoRepository.findByBoleto(idBoleto) == null)
+            throw new ValidationException("idBoleto", "Boleto nao cadastrado");
+        
+        if (pagamentoRepository.findByBoleto(idBoleto).getValidade().isBefore(LocalDateTime.now()))
+            throw new ValidationException("validade", "Data de validade expirada.");
+        
         pedido.setPagamento(pagamentoRepository.findById(idBoleto));
-
-        if (pagamentoRepository.findById(idBoleto) == null)
-            throw new ValidationException("idBoleto", "Informe um boleto valido!");
 
         StatusPedido statusPedido = new StatusPedido();
         statusPedido.setDataAtualizacao(LocalDateTime.now());
@@ -233,14 +269,21 @@ public class PedidoServiceImpl implements PedidoService {
     @Override
     @Transactional
     public void registrarPagamentoPix(Long idPedido, Long idPix) {
+        if (pedidoRepository.findById(idPedido) == null)
+            throw new ValidationException("idPedido", "Informe um pedido valido!");
+        
+        Pedido pedido = pedidoRepository.findById(idPedido);
+
         if (pedidoRepository.findById(idPedido).getPagamento() != null)
             throw new ValidationException("pagamento", "Este pedido ja foi pago.");
 
-        Pedido pedido = pedidoRepository.findById(idPedido);
-        pedido.setPagamento(pagamentoRepository.findById(idPix));
+        if (pagamentoRepository.findByPix(idPix) == null)
+            throw new ValidationException("idPix", "Pix nao cadastrado");
 
-        if (pagamentoRepository.findById(idPix) == null)
-            throw new ValidationException("idPix", "Informe um pix valido!");
+        if (pagamentoRepository.findByPix(idPix).getValidade().isBefore(LocalDateTime.now()))
+            throw new ValidationException("validade", "Data de validade expirada.");
+
+        pedido.setPagamento(pagamentoRepository.findById(idPix));
 
         StatusPedido statusPedido = new StatusPedido();
         statusPedido.setDataAtualizacao(LocalDateTime.now());
@@ -251,17 +294,24 @@ public class PedidoServiceImpl implements PedidoService {
 
     @Override
     @Transactional
-    public void registrarPagamentoCartao(Long idPedido, CartaoRequestDTO cartaoDTO) {
-        if (pedidoRepository.findById(idPedido).getPagamento() != null)
-            throw new ValidationException("pagamento", "Este pedido ja foi pago.");
+    public void registrarPagamentoCartao(Pedido pedido, Long idCartao) {
+        Cartao cartao = cartaoService.findById(idCartao);
+        if (cartao == null)
+            throw new ValidationException("idCartao", "Cartao nao encontrado");
 
-        Pedido pedido = pedidoRepository.findById(idPedido);
+        CartaoPagamento cartaoPagamento = new CartaoPagamento();
 
-        Cartao cartao = converterCartao(cartaoDTO);
-        cartao.setValor(pedido.getValorTotal());
+        cartaoPagamento.setTitular(cartao.getTitular());
+        cartaoPagamento.setNumero(cartao.getNumero());
+        cartaoPagamento.setCvc(cartao.getCvc());
+        cartaoPagamento.setDataValidade(cartao.getDataValidade());
+        cartaoPagamento.setCpfCartao(cartao.getCpfCartao());
+        cartaoPagamento.setModalidadeCartao(cartao.getModalidadeCartao());
+        cartaoPagamento.setValor(pedido.getValorTotal());
 
-        pagamentoRepository.persist(cartao);
-        pedido.setPagamento(cartao);
+        pagamentoRepository.persist(cartaoPagamento);
+
+        pedido.setPagamento(cartaoPagamento);
 
         StatusPedido statusPedido = new StatusPedido();
         statusPedido.setDataAtualizacao(LocalDateTime.now());
@@ -278,18 +328,7 @@ public class PedidoServiceImpl implements PedidoService {
         pedido.getStatusPedido().add(converterStatusPedido(statusPedido));
     }
 
-    private Cartao converterCartao(CartaoRequestDTO cartaoDTO) {
-        Cartao cartao = new Cartao();
-
-        cartao.setTitular(cartaoDTO.titular());
-        cartao.setNumero(cartaoDTO.numero());
-        cartao.setCvc(cartaoDTO.cvc());
-        cartao.setDataValidade(cartaoDTO.dataValidade());
-        cartao.setCpfCartao(cartaoDTO.cpfCartao());
-        cartao.setModalidadeCartao(cartaoDTO.modalidade());
-
-        return cartao;
-    }
+    
 
     private StatusPedido converterStatusPedido(StatusPedidoRequestDTO statusPedido) {
         StatusPedido status = new StatusPedido();
@@ -299,4 +338,27 @@ public class PedidoServiceImpl implements PedidoService {
         return status;
     }
 
+    @Override
+    public List<Endereco> listarEnderecos(String email) {
+        Cliente cliente = clienteService.findByUsuario(email);
+        return cliente.getUsuario().getEnderecos();
+    }
+
+    @Override
+    @Transactional
+    public void cancelarPedido(Long idPedido) {
+        Pedido pedido = pedidoRepository.findById(idPedido);
+        if (pedido == null)
+            throw new ValidationException("idPedido", "Pedido nao encontrado.");
+
+        if (pedido.getStatusPedido().stream().anyMatch(e -> e.getSituacaoPedido().equals(SituacaoPedido.ENVIADO)))
+            throw new ValidationException("Status Pedido", "Nao é possivel cancelar, pois o pedido ja foi enviado");
+
+        StatusPedido statusPedido = new StatusPedido();
+        statusPedido.setDataAtualizacao(LocalDateTime.now());
+        statusPedido.setSituacaoPedido(SituacaoPedido.CANCELADO);
+        
+        pedido.getStatusPedido().add(statusPedido);
+        
+    }
 }
