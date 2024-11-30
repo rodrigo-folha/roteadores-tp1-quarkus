@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import br.unitins.tp1.roteadores.dto.endereco.EnderecoRequestDTO;
 import br.unitins.tp1.roteadores.dto.pagamento.BoletoResponseDTO;
 import br.unitins.tp1.roteadores.dto.pagamento.PixResponseDTO;
 import br.unitins.tp1.roteadores.dto.pedido.ItemPedidoRequestDTO;
@@ -86,19 +85,19 @@ public class PedidoServiceImpl implements PedidoService {
         Double desconto = 0.0;
 
         for (ItemPedidoRequestDTO itemDTO : dto.listaItemPedido()) {
-            ItemPedido item = new ItemPedido();
-            item.setPreco(0.0);
             Lote lote = loteService.findByIdRoteador(itemDTO.idProduto());
             if (lote == null)
-                throw new ValidationException("idProduto", "Por favor informe o id de algum produto valido");
-
+            throw new ValidationException("idProduto", "Por favor informe o id de algum produto valido");
+            
             int qtdeTotalEstoque = calcularQuantidadeEstoque(itemDTO.idProduto());
             if (qtdeTotalEstoque < itemDTO.quantidade())
-                throw new ValidationException("quantidade", "quantidade em estoque insuficiente");
-
+            throw new ValidationException("quantidade", "quantidade em estoque insuficiente");
+            
             int qtdeRestante = itemDTO.quantidade();
-
+            
             while (qtdeRestante > 0) {
+                ItemPedido item = new ItemPedido();
+                item.setPreco(0.0);
                 lote = loteService.findByIdRoteador(itemDTO.idProduto());
 
                 int qtdeConsumida = Math.min(lote.getEstoque(), qtdeRestante);
@@ -106,14 +105,14 @@ public class PedidoServiceImpl implements PedidoService {
                 item.setPreco(item.getPreco() + (qtdeConsumida * lote.getRoteador().getPreco()));
 
                 qtdeRestante -= qtdeConsumida;
+                item.setQuantidade(itemDTO.quantidade());
+                item.setLote(lote);
+                item.setPreco(lote.getRoteador().getPreco());
+                item.setQuantidade(qtdeConsumida);
+    
+                pedido.getListaItemPedido().add(item);
             }
-
-            item.setQuantidade(itemDTO.quantidade());
-            item.setLote(lote);
-            item.setPreco(lote.getRoteador().getPreco());
-            item.setQuantidade(itemDTO.quantidade());
-
-            pedido.getListaItemPedido().add(item);
+           
 
         }
 
@@ -124,9 +123,7 @@ public class PedidoServiceImpl implements PedidoService {
             desconto = valorDesconto(cupom);
         }
 
-        EnderecoRequestDTO enderecoDTO = dto.enderecoEntrega();
-        pedido.setEnderecoEntrega(converterEndereco(enderecoDTO));
-
+        pedido.setEnderecoEntrega(getEnderecoEntrega(pedido.getCliente(), dto.idEndereco()));
 
         // eh importante validar se o total enviado via dto eh o mesmo gerado pelos
         // produtos
@@ -174,15 +171,22 @@ public class PedidoServiceImpl implements PedidoService {
                 .sum();
     }
 
-    private EnderecoEntrega converterEndereco(EnderecoRequestDTO enderecoDto) {
-        EnderecoEntrega endereco = new EnderecoEntrega();
-        endereco.setLogradouro(enderecoDto.logradouro());
-        endereco.setBairro(enderecoDto.bairro());
-        endereco.setNumero(enderecoDto.numero());
-        endereco.setComplemento(enderecoDto.complemento());
-        endereco.setCep(enderecoDto.cep());
-        endereco.setCidade(cidadeService.findById(enderecoDto.idCidade()));
-        return endereco;
+    private EnderecoEntrega getEnderecoEntrega(Cliente cliente, Long idEndereco) {
+        Endereco endereco = cliente.getUsuario().getEnderecos()
+            .stream()
+            .filter(e -> e.getId().equals(idEndereco))
+            .findFirst()
+            .orElseThrow(() -> new ValidationException("idEndereco", "Endereco nao encontrado"));
+
+        EnderecoEntrega enderecoEntrega = new EnderecoEntrega();
+        enderecoEntrega.setLogradouro(endereco.getLogradouro());
+        enderecoEntrega.setBairro(endereco.getBairro());
+        enderecoEntrega.setNumero(endereco.getNumero());
+        enderecoEntrega.setComplemento(endereco.getComplemento());
+        enderecoEntrega.setCep(endereco.getCep());
+        enderecoEntrega.setCidade(endereco.getCidade());
+
+        return enderecoEntrega;
     }
 
     private boolean verificarValidadeCupom(String cupom) {
@@ -254,8 +258,10 @@ public class PedidoServiceImpl implements PedidoService {
         if (pagamentoRepository.findByBoleto(idBoleto) == null)
             throw new ValidationException("idBoleto", "Boleto nao cadastrado");
         
-        if (pagamentoRepository.findByBoleto(idBoleto).getValidade().isBefore(LocalDateTime.now()))
+        if (pagamentoRepository.findByBoleto(idBoleto).getValidade().isBefore(LocalDateTime.now())) {
+            devolverEstoque(idPedido);
             throw new ValidationException("validade", "Data de validade expirada.");
+        }
         
         pedido.setPagamento(pagamentoRepository.findById(idBoleto));
 
@@ -280,8 +286,10 @@ public class PedidoServiceImpl implements PedidoService {
         if (pagamentoRepository.findByPix(idPix) == null)
             throw new ValidationException("idPix", "Pix nao cadastrado");
 
-        if (pagamentoRepository.findByPix(idPix).getValidade().isBefore(LocalDateTime.now()))
+        if (pagamentoRepository.findByPix(idPix).getValidade().isBefore(LocalDateTime.now())) {
+            devolverEstoque(idPedido);
             throw new ValidationException("validade", "Data de validade expirada.");
+        }
 
         pedido.setPagamento(pagamentoRepository.findById(idPix));
 
@@ -328,8 +336,6 @@ public class PedidoServiceImpl implements PedidoService {
         pedido.getStatusPedido().add(converterStatusPedido(statusPedido));
     }
 
-    
-
     private StatusPedido converterStatusPedido(StatusPedidoRequestDTO statusPedido) {
         StatusPedido status = new StatusPedido();
         status.setDataAtualizacao(LocalDateTime.now());
@@ -359,6 +365,36 @@ public class PedidoServiceImpl implements PedidoService {
         statusPedido.setSituacaoPedido(SituacaoPedido.CANCELADO);
         
         pedido.getStatusPedido().add(statusPedido);
+        devolverEstoque(idPedido);
         
     }
+
+    @Override
+    @Transactional
+    public void devolverPedido(Long idPedido) {
+        Pedido pedido = pedidoRepository.findById(idPedido);
+        if (pedido == null)
+            throw new ValidationException("idPedido", "Pedido nao encontrado.");
+
+        if (!(pedido.getStatusPedido().stream().anyMatch(e -> e.getSituacaoPedido().equals(SituacaoPedido.ENTREGUE))))
+            throw new ValidationException("Status Pedido", "Nao é possivel devolver, pois o pedido ainda não foi entregue");
+
+        StatusPedido statusPedido = new StatusPedido();
+        statusPedido.setDataAtualizacao(LocalDateTime.now());
+        statusPedido.setSituacaoPedido(SituacaoPedido.DEVOLVIDO);
+        
+        pedido.getStatusPedido().add(statusPedido);
+        devolverEstoque(idPedido);
+    }
+
+    private void devolverEstoque(Long idPedido) {
+        Pedido pedido = pedidoRepository.findById(idPedido);
+        for (ItemPedido item: pedido.getListaItemPedido()) {
+            Lote lote = item.getLote();
+            Integer estoque = lote.getEstoque();
+
+            lote.setEstoque(estoque + item.getQuantidade());
+        }
+    }
+
 }

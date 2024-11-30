@@ -29,6 +29,8 @@ public interface PedidoService {
     List<Endereco> listarEnderecos(String email);
 
     void cancelarPedido(Long idPedido);
+
+    void devolverPedido(Long idPedido);
     
     // implementar os patches
 

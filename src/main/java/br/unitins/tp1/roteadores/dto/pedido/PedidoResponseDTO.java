@@ -4,7 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import br.unitins.tp1.roteadores.dto.endereco.EnderecoResponseDTO;
-import br.unitins.tp1.roteadores.model.pagamento.Pagamento;
+import br.unitins.tp1.roteadores.dto.pagamento.PagamentoResponseDTO;
 import br.unitins.tp1.roteadores.model.pedido.Pedido;
 
 public record PedidoResponseDTO(
@@ -14,7 +14,7 @@ public record PedidoResponseDTO(
     List<ItemPedidoResponseDTO> listaItemPedido,
     List<StatusPedidoResponseDTO> statusPedidos,
     EnderecoResponseDTO enderecoEntrega,
-    Pagamento pagamento
+    Object pagamento
 ) {
 
     public static PedidoResponseDTO valueOf(Pedido pedido) {
@@ -25,7 +25,7 @@ public record PedidoResponseDTO(
             pedido.getListaItemPedido().stream().map(ItemPedidoResponseDTO::valueOf).toList(),
             pedido.getStatusPedido().stream().map(StatusPedidoResponseDTO::valueOf).toList(),
             EnderecoResponseDTO.valueOf(pedido.getEnderecoEntrega()),
-            pedido.getPagamento());
+            PagamentoResponseDTO.valueOf(pedido.getPagamento()));
       
     }
     

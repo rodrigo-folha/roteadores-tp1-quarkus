@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 import br.unitins.tp1.roteadores.model.pagamento.Cartao;
+import br.unitins.tp1.roteadores.model.pagamento.CartaoPagamento;
 import br.unitins.tp1.roteadores.model.pagamento.ModalidadeCartao;
 
 public record CartaoResponseDTO(
@@ -13,8 +14,17 @@ public record CartaoResponseDTO(
     String validade,
     ModalidadeCartao modalidadeCartao
 ) {
-    
+
     public static CartaoResponseDTO valueOf(Cartao cartao) {
+        return new CartaoResponseDTO(
+            cartao.getId(),
+            cartao.getTitular(),
+            ofuscarNumero(cartao.getNumero()),
+            converterData(cartao.getDataValidade()),
+            cartao.getModalidadeCartao());
+    }
+    
+    public static CartaoResponseDTO valueOf(CartaoPagamento cartao) {
         return new CartaoResponseDTO(
             cartao.getId(),
             cartao.getTitular(),

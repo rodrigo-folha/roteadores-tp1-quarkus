@@ -14,10 +14,6 @@ public class ItemPedido extends DefaultEntity {
     private Integer quantidade;
     private Double preco;
 
-    @ManyToOne
-    @JoinColumn(name = "id_cupom")
-    private CupomDesconto cupomDesconto;
-
     public Lote getLote() {
         return lote;
     }

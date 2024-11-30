@@ -3,6 +3,7 @@ package br.unitins.tp1.roteadores.resource;
 import org.eclipse.microprofile.jwt.JsonWebToken;
 import org.jboss.logging.Logger;
 
+import br.unitins.tp1.roteadores.dto.pedido.PedidoBasicoResponseDTO;
 import br.unitins.tp1.roteadores.dto.pedido.PedidoRequestDTO;
 import br.unitins.tp1.roteadores.dto.pedido.PedidoResponseDTO;
 import br.unitins.tp1.roteadores.dto.pedido.StatusPedidoRequestDTO;
@@ -48,6 +49,29 @@ public class PedidoResource {
                     toList()).build();
     }
 
+    @GET
+    @RolesAllowed("User")
+    @Path("/resumido")
+    public Response findByEmailResumido() {
+        LOG.info("Execucao do metodo findByEmailResumido");
+
+        // buscando o username do hash do jwt
+        String username = jwt.getSubject();
+
+        return Response.ok(pedidoService.findByEmail(username).
+                    stream().
+                    map(o -> PedidoBasicoResponseDTO.valueOf(o)).
+                    toList()).build();
+    }
+
+    @GET
+    @RolesAllowed({"User"})
+    @Path("/{id}")
+    public Response findById(@PathParam("id") Long id) {
+        LOG.info("Execucao do metodo findById. Id: " + id);
+        return Response.ok(PedidoResponseDTO.valueOf(pedidoService.findById(id))).build();
+    }
+
     @POST
     @RolesAllowed("User")
     public Response create(@Valid PedidoRequestDTO dto) {
@@ -59,7 +83,6 @@ public class PedidoResource {
         return Response.status(Status.CREATED).entity(
             PedidoResponseDTO.valueOf(pedidoService.create(dto, username))
         ).build();
-    
     }
 
     @PATCH
@@ -79,15 +102,6 @@ public class PedidoResource {
         pedidoService.registrarPagamentoBoleto(idPedido, idBoleto);
         return Response.status(Status.NO_CONTENT).build();
     }
-
-    // @PATCH
-    // @RolesAllowed("User")
-    // @Path("/{idPedido}/pagamento/pagar/cartao/")
-    // public Response registrarPagamentoCartao(@PathParam("idPedido") Long idPedido, CartaoRequestDTO cartaoDTO) {   
-    //     LOG.info("Execucao do metodo registrarPagamentoCartao. Id do pedido: " + idPedido);  
-    //     pedidoService.registrarPagamentoCartao(idPedido, cartaoDTO);
-    //     return Response.status(Status.NO_CONTENT).build();
-    // }
 
     @PATCH
     @RolesAllowed("Adm")
@@ -120,6 +134,8 @@ public class PedidoResource {
         pedidoService.cancelarPedido(idPedido);
         return Response.status(Status.NO_CONTENT).build();
     }
+
+
 
 
     
