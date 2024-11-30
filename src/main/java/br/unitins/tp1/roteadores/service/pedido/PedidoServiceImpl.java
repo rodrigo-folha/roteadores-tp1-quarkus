@@ -32,6 +32,7 @@ import br.unitins.tp1.roteadores.service.CartaoService;
 import br.unitins.tp1.roteadores.service.endereco.CidadeService;
 import br.unitins.tp1.roteadores.service.usuario.ClienteService;
 import br.unitins.tp1.roteadores.validation.ValidationException;
+import io.quarkus.scheduler.Scheduled;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
@@ -345,12 +346,6 @@ public class PedidoServiceImpl implements PedidoService {
     }
 
     @Override
-    public List<Endereco> listarEnderecos(String email) {
-        Cliente cliente = clienteService.findByUsuario(email);
-        return cliente.getUsuario().getEnderecos();
-    }
-
-    @Override
     @Transactional
     public void cancelarPedido(Long idPedido) {
         Pedido pedido = pedidoRepository.findById(idPedido);
@@ -395,6 +390,27 @@ public class PedidoServiceImpl implements PedidoService {
 
             lote.setEstoque(estoque + item.getQuantidade());
         }
+    }
+
+    @Transactional
+    @Scheduled(every = "2m")
+    public void verificarPagamento(){
+        List<Pedido> listaPedido = pedidoRepository.findPedidoSemPagamentoNaoCancelado();
+
+        listaPedido.stream()
+            .filter(pedido -> pedido.getStatusPedido()
+                .stream()
+                .anyMatch(status -> 
+                    status.getSituacaoPedido() == SituacaoPedido.AGUARDANDO_PAGAMENTO && 
+                    status.getDataAtualizacao().plusHours(24).isBefore(LocalDateTime.now())))
+                .forEach(pedido -> {
+                    StatusPedido novoStatus = new StatusPedido();
+                    novoStatus.setDataAtualizacao(LocalDateTime.now());
+                    novoStatus.setSituacaoPedido(SituacaoPedido.PAGAMENTO_EXPIRADO);
+
+                    pedido.getStatusPedido().add(novoStatus);
+                    devolverEstoque(pedido.getId());
+                });
     }
 
 }

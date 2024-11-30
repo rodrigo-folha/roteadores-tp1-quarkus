@@ -112,20 +112,6 @@ public class PedidoResource {
         return Response.status(Status.NO_CONTENT).build();
     }
 
-    @GET
-    @RolesAllowed("User")
-    @Path("/search/enderecos")
-    public Response listarEnderecos() {
-
-        LOG.info("Execucao do metodo listarEnderecos.");  
-
-        // buscando o username do hash do jwt
-        String username = jwt.getSubject();
-
-        return Response.ok(pedidoService.listarEnderecos(username)).build();
-    
-    }
-
     @PATCH
     @RolesAllowed("User")
     @Path("/cancelar/{idPedido}")

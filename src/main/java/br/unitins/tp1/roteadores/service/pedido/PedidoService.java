@@ -6,7 +6,6 @@ import br.unitins.tp1.roteadores.dto.pagamento.BoletoResponseDTO;
 import br.unitins.tp1.roteadores.dto.pagamento.PixResponseDTO;
 import br.unitins.tp1.roteadores.dto.pedido.PedidoRequestDTO;
 import br.unitins.tp1.roteadores.dto.pedido.StatusPedidoRequestDTO;
-import br.unitins.tp1.roteadores.model.endereco.Endereco;
 import br.unitins.tp1.roteadores.model.pedido.Pedido;
 
 public interface PedidoService {
@@ -25,8 +24,6 @@ public interface PedidoService {
     void registrarPagamentoCartao(Pedido pedido, Long idCartao);
 
     void updateStatusPedido(Long idPedido, StatusPedidoRequestDTO statusPedido);
-
-    List<Endereco> listarEnderecos(String email);
 
     void cancelarPedido(Long idPedido);
 

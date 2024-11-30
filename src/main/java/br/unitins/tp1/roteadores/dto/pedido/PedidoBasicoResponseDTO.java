@@ -35,8 +35,14 @@ public record PedidoBasicoResponseDTO(
         } else if (pedido.getPagamento() instanceof CartaoPagamento) {
             return "Cartao";
         } else if (pagamentoRepository.findByBoleto(pedido.getId()) != null) {
+            if (pedido.getStatusPedido().getLast().getSituacaoPedido().equals(SituacaoPedido.PAGAMENTO_EXPIRADO)) 
+                return "Pagamento expirado!";
+            
             return "Aguardando pagamento do boleto de id: "  + pedido.getId();
         } else if (pagamentoRepository.findByPix(pedido.getId()) != null) {
+            if (pedido.getStatusPedido().getLast().getSituacaoPedido().equals(SituacaoPedido.PAGAMENTO_EXPIRADO)) 
+                return "Pagamento expirado!";
+                
             return "Aguardando pagamento do pix de id: "  + pedido.getId();
         } else
             return "Pagando ainda não realizado";
