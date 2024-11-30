@@ -5,6 +5,7 @@ import java.util.List;
 import br.unitins.tp1.roteadores.dto.TelefoneRequestDTO;
 import br.unitins.tp1.roteadores.dto.endereco.EnderecoRequestDTO;
 import br.unitins.tp1.roteadores.dto.usuario.ClienteRequestDTO;
+import br.unitins.tp1.roteadores.model.roteador.Roteador;
 import br.unitins.tp1.roteadores.model.usuario.Cliente;
 
 public interface ClienteService {
@@ -32,5 +33,11 @@ public interface ClienteService {
     void updateTelefoneEspecifico(Long id, Long idTelefone, TelefoneRequestDTO dto);
 
     void updateTelefone(Long id, List<TelefoneRequestDTO> dto);
+
+    void adicionarProdutoListaDesejo(String email, Long idProduto);
+
+    void removerProdutoListaDesejo(String email, Long idProduto);
+
+    List<Roteador> getListaDesejos(String email);
     
 }

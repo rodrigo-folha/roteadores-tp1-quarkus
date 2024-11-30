@@ -120,9 +120,5 @@ public class PedidoResource {
         pedidoService.cancelarPedido(idPedido);
         return Response.status(Status.NO_CONTENT).build();
     }
-
-
-
-
     
 }

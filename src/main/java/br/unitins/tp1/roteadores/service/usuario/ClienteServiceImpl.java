@@ -1,6 +1,7 @@
 package br.unitins.tp1.roteadores.service.usuario;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import br.unitins.tp1.roteadores.dto.TelefoneRequestDTO;
@@ -8,12 +9,14 @@ import br.unitins.tp1.roteadores.dto.endereco.EnderecoRequestDTO;
 import br.unitins.tp1.roteadores.dto.usuario.ClienteRequestDTO;
 import br.unitins.tp1.roteadores.model.Telefone;
 import br.unitins.tp1.roteadores.model.endereco.Endereco;
+import br.unitins.tp1.roteadores.model.roteador.Roteador;
 import br.unitins.tp1.roteadores.model.usuario.Cliente;
 import br.unitins.tp1.roteadores.model.usuario.Perfil;
 import br.unitins.tp1.roteadores.model.usuario.Usuario;
 import br.unitins.tp1.roteadores.repository.ClienteRepository;
 import br.unitins.tp1.roteadores.repository.UsuarioRepository;
 import br.unitins.tp1.roteadores.service.endereco.CidadeService;
+import br.unitins.tp1.roteadores.service.roteador.RoteadorService;
 import br.unitins.tp1.roteadores.validation.ValidationException;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -30,6 +33,9 @@ public class ClienteServiceImpl implements ClienteService {
 
     @Inject
     public CidadeService cidadeService;
+
+    @Inject
+    public RoteadorService roteadorService;
 
     @Inject
     public HashService hashService;
@@ -187,6 +193,46 @@ public class ClienteServiceImpl implements ClienteService {
     @Transactional
     public void delete(Long id) {
         clienteRepository.deleteById(id);
+    }
+
+    @Override
+    @Transactional
+    public void adicionarProdutoListaDesejo(String email, Long idProduto) {
+        Cliente cliente = clienteRepository.findByUsuario(email);
+
+        if (cliente.getListaDesejos() == null)
+            cliente.setListaDesejos(new ArrayList<>());
+
+        Roteador roteador = roteadorService.findById(idProduto);
+        if (roteador == null)
+            throw new ValidationException("idProduto", "Roteador nao encontrado");
+        
+        cliente.getListaDesejos().add(roteador);
+    }
+
+    @Override
+    @Transactional
+    public void removerProdutoListaDesejo(String email, Long idProduto) {
+        Cliente cliente = clienteRepository.findByUsuario(email);
+        List<Roteador> listaDesejos = cliente.getListaDesejos();
+
+        if (listaDesejos == null)
+            throw new ValidationException("listaDesejos", "Voce nao possui uma lista de desejos");
+        
+        Roteador roteador = roteadorService.findById(idProduto);
+        if (roteador == null)
+            throw new ValidationException("idProduto", "Roteador nao encontrado");
+        
+        if (!listaDesejos.contains(roteador))
+            throw new ValidationException("idProduto", "O produto nao esta na lista de desejos");
+
+        listaDesejos.remove(roteador);
+    }
+
+    @Override
+    public List<Roteador> getListaDesejos(String email) {
+        Cliente cliente = clienteRepository.findByUsuario(email);
+        return cliente.getListaDesejos();
     }
 
     private Endereco converterEndereco(EnderecoRequestDTO enderecoDto) {
