@@ -1,5 +1,6 @@
 package br.unitins.tp1.roteadores.service.usuario;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import br.unitins.tp1.roteadores.dto.TelefoneRequestDTO;
@@ -70,7 +71,10 @@ public class FuncionarioServiceImpl implements FuncionarioService {
         usuario.setDataNascimento(dto.usuario().dataNascimento());
         usuario.setEmail(dto.usuario().email());
         usuario.setSenha(hashService.getHashSenha(dto.usuario().senha()));
-        usuario.setPerfil(Perfil.ADM);
+        if (usuario.getPerfis() == null)
+            usuario.setPerfis(new ArrayList<>());
+        usuario.getPerfis().add(Perfil.ADM);
+        // usuario.setPerfil(Perfil.ADM);
         usuario.setTelefones(dto.usuario().telefones().stream().map(this::converterTelefone).toList());
         usuario.setEnderecos(dto.usuario().enderecos().stream().map(this::converterEndereco).toList());
         
@@ -102,7 +106,10 @@ public class FuncionarioServiceImpl implements FuncionarioService {
         usuario.setDataNascimento(dto.usuario().dataNascimento());
         usuario.setEmail(dto.usuario().email());
         usuario.setSenha(hashService.getHashSenha(dto.usuario().senha()));
-        usuario.setPerfil(Perfil.ADM);
+        if (usuario.getPerfis() == null)
+            usuario.setPerfis(new ArrayList<>());
+        usuario.getPerfis().add(Perfil.ADM);
+        // usuario.setPerfil(Perfil.ADM);
         updateTelefones(usuario, dto.usuario().telefones());
         updateEnderecos(usuario, dto.usuario().enderecos());
         

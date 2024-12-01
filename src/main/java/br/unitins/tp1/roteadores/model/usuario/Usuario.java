@@ -7,7 +7,9 @@ import br.unitins.tp1.roteadores.model.DefaultEntity;
 import br.unitins.tp1.roteadores.model.Telefone;
 import br.unitins.tp1.roteadores.model.endereco.Endereco;
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
@@ -26,7 +28,11 @@ public class Usuario extends DefaultEntity {
     private String email;
     @Column(nullable = false)
     private String senha;
-    private Perfil perfil;
+
+    @ElementCollection(fetch = FetchType.EAGER)
+    @CollectionTable(name = "perfil_usuario", joinColumns = @JoinColumn(name = "id_usuario"))
+    private List<Perfil> perfis;
+    // private Perfil perfil;
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JoinTable(name = "telefone_usuario", joinColumns = @JoinColumn(name = "id_usuario"))
@@ -76,13 +82,13 @@ public class Usuario extends DefaultEntity {
         this.senha = senha;
     }
 
-    public Perfil getPerfil() {
-    return perfil;
-    }
+    // public Perfil getPerfil() {
+    // return perfil;
+    // }
 
-    public void setPerfil(Perfil perfil) {
-    this.perfil = perfil;
-    }
+    // public void setPerfil(Perfil perfil) {
+    // this.perfil = perfil;
+    // }
 
     public List<Telefone> getTelefones() {
         return telefones;
@@ -99,5 +105,15 @@ public class Usuario extends DefaultEntity {
     public void setEnderecos(List<Endereco> enderecos) {
         this.enderecos = enderecos;
     }
+
+    public List<Perfil> getPerfis() {
+        return perfis;
+    }
+
+    public void setPerfis(List<Perfil> perfis) {
+        this.perfis = perfis;
+    }
+
+    
 
 }

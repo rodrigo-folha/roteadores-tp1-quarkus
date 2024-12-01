@@ -75,6 +75,8 @@ public class ClienteServiceImpl implements ClienteService {
     @Override
     public Cliente getMinhasInformacoess(String email) {
         Cliente cliente = clienteRepository.findByUsuario(email);
+        if (cliente == null)
+            throw new ValidationException("email", "cliente nao encontardo");
         return cliente;
     }
 
@@ -95,7 +97,10 @@ public class ClienteServiceImpl implements ClienteService {
         usuario.setDataNascimento(dto.usuario().dataNascimento());
         usuario.setEmail(dto.usuario().email());
         usuario.setSenha(hashService.getHashSenha(dto.usuario().senha()));
-        usuario.setPerfil(Perfil.USER);
+        if (usuario.getPerfis() == null)
+            usuario.setPerfis(new ArrayList<>());
+        usuario.getPerfis().add(Perfil.USER);
+        // usuario.setPerfil(Perfil.USER);
         usuario.setTelefones(dto.usuario().telefones().stream().map(this::converterTelefone).toList());
         usuario.setEnderecos(dto.usuario().enderecos().stream().map(this::converterEndereco).toList());
         
@@ -121,7 +126,9 @@ public class ClienteServiceImpl implements ClienteService {
         cliente.setUsuario(funcionario.getUsuario());
         // cliente.getUsuario().setPerfil(Perfil.USER);
         cliente.setDataCadastro(LocalDateTime.now());
-        cliente.setCartoes(new ArrayList<>());
+        if (cliente.getCartoes() == null)
+            cliente.setCartoes(new ArrayList<>());
+
         clienteRepository.persist(cliente);
 
         return cliente;
@@ -143,7 +150,11 @@ public class ClienteServiceImpl implements ClienteService {
         usuario.setCpf(dto.usuario().cpf());
         usuario.setEmail(dto.usuario().email());
         usuario.setSenha(hashService.getHashSenha(dto.usuario().senha()));
-        usuario.setPerfil(Perfil.USER);
+        if (usuario.getPerfis() == null)
+            usuario.setPerfis(new ArrayList<>());
+
+        usuario.getPerfis().add(Perfil.USER);
+        // usuario.setPerfil(Perfil.USER);
         
         usuarioRepository.persist(usuario);
         cliente.setUsuario(usuario);
@@ -173,7 +184,11 @@ public class ClienteServiceImpl implements ClienteService {
         usuario.setDataNascimento(dto.usuario().dataNascimento());
         usuario.setEmail(dto.usuario().email());
         usuario.setSenha(hashService.getHashSenha(dto.usuario().senha()));
-        usuario.setPerfil(Perfil.USER);
+        if (usuario.getPerfis() == null)
+            usuario.setPerfis(new ArrayList<>());
+
+        usuario.getPerfis().add(Perfil.USER);
+        // usuario.setPerfil(Perfil.USER);
         updateTelefones(usuario, dto.usuario().telefones());
         updateEnderecos(usuario, dto.usuario().enderecos());
 
@@ -200,7 +215,11 @@ public class ClienteServiceImpl implements ClienteService {
         usuario.setDataNascimento(dto.usuario().dataNascimento());
         usuario.setEmail(dto.usuario().email());
         usuario.setSenha(hashService.getHashSenha(dto.usuario().senha()));
-        usuario.setPerfil(Perfil.USER);
+        if (usuario.getPerfis() == null)
+            usuario.setPerfis(new ArrayList<>());
+
+        usuario.getPerfis().add(Perfil.USER);
+        // usuario.setPerfil(Perfil.USER);
         updateTelefones(usuario, dto.usuario().telefones());
         updateEnderecos(usuario, dto.usuario().enderecos());
 

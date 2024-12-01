@@ -15,7 +15,7 @@ public record UsuarioResponseDTO(
     LocalDate dataNascimento,
     String email,
     String senha,
-    Perfil perfil,
+    List<Perfil> perfil,
     List<TelefoneResponseDTO> telefones,
     List<EnderecoResponseDTO> enderecos
 ) {
@@ -28,7 +28,7 @@ public record UsuarioResponseDTO(
             usuario.getDataNascimento(),
             usuario.getEmail(),
             ofuscarSenha(usuario.getSenha()),
-            usuario.getPerfil(),
+            usuario.getPerfis(),
             usuario.getTelefones().stream().map(TelefoneResponseDTO::valueOf).toList(),
             usuario.getEnderecos().stream().map(EnderecoResponseDTO::valueOf).toList()
         );
