@@ -6,6 +6,9 @@ import br.unitins.tp1.roteadores.dto.TelefoneRequestDTO;
 import br.unitins.tp1.roteadores.dto.endereco.EnderecoRequestDTO;
 import br.unitins.tp1.roteadores.dto.usuario.ClienteBasicoRequestDTO;
 import br.unitins.tp1.roteadores.dto.usuario.ClienteRequestDTO;
+import br.unitins.tp1.roteadores.dto.usuario.patches.EmailPatchRequestDTO;
+import br.unitins.tp1.roteadores.dto.usuario.patches.NomePatchRequestDTO;
+import br.unitins.tp1.roteadores.dto.usuario.patches.SenhaPatchRequestDTO;
 import br.unitins.tp1.roteadores.model.roteador.Roteador;
 import br.unitins.tp1.roteadores.model.usuario.Cliente;
 
@@ -46,9 +49,13 @@ public interface ClienteService {
     // metodos para o cliente utilizar
     Cliente getMinhasInformacoess(String email);
     Cliente update(String email, ClienteRequestDTO dto);
+    void updateSenha(String email, SenhaPatchRequestDTO dto);
+    void updateNome(String email, NomePatchRequestDTO dto);
+    void updateEmail(String email, EmailPatchRequestDTO dto);
     void updateEnderecoEspecifico(String email, Long idEndereco, EnderecoRequestDTO dto);
     void updateEndereco(String email, List<EnderecoRequestDTO> dto);
     void updateTelefoneEspecifico(String email, Long idTelefone, TelefoneRequestDTO dto);
     void updateTelefone(String email, List<TelefoneRequestDTO> dto);
     Cliente updateNomeImagem(String email, String nomeImagem);
+    Cliente gerarClienteFromFuncionario(String email);
 }

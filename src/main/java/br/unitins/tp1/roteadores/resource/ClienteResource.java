@@ -110,6 +110,15 @@ public class ClienteResource {
                 .build();
     }
 
+    @POST
+    @Path("/gerarcliente/{email}")
+    public Response gerarClienteFromFuncionario(@PathParam("email") String email) {
+        LOG.info("Execucao do metodo gerarClienteFromFuncionario");
+        return Response.status(Status.CREATED)
+            .entity(ClienteResponseDTO.valueOf(clienteService.gerarClienteFromFuncionario(email)))
+            .build();
+    }
+
     @PUT
     @RolesAllowed({"Adm"})
     @Path("/{id}")

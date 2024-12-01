@@ -42,12 +42,6 @@ public class AuthResource {
                 .entity("Usuario não encontrado").build();
         } 
 
-        // Permitir que apenas usuarios que tenham o perfil cliente, possam logar
-        // if (!usuario.getPerfil().equals(Perfil.USER)) {
-        //     return Response.status(Status.NO_CONTENT)
-        //         .entity("Usuario não encontrado").build();
-        // }
-
         return Response.ok()
             .header("Authorization", jwtService.generateJwt(UsuarioResponseDTO.valueOf(usuario)))
             .build();

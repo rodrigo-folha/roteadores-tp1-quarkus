@@ -9,6 +9,7 @@ import br.unitins.tp1.roteadores.model.endereco.Endereco;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.OneToMany;
@@ -27,11 +28,11 @@ public class Usuario extends DefaultEntity {
     private String senha;
     private Perfil perfil;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JoinTable(name = "telefone_usuario", joinColumns = @JoinColumn(name = "id_usuario"))
     private List<Telefone> telefones;
 
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JoinTable(name = "endereco_usuario", joinColumns = @JoinColumn(name = "id_usuario"))
     private List<Endereco> enderecos;
 
@@ -76,11 +77,11 @@ public class Usuario extends DefaultEntity {
     }
 
     public Perfil getPerfil() {
-        return perfil;
+    return perfil;
     }
 
     public void setPerfil(Perfil perfil) {
-        this.perfil = perfil;
+    this.perfil = perfil;
     }
 
     public List<Telefone> getTelefones() {

@@ -10,7 +10,7 @@ import br.unitins.tp1.roteadores.model.pedido.Pedido;
 
 public interface PedidoService {
 
-    Pedido findById(Long id);
+    Pedido findById(String email, Long id);
 
     List<Pedido> findByEmail(String email);
 

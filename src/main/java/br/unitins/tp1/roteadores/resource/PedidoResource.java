@@ -69,7 +69,8 @@ public class PedidoResource {
     @Path("/{id}")
     public Response findById(@PathParam("id") Long id) {
         LOG.info("Execucao do metodo findById. Id: " + id);
-        return Response.ok(PedidoResponseDTO.valueOf(pedidoService.findById(id))).build();
+        String email = jwt.getSubject();
+        return Response.ok(PedidoResponseDTO.valueOf(pedidoService.findById(email, id))).build();
     }
 
     @POST

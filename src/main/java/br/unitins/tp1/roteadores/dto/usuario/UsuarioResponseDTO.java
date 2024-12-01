@@ -27,10 +27,14 @@ public record UsuarioResponseDTO(
             usuario.getCpf(),
             usuario.getDataNascimento(),
             usuario.getEmail(),
-            usuario.getSenha(),
+            ofuscarSenha(usuario.getSenha()),
             usuario.getPerfil(),
             usuario.getTelefones().stream().map(TelefoneResponseDTO::valueOf).toList(),
             usuario.getEnderecos().stream().map(EnderecoResponseDTO::valueOf).toList()
         );
+    }
+
+    public static String ofuscarSenha(String senha) {
+        return "******";
     }
 }

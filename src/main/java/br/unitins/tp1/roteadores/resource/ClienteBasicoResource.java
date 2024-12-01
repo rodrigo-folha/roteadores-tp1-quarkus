@@ -14,6 +14,9 @@ import br.unitins.tp1.roteadores.dto.usuario.ClienteBasicoResponseDTO;
 import br.unitins.tp1.roteadores.dto.usuario.ClienteRequestDTO;
 import br.unitins.tp1.roteadores.dto.usuario.ClienteResponseDTO;
 import br.unitins.tp1.roteadores.dto.usuario.ListaDesejoResponseDTO;
+import br.unitins.tp1.roteadores.dto.usuario.patches.EmailPatchRequestDTO;
+import br.unitins.tp1.roteadores.dto.usuario.patches.NomePatchRequestDTO;
+import br.unitins.tp1.roteadores.dto.usuario.patches.SenhaPatchRequestDTO;
 import br.unitins.tp1.roteadores.form.ImageForm;
 import br.unitins.tp1.roteadores.service.usuario.ClienteFileServiceImpl;
 import br.unitins.tp1.roteadores.service.usuario.ClienteService;
@@ -54,6 +57,7 @@ public class ClienteBasicoResource {
     public ClienteFileServiceImpl clienteFileService;
 
     @POST
+    @Path("/cadastrar-cliente")
     public Response create(@Valid ClienteBasicoRequestDTO dto) {
         LOG.info("Execucao do metodo create");
         return Response.status(Status.CREATED)
@@ -71,6 +75,7 @@ public class ClienteBasicoResource {
 
     @PUT
     @RolesAllowed({"User"})
+    @Path("/update")
     public Response update(ClienteRequestDTO cliente) {
         LOG.info("Execucao do metodo update");
         String email = jsonWebToken.getSubject();
@@ -81,7 +86,40 @@ public class ClienteBasicoResource {
 
     @PATCH
     @RolesAllowed({"User"})
-    @Path("/enderecos/{idEndereco}")
+    @Path("/update/senha")
+    public Response updateSenha(SenhaPatchRequestDTO dto) {
+        LOG.info("Execucao do metodo updateSenha");
+        String email = jsonWebToken.getSubject();
+
+        clienteService.updateSenha(email, dto);
+        return Response.noContent().build();
+    }
+
+    @PATCH
+    @RolesAllowed({"User"})
+    @Path("/update/nome")
+    public Response updateNome(NomePatchRequestDTO dto) {
+        LOG.info("Execucao do metodo updateNome");
+        String email = jsonWebToken.getSubject();
+
+        clienteService.updateNome(email, dto);
+        return Response.noContent().build();
+    }
+
+    @PATCH
+    @RolesAllowed({"User"})
+    @Path("/update/email")
+    public Response updateEmail(EmailPatchRequestDTO dto) {
+        LOG.info("Execucao do metodo updateEmail");
+        String email = jsonWebToken.getSubject();
+
+        clienteService.updateEmail(email, dto);
+        return Response.noContent().build();
+    }
+
+    @PATCH
+    @RolesAllowed({"User"})
+    @Path("/update/enderecos/{idEndereco}")
     public Response updateEnderecoEspecifico(@PathParam("idEndereco") Long idEndereco, @Valid EnderecoRequestDTO endereco) {
         LOG.info("Execucao do metodo updateEnderecoEspecifico. Id do endereco: " + idEndereco);
         String email = jsonWebToken.getSubject();
@@ -91,7 +129,7 @@ public class ClienteBasicoResource {
 
     @PATCH
     @RolesAllowed({"User"})
-    @Path("/enderecos")
+    @Path("/update/enderecos")
     public Response updateEndereco(@Valid List<EnderecoRequestDTO> endereco) {
         LOG.info("Execucao do metodo updateEndereco.");
         String email = jsonWebToken.getSubject();
@@ -101,7 +139,7 @@ public class ClienteBasicoResource {
 
     @PATCH
     @RolesAllowed({"User"})
-    @Path("/telefones/{idTelefone}")
+    @Path("/update/telefones/{idTelefone}")
     public Response updateTelefoneEspecifico(@PathParam("idTelefone") Long idTelefone, @Valid TelefoneRequestDTO telefone) {
         LOG.info("Execucao do metodo updateTelefoneEspecifico. Id do telefone: " + idTelefone);
         String email = jsonWebToken.getSubject();
@@ -111,7 +149,7 @@ public class ClienteBasicoResource {
 
     @PATCH
     @RolesAllowed({"User"})
-    @Path("/telefones")
+    @Path("/update/telefones")
     public Response updateTelefone(@Valid List<TelefoneRequestDTO> telefone) {
         LOG.info("Execucao do metodo updateTelefone.");
         String email = jsonWebToken.getSubject();
@@ -153,7 +191,7 @@ public class ClienteBasicoResource {
 
     @PATCH
     @RolesAllowed({"User"})
-    @Path("/upload/imagem")
+    @Path("/imagem/upload")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public Response uploadImage(@MultipartForm ImageForm form) {
         LOG.info("Execucao do metodo uploadImage.");
@@ -170,7 +208,7 @@ public class ClienteBasicoResource {
 
     @GET
     @RolesAllowed({"User"})
-    @Path("/download/imagem/{nomeImagem}")
+    @Path("/imagem/download/{nomeImagem}")
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
     public Response downloadImage(@PathParam("nomeImagem") String nomeImagem) {
         LOG.info("Execucao do metodo DownloadImage.");

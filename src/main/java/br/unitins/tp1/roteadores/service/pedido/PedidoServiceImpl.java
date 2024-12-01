@@ -65,7 +65,14 @@ public class PedidoServiceImpl implements PedidoService {
     public CupomDescontoService cupomDescontoService;
 
     @Override
-    public Pedido findById(Long id) {
+    public Pedido findById(String email, Long id) {
+        Cliente cliente = clienteService.findByUsuario(email);
+        if (cliente == null)
+            throw new ValidationException("email", "cliente nao encontrado");
+        
+        if (pedidoRepository.findById(id) == null)
+            throw new ValidationException("id", "pedido nao encontrado");
+
         return pedidoRepository.findById(id);
     }
 
@@ -225,6 +232,7 @@ public class PedidoServiceImpl implements PedidoService {
         boleto.setValor(pedido.getValorTotal());
         boleto.setCodigoBarras(UUID.randomUUID().toString());
         boleto.setValidade(LocalDateTime.now().plus(Duration.ofHours(24)));
+        pedido.setPagamento(boleto);
 
         pagamentoRepository.persist(boleto);
 
@@ -239,6 +247,7 @@ public class PedidoServiceImpl implements PedidoService {
         pix.setValor(pedido.getValorTotal());
         pix.setValidade(LocalDateTime.now().plus(Duration.ofHours(24)));
         pix.setChave(UUID.randomUUID().toString());
+        pedido.setPagamento(pix);
 
         pagamentoRepository.persist(pix);
 
@@ -252,8 +261,11 @@ public class PedidoServiceImpl implements PedidoService {
             throw new ValidationException("idPedido", "Informe um pedido valido!");
         
         Pedido pedido = pedidoRepository.findById(idPedido);
+
+        if (!(pedidoRepository.findById(idPedido).getPagamento().getId().equals(idBoleto)))
+            throw new ValidationException("idPedido", "o boleto nao corresponde ao pedido");
         
-        if (pedidoRepository.findById(idPedido).getPagamento() != null)
+        if (pedido.getStatusPedido().stream().map(StatusPedido::getSituacaoPedido).anyMatch(situacao -> situacao == SituacaoPedido.PAGAMENTO_AUTORIZADO))
             throw new ValidationException("pagamento", "Este pedido ja foi pago.");
 
         if (pagamentoRepository.findByBoleto(idBoleto) == null)
@@ -264,7 +276,7 @@ public class PedidoServiceImpl implements PedidoService {
             throw new ValidationException("validade", "Data de validade expirada.");
         }
         
-        pedido.setPagamento(pagamentoRepository.findById(idBoleto));
+        // pedido.setPagamento(pagamentoRepository.findById(idBoleto));
 
         StatusPedido statusPedido = new StatusPedido();
         statusPedido.setDataAtualizacao(LocalDateTime.now());
@@ -281,7 +293,10 @@ public class PedidoServiceImpl implements PedidoService {
         
         Pedido pedido = pedidoRepository.findById(idPedido);
 
-        if (pedidoRepository.findById(idPedido).getPagamento() != null)
+        if (!(pedidoRepository.findById(idPedido).getPagamento().getId().equals(idPix)))
+            throw new ValidationException("idPedido", "o pix nao corresponde ao pedido");
+
+        if (pedido.getStatusPedido().stream().map(StatusPedido::getSituacaoPedido).anyMatch(situacao -> situacao == SituacaoPedido.PAGAMENTO_AUTORIZADO))
             throw new ValidationException("pagamento", "Este pedido ja foi pago.");
 
         if (pagamentoRepository.findByPix(idPix) == null)
@@ -292,7 +307,7 @@ public class PedidoServiceImpl implements PedidoService {
             throw new ValidationException("validade", "Data de validade expirada.");
         }
 
-        pedido.setPagamento(pagamentoRepository.findById(idPix));
+        // pedido.setPagamento(pagamentoRepository.findById(idPix));
 
         StatusPedido statusPedido = new StatusPedido();
         statusPedido.setDataAtualizacao(LocalDateTime.now());

@@ -8,13 +8,18 @@ import br.unitins.tp1.roteadores.dto.TelefoneRequestDTO;
 import br.unitins.tp1.roteadores.dto.endereco.EnderecoRequestDTO;
 import br.unitins.tp1.roteadores.dto.usuario.ClienteBasicoRequestDTO;
 import br.unitins.tp1.roteadores.dto.usuario.ClienteRequestDTO;
+import br.unitins.tp1.roteadores.dto.usuario.patches.EmailPatchRequestDTO;
+import br.unitins.tp1.roteadores.dto.usuario.patches.NomePatchRequestDTO;
+import br.unitins.tp1.roteadores.dto.usuario.patches.SenhaPatchRequestDTO;
 import br.unitins.tp1.roteadores.model.Telefone;
 import br.unitins.tp1.roteadores.model.endereco.Endereco;
 import br.unitins.tp1.roteadores.model.roteador.Roteador;
 import br.unitins.tp1.roteadores.model.usuario.Cliente;
+import br.unitins.tp1.roteadores.model.usuario.Funcionario;
 import br.unitins.tp1.roteadores.model.usuario.Perfil;
 import br.unitins.tp1.roteadores.model.usuario.Usuario;
 import br.unitins.tp1.roteadores.repository.ClienteRepository;
+import br.unitins.tp1.roteadores.repository.FuncionarioRepository;
 import br.unitins.tp1.roteadores.repository.UsuarioRepository;
 import br.unitins.tp1.roteadores.service.endereco.CidadeService;
 import br.unitins.tp1.roteadores.service.roteador.RoteadorService;
@@ -28,6 +33,9 @@ public class ClienteServiceImpl implements ClienteService {
 
     @Inject
     public ClienteRepository clienteRepository;
+
+    @Inject
+    public FuncionarioRepository funcionarioRepository;
 
     @Inject
     public UsuarioRepository usuarioRepository;
@@ -94,6 +102,26 @@ public class ClienteServiceImpl implements ClienteService {
         usuarioRepository.persist(usuario);
         cliente.setUsuario(usuario);
         cliente.setDataCadastro(LocalDateTime.now());
+        clienteRepository.persist(cliente);
+
+        return cliente;
+    }
+
+    @Override
+    @Transactional
+    public Cliente gerarClienteFromFuncionario(String email) {
+        if (clienteRepository.findByUsuario(email) != null)
+            throw new ValidationException("email", "Ja existe um cliente cadastrado para esse usuario");
+        
+        if (funcionarioRepository.findByUsuario(email) == null)
+            throw new ValidationException("email", "Nao existe nenhum funcionario cadastrado com esse email. Crie uma conta nova");
+
+        Funcionario funcionario = funcionarioRepository.findByUsuario(email);
+        Cliente cliente = new Cliente();
+        cliente.setUsuario(funcionario.getUsuario());
+        // cliente.getUsuario().setPerfil(Perfil.USER);
+        cliente.setDataCadastro(LocalDateTime.now());
+        cliente.setCartoes(new ArrayList<>());
         clienteRepository.persist(cliente);
 
         return cliente;
@@ -372,6 +400,48 @@ public class ClienteServiceImpl implements ClienteService {
     public List<Roteador> getListaDesejos(String email) {
         Cliente cliente = clienteRepository.findByUsuario(email);
         return cliente.getListaDesejos();
+    }
+
+    @Override
+    @Transactional
+    public void updateSenha(String email, SenhaPatchRequestDTO dto) {
+        Usuario usuario = usuarioRepository.findByEmail(email);
+        if (usuario == null)
+            throw new ValidationException("email", "usuario nao encontrado");
+
+        if (usuario.getSenha().equals(hashService.getHashSenha(dto.senhaAtual())) == false) 
+            throw new ValidationException("senhaAtual", "A senha atual esta invalida");
+        
+        if (!dto.novaSenha().equals(dto.repetirNovaSenha()))
+            throw new ValidationException("repetirNovaSenha", "as senhas nao conferem");
+
+        usuario.setSenha(hashService.getHashSenha(dto.novaSenha()));
+    }
+
+    @Override
+    @Transactional
+    public void updateNome(String email, NomePatchRequestDTO dto) {
+        Usuario usuario = usuarioRepository.findByEmail(email);
+        if (usuario == null)
+            throw new ValidationException("email", "usuario nao encontrado");
+
+        if (!(dto.novoNome().length() > 0))
+            throw new ValidationException("nome", "O nome nao pode estar vazio");
+
+        usuario.setNome(dto.novoNome());
+    }
+
+    @Override
+    @Transactional
+    public void updateEmail(String email, EmailPatchRequestDTO dto) {
+        Usuario usuario = usuarioRepository.findByEmail(email);
+        if (usuario == null)
+            throw new ValidationException("email", "usuario nao encontrado");
+
+        if (usuarioRepository.findByEmail(dto.novoEmail()) != null)
+            throw new ValidationException("novoEmail", "Email ja cadastrado");
+        
+        usuario.setEmail(dto.novoEmail());
     }
 
     private Endereco converterEndereco(EnderecoRequestDTO enderecoDto) {
