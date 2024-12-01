@@ -52,7 +52,7 @@ public class ClienteResource {
     public ClienteFileServiceImpl clienteFileService;
 
     @GET
-    @RolesAllowed({"Adm"})
+    // @RolesAllowed({"Adm"})
     @Path("/{id}")
     public Response findById(@PathParam("id") Long id) {
         LOG.info("Execucao do metodo findById. Id: " + id);
@@ -60,7 +60,7 @@ public class ClienteResource {
     }
 
     @GET
-    @RolesAllowed({"Adm"})
+    // @RolesAllowed({"Adm"})
     @Path("/search/{nome}")
     public Response findByNome(@PathParam("nome") String nome) {
         LOG.info("Execucao do metodo findByNome. Nome: " + nome);
@@ -71,7 +71,7 @@ public class ClienteResource {
     }
 
     @GET
-    @RolesAllowed({"Adm"})
+    // @RolesAllowed({"Adm"})
     @Path("/search/email/{email}")
     public Response findByEmail(@PathParam("email") String email) {
         LOG.info("Execucao do metodo findByEmail. Email: " + email);
@@ -82,7 +82,7 @@ public class ClienteResource {
     }
 
     @GET
-    @RolesAllowed({"Adm"})
+    // @RolesAllowed({"Adm"})
     @Path("/search/cpf/{cpf}")
     public Response findByCpf(@PathParam("cpf") String cpf) {
         LOG.info("Execucao do metodo findByCpf. Cpf: " + cpf);
@@ -93,7 +93,7 @@ public class ClienteResource {
     }
 
     @GET
-    @RolesAllowed({"Adm"})
+    // @RolesAllowed({"Adm"})
     public Response findAll() {
         LOG.info("Execucao do metodo findAll");
         return Response.ok(clienteService.findAll()
@@ -111,7 +111,7 @@ public class ClienteResource {
     }
 
     @PUT
-    @RolesAllowed({"User"})
+    @RolesAllowed({"Adm"})
     @Path("/{id}")
     public Response update(@PathParam("id") Long id, ClienteRequestDTO cliente) {
         LOG.info("Execucao do metodo update. Id do Cliente: " + id);
@@ -120,7 +120,7 @@ public class ClienteResource {
     }
 
     @PATCH
-    @RolesAllowed({"User"})
+    @RolesAllowed({"Adm"})
     @Path("/{id}/enderecos/{idEndereco}")
     public Response updateEnderecoEspecifico(@PathParam("id") Long id, @PathParam("idEndereco") Long idEndereco, @Valid EnderecoRequestDTO endereco) {
         LOG.info("Execucao do metodo updateEnderecoEspecifico. Id do cliente: " + id + ", id do endereco: " + idEndereco);
@@ -129,7 +129,7 @@ public class ClienteResource {
     }
 
     @PATCH
-    @RolesAllowed({"User"})
+    @RolesAllowed({"Adm"})
     @Path("/{id}/enderecos")
     public Response updateEndereco(@PathParam("id") Long id, @Valid List<EnderecoRequestDTO> endereco) {
         LOG.info("Execucao do metodo updateEndereco. Id do cliente: " + id);
@@ -138,7 +138,7 @@ public class ClienteResource {
     }
 
     @PATCH
-    @RolesAllowed({"User"})
+    @RolesAllowed({"Adm"})
     @Path("/{id}/telefones/{idTelefone}")
     public Response updateTelefoneEspecifico(@PathParam("id") Long id, @PathParam("idTelefone") Long idTelefone, @Valid TelefoneRequestDTO telefone) {
         LOG.info("Execucao do metodo updateTelefoneEspecifico. Id do cliente: " + id + ", id do telefone: " + idTelefone);
@@ -147,7 +147,7 @@ public class ClienteResource {
     }
     
     @PATCH
-    @RolesAllowed({"User"})
+    @RolesAllowed({"Adm"})
     @Path("/{id}/telefones")
     public Response updateTelefone(@PathParam("id") Long id, @Valid List<TelefoneRequestDTO> telefone) {
         LOG.info("Execucao do metodo updateTelefone. Id do cliente: " + id);
@@ -165,7 +165,7 @@ public class ClienteResource {
     }
 
     @PATCH
-    @RolesAllowed({"User"})
+    @RolesAllowed({"Adm"})
     @Path("/{id}/upload/imagem")
     @Consumes(MediaType.MULTIPART_FORM_DATA)
     public Response uploadImage(@PathParam("id") Long id, @MultipartForm ImageForm form) {
@@ -182,43 +182,14 @@ public class ClienteResource {
     }
 
     @GET
-    @RolesAllowed({"User"})
+    @RolesAllowed({"Adm"})
     @Path("/download/imagem/{nomeImagem}")
     @Produces(MediaType.APPLICATION_OCTET_STREAM)
     public Response downloadImage(@PathParam("nomeImagem") String nomeImagem) {
-        LOG.info("Execucao do metodo DownloadImagem.");
+        LOG.info("Execucao do metodo DownloadImage.");
         ResponseBuilder response = Response.ok(clienteFileService.find(nomeImagem));
         response.header("Content-Disposition", "attachment; filename=" + nomeImagem);
         return response.build();
     }
 
-    
-    @GET
-    @RolesAllowed({"User"})
-    @Path("/desejos")
-    public Response getListaDesejos() {
-        String email = jsonWebToken.getSubject();
-        LOG.info("Execucao do metodo getListaDesejos");
-        return Response.ok(clienteService.getListaDesejos(email)).build();
-    }
-
-    @PATCH
-    @RolesAllowed({"User"})
-    @Path("/desejos/adicionar/{idProduto}")
-    public Response adicionarProdutoListaDesejo(@PathParam("idProduto") Long idProduto) {
-        String email = jsonWebToken.getSubject();
-        LOG.info("Execucao do metodo adicionarProdutoListaDesejo");
-        clienteService.adicionarProdutoListaDesejo(email, idProduto);
-        return Response.noContent().build();
-    }
-
-    @PATCH
-    @RolesAllowed({"User"})
-    @Path("/desejos/remover/{idProduto}")
-    public Response removerProdutoListaDesejo(@PathParam("idProduto") Long idProduto) {
-        String email = jsonWebToken.getSubject();
-        LOG.info("Execucao do metodo removerProdutoListaDesejo");
-        clienteService.removerProdutoListaDesejo(email, idProduto);
-        return Response.noContent().build();
-    }
 }

@@ -7,11 +7,11 @@ import br.unitins.tp1.roteadores.model.pagamento.Cartao;
 
 public interface CartaoService {
 
-    Cartao findById(Long id);
+    Cartao findById(String email, Long id);
 
     List<Cartao> findByCliente(String username);
 
-    List<Cartao> findAll();
+    // List<Cartao> findAll();
 
     Cartao create(String email, CartaoRequestDTO dto);
 

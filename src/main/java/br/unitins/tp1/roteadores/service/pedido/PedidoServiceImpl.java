@@ -304,7 +304,10 @@ public class PedidoServiceImpl implements PedidoService {
     @Override
     @Transactional
     public void registrarPagamentoCartao(Pedido pedido, Long idCartao) {
-        Cartao cartao = cartaoService.findById(idCartao);
+        Cliente cliente = pedido.getCliente();
+        String email = cliente.getUsuario().getEmail();
+
+        Cartao cartao = cartaoService.findById(email, idCartao);
         if (cartao == null)
             throw new ValidationException("idCartao", "Cartao nao encontrado");
 

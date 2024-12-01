@@ -23,11 +23,16 @@ public class CartaoServiceImpl implements CartaoService {
     public ClienteService clienteService;
 
     @Override
-    public Cartao findById(Long id) {
-        if (cartaoRepository.findById(id) == null)
-            throw new ValidationException("id", "cartao nao encontrado");
+    public Cartao findById(String email, Long idCartao) {
+        Cliente cliente = clienteService.findByUsuario(email);
+
+        if (cliente == null)
+            throw new ValidationException("email", "Cliente nao encontrado");
         
-        return cartaoRepository.findById(id);
+        if (cliente.getCartoes().contains(cartaoRepository.findById(idCartao)) == false) 
+            throw new ValidationException("idCartao", "Cartao nao encontrado"); 
+        
+        return cartaoRepository.findById(idCartao);
     }
 
     @Override
@@ -35,15 +40,18 @@ public class CartaoServiceImpl implements CartaoService {
         return clienteService.findByUsuario(username).getCartoes();
     }
 
-    @Override
-    public List<Cartao> findAll() {
-        return cartaoRepository.findAll().list();
-    }
+    // @Override
+    // public List<Cartao> findAll() {
+    //     return cartaoRepository.findAll().list();
+    // }
 
     @Override
     @Transactional
     public Cartao create(String email, CartaoRequestDTO dto) {
         Cliente cliente = clienteService.findByUsuario(email);
+        if (cliente == null)
+            throw new ValidationException("email", "Cliente nao encontrado");
+
         Cartao cartao = new Cartao();
         cartao.setTitular(dto.titular());
         cartao.setNumero(dto.numero());
@@ -64,6 +72,10 @@ public class CartaoServiceImpl implements CartaoService {
     @Transactional
     public void update(String email, Long idCartao, CartaoRequestDTO dto) {
         Cliente cliente = clienteService.findByUsuario(email);
+
+        if (cliente == null)
+            throw new ValidationException("email", "Cliente nao encontrado");
+
         Cartao cartao = cartaoRepository.findById(idCartao);
         
         if (!cliente.getCartoes().contains(cartao))

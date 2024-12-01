@@ -35,9 +35,11 @@ public class CartaoResource {
     public JsonWebToken jsonWebToken;
 
     @GET
+    @RolesAllowed("User")
     @Path("/{id}")
     public Response findById(@PathParam("id") Long id) {
-        return Response.ok(CartaoResponseDTO.valueOf(cartaoService.findById(id))).build();
+        String email = jsonWebToken.getSubject();
+        return Response.ok(CartaoResponseDTO.valueOf(cartaoService.findById(email, id))).build();
     }
 
     @GET
@@ -48,11 +50,11 @@ public class CartaoResource {
         return Response.ok(cartoes.stream().map(CartaoResponseDTO::valueOf).toList()).build();
     }
 
-    @GET
-    public Response findAll() {
-        List<Cartao> cartaoes = cartaoService.findAll();
-        return Response.ok(cartaoes.stream().map(CartaoResponseDTO::valueOf).toList()).build();
-    }
+    // @GET
+    // public Response findAll() {
+    //     List<Cartao> cartoes = cartaoService.findAll();
+    //     return Response.ok(cartoes.stream().map(CartaoResponseDTO::valueOf).toList()).build();
+    // }
 
     @POST
     @RolesAllowed("User")

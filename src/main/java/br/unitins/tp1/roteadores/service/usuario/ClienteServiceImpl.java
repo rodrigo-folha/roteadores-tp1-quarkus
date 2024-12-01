@@ -6,6 +6,7 @@ import java.util.List;
 
 import br.unitins.tp1.roteadores.dto.TelefoneRequestDTO;
 import br.unitins.tp1.roteadores.dto.endereco.EnderecoRequestDTO;
+import br.unitins.tp1.roteadores.dto.usuario.ClienteBasicoRequestDTO;
 import br.unitins.tp1.roteadores.dto.usuario.ClienteRequestDTO;
 import br.unitins.tp1.roteadores.model.Telefone;
 import br.unitins.tp1.roteadores.model.endereco.Endereco;
@@ -52,12 +53,21 @@ public class ClienteServiceImpl implements ClienteService {
 
     @Override
     public Cliente findByUsuario(String email) {
+        if (clienteRepository.findByUsuario(email) == null) {
+            throw new ValidationException("email", "cliente nao encontrado");
+        }
         return clienteRepository.findByUsuario(email);
     }
 
     @Override
     public List<Cliente> findAll() {
         return clienteRepository.findAll().list();
+    }
+
+    @Override
+    public Cliente getMinhasInformacoess(String email) {
+        Cliente cliente = clienteRepository.findByUsuario(email);
+        return cliente;
     }
 
     @Override
@@ -80,6 +90,32 @@ public class ClienteServiceImpl implements ClienteService {
         usuario.setPerfil(Perfil.USER);
         usuario.setTelefones(dto.usuario().telefones().stream().map(this::converterTelefone).toList());
         usuario.setEnderecos(dto.usuario().enderecos().stream().map(this::converterEndereco).toList());
+        
+        usuarioRepository.persist(usuario);
+        cliente.setUsuario(usuario);
+        cliente.setDataCadastro(LocalDateTime.now());
+        clienteRepository.persist(cliente);
+
+        return cliente;
+    }
+
+    @Override
+    @Transactional
+    public Cliente createClienteBasico(ClienteBasicoRequestDTO dto) {
+        if (usuarioRepository.findByEmail(dto.usuario().email()) != null)
+            throw new ValidationException("email", "email já cadastrado.");
+
+        if (usuarioRepository.findByCpf(dto.usuario().cpf()) != null)
+            throw new ValidationException("cpf", "cpf já cadastrado.");
+
+        Cliente cliente = new Cliente();
+        Usuario usuario = new Usuario();
+
+        usuario.setNome(dto.usuario().nome());
+        usuario.setCpf(dto.usuario().cpf());
+        usuario.setEmail(dto.usuario().email());
+        usuario.setSenha(hashService.getHashSenha(dto.usuario().senha()));
+        usuario.setPerfil(Perfil.USER);
         
         usuarioRepository.persist(usuario);
         cliente.setUsuario(usuario);
@@ -118,10 +154,48 @@ public class ClienteServiceImpl implements ClienteService {
 
     @Override
     @Transactional
+    public Cliente update(String email, ClienteRequestDTO dto) {
+        if (clienteRepository.findByUsuario(email) == null)
+            throw new ValidationException("email", "email nao encontrado");
+
+        if (usuarioRepository.findByEmail(dto.usuario().email()) != null)
+            throw new ValidationException("email", "email já cadastrado.");
+
+        if (usuarioRepository.findByCpf(dto.usuario().cpf()) != null)
+            throw new ValidationException("cpf", "cpf já cadastrado.");
+
+        Cliente cliente = clienteRepository.findByUsuario(email);
+        Usuario usuario = cliente.getUsuario();
+
+        usuario.setNome(dto.usuario().nome());
+        usuario.setCpf(dto.usuario().cpf());
+        usuario.setDataNascimento(dto.usuario().dataNascimento());
+        usuario.setEmail(dto.usuario().email());
+        usuario.setSenha(hashService.getHashSenha(dto.usuario().senha()));
+        usuario.setPerfil(Perfil.USER);
+        updateTelefones(usuario, dto.usuario().telefones());
+        updateEnderecos(usuario, dto.usuario().enderecos());
+
+        return cliente;
+    }
+
+    @Override
+    @Transactional
     public Cliente updateNomeImagem(Long id, String nomeImagem) {
         Cliente cliente = clienteRepository.findById(id);
         if (cliente == null)
             throw new ValidationException("idCliente", "Cliente nao encontrado");
+
+        cliente.setNomeImagem(nomeImagem);
+        return cliente;
+    }
+
+    @Override
+    @Transactional
+    public Cliente updateNomeImagem(String email, String nomeImagem) {
+        Cliente cliente = clienteRepository.findByUsuario(email);
+        if (cliente == null)
+            throw new ValidationException("email", "Cliente nao encontrado");
 
         cliente.setNomeImagem(nomeImagem);
         return cliente;
@@ -151,8 +225,41 @@ public class ClienteServiceImpl implements ClienteService {
 
     @Override
     @Transactional
+    public void updateEnderecoEspecifico(String email, Long idEndereco, EnderecoRequestDTO dto) {
+        Cliente cliente = clienteRepository.findByUsuario(email);
+
+        if (cliente == null)
+            throw new ValidationException("email", "Cliente nao encontrado");
+
+        Endereco endereco = cliente.getUsuario().getEnderecos().stream().filter(a -> a.getId().equals((idEndereco)))
+                .findFirst()
+                .orElseThrow(() -> new ValidationException("idEndereco", "Endereco nao encontrado"));
+
+        endereco.setLogradouro(dto.logradouro());
+        endereco.setNumero(dto.numero());
+        endereco.setComplemento(dto.complemento());
+        endereco.setBairro(dto.bairro());
+        endereco.setCep(dto.cep());
+        endereco.setCidade(cidadeService.findById(dto.idCidade()));
+
+        cliente.getUsuario().setEnderecos(cliente.getUsuario().getEnderecos());
+    }
+
+    @Override
+    @Transactional
     public void updateEndereco(Long id, List<EnderecoRequestDTO> dto) {
         Cliente cliente = clienteRepository.findById(id);
+
+        if (cliente == null)
+            throw new ValidationException("idCliente", "Cliente nao encontrado");
+
+        updateEnderecos(cliente.getUsuario(), dto);
+    }
+
+    @Override
+    @Transactional
+    public void updateEndereco(String email, List<EnderecoRequestDTO> dto) {
+        Cliente cliente = clienteRepository.findByUsuario(email);
 
         if (cliente == null)
             throw new ValidationException("idCliente", "Cliente nao encontrado");
@@ -180,11 +287,40 @@ public class ClienteServiceImpl implements ClienteService {
 
     @Override
     @Transactional
+    public void updateTelefoneEspecifico(String email, Long idTelefone, TelefoneRequestDTO dto) {
+        Cliente cliente = clienteRepository.findByUsuario(email);
+
+        if (cliente == null)
+            throw new ValidationException("email", "Cliente nao encontrado");
+
+        Telefone telefone = cliente.getUsuario().getTelefones().stream().filter(a -> a.getId().equals((idTelefone)))
+                .findFirst()
+                .orElseThrow(() -> new ValidationException("idEndereco", "Endereco nao encontrado"));
+        
+        telefone.setCodigoArea(dto.codigoArea());
+        telefone.setNumero(dto.numero());
+
+        cliente.getUsuario().setTelefones(cliente.getUsuario().getTelefones());
+    }
+
+    @Override
+    @Transactional
     public void updateTelefone(Long id, List<TelefoneRequestDTO> dto) {
         Cliente cliente = clienteRepository.findById(id);
 
         if (cliente == null)
             throw new ValidationException("idCliente", "Cliente nao encontrado");
+
+        updateTelefones(cliente.getUsuario(), dto);
+    }
+
+    @Override
+    @Transactional
+    public void updateTelefone(String email, List<TelefoneRequestDTO> dto) {
+        Cliente cliente = clienteRepository.findByUsuario(email);
+
+        if (cliente == null)
+            throw new ValidationException("email", "Cliente nao encontrado");
 
         updateTelefones(cliente.getUsuario(), dto);
     }
@@ -206,6 +342,9 @@ public class ClienteServiceImpl implements ClienteService {
         Roteador roteador = roteadorService.findById(idProduto);
         if (roteador == null)
             throw new ValidationException("idProduto", "Roteador nao encontrado");
+
+        if (cliente.getListaDesejos().contains(roteador))
+            throw new ValidationException("idProduto", "O produto ja se encontra na lista de desejos");
         
         cliente.getListaDesejos().add(roteador);
     }
