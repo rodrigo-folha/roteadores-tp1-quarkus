@@ -12,6 +12,7 @@ import br.unitins.tp1.roteadores.dto.roteador.ProtocoloSegurancaRequestDTO;
 import br.unitins.tp1.roteadores.model.roteador.ProtocoloSeguranca;
 import br.unitins.tp1.roteadores.service.roteador.ProtocoloSegurancaService;
 import io.quarkus.test.junit.QuarkusTest;
+import io.quarkus.test.security.TestSecurity;
 import io.restassured.http.ContentType;
 import jakarta.inject.Inject;
 
@@ -22,6 +23,7 @@ public class ProtocoloSegurancaResourceTest {
     public ProtocoloSegurancaService protocoloSegurancaService;
 
     @Test
+    @TestSecurity(user = "test", roles = {"Adm", "User"})
     public void testFindById() {
         given()
             .when().get("/protocolosseguranca/1")
@@ -30,6 +32,7 @@ public class ProtocoloSegurancaResourceTest {
     }
 
     @Test
+    @TestSecurity(user = "test", roles = {"Adm", "User"})
     public void testFindByNome() {
         given()
             .when().pathParam("nome", "WPA2-PSK")
@@ -39,6 +42,7 @@ public class ProtocoloSegurancaResourceTest {
     }
 
     @Test
+    @TestSecurity(user = "test", roles = {"Adm", "User"})
     public void testFindAll() {
         given()
             .when().get("/protocolosseguranca")
@@ -46,6 +50,7 @@ public class ProtocoloSegurancaResourceTest {
     }
 
     @Test
+    @TestSecurity(user = "test", roles = {"Adm"})
     public void testCreate() {
         ProtocoloSegurancaRequestDTO dto = new ProtocoloSegurancaRequestDTO("WPA 5");
 
@@ -63,6 +68,7 @@ public class ProtocoloSegurancaResourceTest {
     }
 
     @Test
+    @TestSecurity(user = "test", roles = {"Adm"})
     public void testUpdate() {
         ProtocoloSegurancaRequestDTO dto = new ProtocoloSegurancaRequestDTO("WPA 5");
         long id = protocoloSegurancaService.create(dto).getId();
@@ -86,6 +92,7 @@ public class ProtocoloSegurancaResourceTest {
     }  
 
     @Test
+    @TestSecurity(user = "test", roles = {"Adm"})
     public void testDelete() {
         ProtocoloSegurancaRequestDTO dto = new ProtocoloSegurancaRequestDTO("WPA 5");
         Long id = protocoloSegurancaService.create(dto).getId();

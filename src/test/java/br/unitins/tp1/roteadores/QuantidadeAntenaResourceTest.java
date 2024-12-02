@@ -12,6 +12,7 @@ import br.unitins.tp1.roteadores.dto.roteador.QuantidadeAntenaRequestDTO;
 import br.unitins.tp1.roteadores.model.roteador.QuantidadeAntena;
 import br.unitins.tp1.roteadores.service.roteador.QuantidadeAntenaService;
 import io.quarkus.test.junit.QuarkusTest;
+import io.quarkus.test.security.TestSecurity;
 import io.restassured.http.ContentType;
 import jakarta.inject.Inject;
 
@@ -22,6 +23,7 @@ public class QuantidadeAntenaResourceTest {
     public QuantidadeAntenaService quantidadeAntenaService;
 
     @Test
+    @TestSecurity(user = "test", roles = {"Adm", "User"})
     public void testFindById() {
         given()
             .when().get("/quantidadeantenas/1")
@@ -30,6 +32,7 @@ public class QuantidadeAntenaResourceTest {
     }
 
     @Test
+    @TestSecurity(user = "test", roles = {"Adm", "User"})
     public void testFindByQuantidade() {
         given()
             .when().pathParam("quantidade", 2)
@@ -39,6 +42,7 @@ public class QuantidadeAntenaResourceTest {
     }
 
     @Test
+    @TestSecurity(user = "test", roles = {"Adm", "User"})
     public void testFindAll() {
         given()
             .when().get("/quantidadeantenas")
@@ -46,6 +50,7 @@ public class QuantidadeAntenaResourceTest {
     }
 
     @Test
+    @TestSecurity(user = "test", roles = {"Adm"})
     public void testCreate() {
         QuantidadeAntenaRequestDTO dto = new QuantidadeAntenaRequestDTO(7);
 
@@ -63,6 +68,7 @@ public class QuantidadeAntenaResourceTest {
     }
 
     @Test
+    @TestSecurity(user = "test", roles = {"Adm"})
     public void testUpdate() {
         QuantidadeAntenaRequestDTO dto = new QuantidadeAntenaRequestDTO(7);
         long id = quantidadeAntenaService.create(dto).getId();
@@ -86,6 +92,7 @@ public class QuantidadeAntenaResourceTest {
     }  
 
     @Test
+    @TestSecurity(user = "test", roles = {"Adm"})
     public void testDelete() {
         QuantidadeAntenaRequestDTO dto = new QuantidadeAntenaRequestDTO(7);
         Long id = quantidadeAntenaService.create(dto).getId();

@@ -50,12 +50,6 @@ public class CartaoResource {
         return Response.ok(cartoes.stream().map(CartaoResponseDTO::valueOf).toList()).build();
     }
 
-    // @GET
-    // public Response findAll() {
-    //     List<Cartao> cartoes = cartaoService.findAll();
-    //     return Response.ok(cartoes.stream().map(CartaoResponseDTO::valueOf).toList()).build();
-    // }
-
     @POST
     @RolesAllowed("User")
     public Response create(@Valid CartaoRequestDTO dto) {

@@ -51,6 +51,8 @@ public class ClienteServiceImpl implements ClienteService {
 
     @Override
     public Cliente findById(Long id) {
+        if (clienteRepository.findById(id) == null)
+            throw new ValidationException("id", "cliente nao encontrado");
         return clienteRepository.findById(id);
     }
 
@@ -61,9 +63,9 @@ public class ClienteServiceImpl implements ClienteService {
 
     @Override
     public Cliente findByUsuario(String email) {
-        if (clienteRepository.findByUsuario(email) == null) {
+        if (clienteRepository.findByUsuario(email) == null)
             throw new ValidationException("email", "cliente nao encontrado");
-        }
+        
         return clienteRepository.findByUsuario(email);
     }
 
@@ -115,7 +117,9 @@ public class ClienteServiceImpl implements ClienteService {
     @Override
     @Transactional
     public Cliente gerarClienteFromFuncionario(String email) {
-        if (clienteRepository.findByUsuario(email) != null)
+        Cliente verificarCliente = clienteRepository.findByUsuario(email);
+
+        if (verificarCliente != null)
             throw new ValidationException("email", "Ja existe um cliente cadastrado para esse usuario");
         
         if (funcionarioRepository.findByUsuario(email) == null)
@@ -124,6 +128,11 @@ public class ClienteServiceImpl implements ClienteService {
         Funcionario funcionario = funcionarioRepository.findByUsuario(email);
         Cliente cliente = new Cliente();
         cliente.setUsuario(funcionario.getUsuario());
+        Usuario usuario = funcionario.getUsuario();
+        if (usuario.getPerfis() == null)
+            usuario.setPerfis(new ArrayList<>());
+
+        usuario.getPerfis().add(Perfil.USER);
         // cliente.getUsuario().setPerfil(Perfil.USER);
         cliente.setDataCadastro(LocalDateTime.now());
         if (cliente.getCartoes() == null)
@@ -170,14 +179,14 @@ public class ClienteServiceImpl implements ClienteService {
         if (clienteRepository.findById(id) == null)
             throw new ValidationException("id", "Id nao encontrado");
 
-        if (usuarioRepository.findByEmail(dto.usuario().email()) != null)
-            throw new ValidationException("email", "email já cadastrado.");
-
-        if (usuarioRepository.findByCpf(dto.usuario().cpf()) != null)
-            throw new ValidationException("cpf", "cpf já cadastrado.");
-
         Cliente cliente = clienteRepository.findById(id);
         Usuario usuario = cliente.getUsuario();
+
+        if (usuarioRepository.findByEmail(dto.usuario().email()) != null && (!dto.usuario().email().equals(usuario.getEmail()))) 
+            throw new ValidationException("email", "email já cadastrado.");
+
+        if (usuarioRepository.findByCpf(dto.usuario().cpf()) != null && (!dto.usuario().cpf().equals(usuario.getCpf())))
+            throw new ValidationException("cpf", "cpf já cadastrado.");   
 
         usuario.setNome(dto.usuario().nome());
         usuario.setCpf(dto.usuario().cpf());
@@ -201,14 +210,14 @@ public class ClienteServiceImpl implements ClienteService {
         if (clienteRepository.findByUsuario(email) == null)
             throw new ValidationException("email", "email nao encontrado");
 
-        if (usuarioRepository.findByEmail(dto.usuario().email()) != null)
-            throw new ValidationException("email", "email já cadastrado.");
-
-        if (usuarioRepository.findByCpf(dto.usuario().cpf()) != null)
-            throw new ValidationException("cpf", "cpf já cadastrado.");
-
         Cliente cliente = clienteRepository.findByUsuario(email);
         Usuario usuario = cliente.getUsuario();
+
+        if (usuarioRepository.findByEmail(dto.usuario().email()) != null && (!dto.usuario().email().equals(usuario.getEmail()))) 
+            throw new ValidationException("email", "email já cadastrado.");
+
+        if (usuarioRepository.findByCpf(dto.usuario().cpf()) != null && (!dto.usuario().cpf().equals(usuario.getCpf())))
+            throw new ValidationException("cpf", "cpf já cadastrado.");   
 
         usuario.setNome(dto.usuario().nome());
         usuario.setCpf(dto.usuario().cpf());
@@ -457,7 +466,10 @@ public class ClienteServiceImpl implements ClienteService {
         if (usuario == null)
             throw new ValidationException("email", "usuario nao encontrado");
 
-        if (usuarioRepository.findByEmail(dto.novoEmail()) != null)
+        if (dto.novoEmail().equals(usuario.getEmail()))
+            throw new ValidationException("email", "O novo email nao pode ser igual ao atual");
+
+        if (usuarioRepository.findByEmail(dto.novoEmail()) != null && (!dto.novoEmail().equals(usuario.getEmail()))) 
             throw new ValidationException("novoEmail", "Email ja cadastrado");
         
         usuario.setEmail(dto.novoEmail());

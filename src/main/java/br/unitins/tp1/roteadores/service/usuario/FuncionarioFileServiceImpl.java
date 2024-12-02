@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.UUID;
 
 import br.unitins.tp1.roteadores.service.file.FileService;
+import br.unitins.tp1.roteadores.validation.ValidationException;
 import jakarta.enterprise.context.ApplicationScoped;
 
 @ApplicationScoped
@@ -68,8 +69,10 @@ public class FuncionarioFileServiceImpl implements FileService {
 
     @Override
     public File find(String nomeArquivo) {
-        // eh ideal verificar se existe para nao retornar um file vazio
-        return new File(PATH_FUNCIONARIO + nomeArquivo);
+        File arquivo = new File(PATH_FUNCIONARIO + nomeArquivo);
+        if (!arquivo.exists())
+            throw new ValidationException("nomeArquivo", "Arquivo nao encontrado");
+        return arquivo;
     }
 
     public static void main(String[] args) {

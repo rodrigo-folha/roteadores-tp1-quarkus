@@ -17,6 +17,7 @@ import br.unitins.tp1.roteadores.dto.endereco.EnderecoRequestDTO;
 import br.unitins.tp1.roteadores.model.Fornecedor;
 import br.unitins.tp1.roteadores.service.FornecedorService;
 import io.quarkus.test.junit.QuarkusTest;
+import io.quarkus.test.security.TestSecurity;
 import io.restassured.http.ContentType;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.core.MediaType;
@@ -28,6 +29,7 @@ public class FornecedorResourceTest {
     public FornecedorService fornecedorService;
 
     @Test
+    @TestSecurity(user = "test", roles = {"Adm"})
     public void testFindById() {
         given()
             .when().get("/fornecedores/1")
@@ -36,6 +38,7 @@ public class FornecedorResourceTest {
     }
 
     @Test
+    @TestSecurity(user = "test", roles = {"Adm"})
     public void testFindByNome() {
         given()
             .when().pathParam("nome", "Prefeitura de Palmas")
@@ -45,6 +48,7 @@ public class FornecedorResourceTest {
     }
 
     @Test
+    @TestSecurity(user = "test", roles = {"Adm"})
     public void testFindByCnpj() {
         given()
             .when().pathParam("cnpj", "24851")
@@ -55,6 +59,7 @@ public class FornecedorResourceTest {
     }
 
     @Test
+    @TestSecurity(user = "test", roles = {"Adm"})
     public void testFindByEmail() {
         given()
             .when().pathParam("email", "@to.gov.br")
@@ -65,6 +70,7 @@ public class FornecedorResourceTest {
     }
 
     @Test
+    @TestSecurity(user = "test", roles = {"Adm"})
     public void testFindAll() {
         given()
             .when().get("/fornecedores")
@@ -72,6 +78,7 @@ public class FornecedorResourceTest {
     }
 
     @Test
+    @TestSecurity(user = "test", roles = {"Adm"})
     public void testCreate() {
         FornecedorRequestDTO dto = new FornecedorRequestDTO(
             "Prefeitura de Paraiso",
@@ -100,6 +107,7 @@ public class FornecedorResourceTest {
     }
 
     @Test
+    @TestSecurity(user = "test", roles = {"Adm"})
     public void testUpdate() {
         FornecedorRequestDTO dto = new FornecedorRequestDTO(
             "Prefeitura de Paraiso",
@@ -138,6 +146,7 @@ public class FornecedorResourceTest {
     }  
 
     @Test
+    @TestSecurity(user = "test", roles = {"Adm"})
     public void testDelete() {
         FornecedorRequestDTO dto = new FornecedorRequestDTO(
             "Prefeitura de Paraiso",

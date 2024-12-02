@@ -8,9 +8,11 @@ import br.unitins.tp1.roteadores.dto.endereco.EnderecoRequestDTO;
 import br.unitins.tp1.roteadores.dto.usuario.FuncionarioRequestDTO;
 import br.unitins.tp1.roteadores.model.Telefone;
 import br.unitins.tp1.roteadores.model.endereco.Endereco;
+import br.unitins.tp1.roteadores.model.usuario.Cliente;
 import br.unitins.tp1.roteadores.model.usuario.Funcionario;
 import br.unitins.tp1.roteadores.model.usuario.Perfil;
 import br.unitins.tp1.roteadores.model.usuario.Usuario;
+import br.unitins.tp1.roteadores.repository.ClienteRepository;
 import br.unitins.tp1.roteadores.repository.FuncionarioRepository;
 import br.unitins.tp1.roteadores.repository.UsuarioRepository;
 import br.unitins.tp1.roteadores.service.endereco.CidadeService;
@@ -27,6 +29,9 @@ public class FuncionarioServiceImpl implements FuncionarioService {
 
     @Inject
     public UsuarioRepository usuarioRepository;
+
+    @Inject
+    public ClienteRepository clienteRepository;
 
     @Inject
     public CidadeService cidadeService;
@@ -81,6 +86,33 @@ public class FuncionarioServiceImpl implements FuncionarioService {
         usuarioRepository.persist(usuario);
         funcionario.setUsuario(usuario);
         funcionario.setSalario(dto.salario());;
+        funcionarioRepository.persist(funcionario);
+
+        return funcionario;
+    }
+
+    @Override
+    @Transactional
+    public Funcionario gerarFuncionarioFromCliente(String email) {
+        Funcionario verificarFuncionario = funcionarioRepository.findByUsuario(email);
+
+        if (verificarFuncionario != null)
+            throw new ValidationException("email", "Ja existe um funcionario cadastrado para esse usuario");
+        
+        if (clienteRepository.findByUsuario(email) == null)
+            throw new ValidationException("email", "Nao existe nenhum cliente cadastrado com esse email. Crie uma conta nova");
+
+        Cliente cliente = clienteRepository.findByUsuario(email);
+        Funcionario funcionario = new Funcionario();
+        funcionario.setUsuario(cliente.getUsuario());
+        Usuario usuario = funcionario.getUsuario();
+        if (usuario.getPerfis() == null)
+            usuario.setPerfis(new ArrayList<>());
+
+        usuario.getPerfis().add(Perfil.ADM);
+        // funcionario.getUsuario().setPerfil(Perfil.ADM);
+        funcionario.setSalario(3000.0);
+
         funcionarioRepository.persist(funcionario);
 
         return funcionario;

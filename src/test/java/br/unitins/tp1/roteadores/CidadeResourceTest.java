@@ -5,7 +5,7 @@ import static org.hamcrest.CoreMatchers.hasItem;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
 
@@ -13,8 +13,10 @@ import br.unitins.tp1.roteadores.dto.endereco.CidadeRequestDTO;
 import br.unitins.tp1.roteadores.model.endereco.Cidade;
 import br.unitins.tp1.roteadores.resource.CidadeResource;
 import br.unitins.tp1.roteadores.service.endereco.CidadeService;
+import br.unitins.tp1.roteadores.validation.ValidationException;
 import io.quarkus.test.common.http.TestHTTPEndpoint;
 import io.quarkus.test.junit.QuarkusTest;
+import io.quarkus.test.security.TestSecurity;
 import io.restassured.http.ContentType;
 import jakarta.inject.Inject;
 
@@ -25,6 +27,7 @@ public class CidadeResourceTest {
     public CidadeService cidadeService;
 
     @Test
+    @TestSecurity(user = "test", roles = {"Adm", "User"})
     public void testFindById() {
         given()
             .when().get("/cidades/1")
@@ -33,6 +36,7 @@ public class CidadeResourceTest {
     }
 
     @Test
+    @TestSecurity(user = "test", roles = {"Adm", "User"})
     public void testFindByNome() {
         given()
             .when().pathParam("nome", "Palmas")
@@ -42,6 +46,7 @@ public class CidadeResourceTest {
     }
 
     @Test
+    @TestSecurity(user = "test", roles = {"Adm", "User"})
     public void testFindAll() {
         given()
             .when().get("/cidades")
@@ -49,6 +54,7 @@ public class CidadeResourceTest {
     }
 
     @Test
+    @TestSecurity(user = "test", roles = {"Adm"})
     public void testCreate() {
         CidadeRequestDTO dto = new CidadeRequestDTO("Tocantinopolis", 1l);
 
@@ -67,7 +73,7 @@ public class CidadeResourceTest {
         cidadeService.delete(cidadeService.findByNome("Tocantinopolis").getFirst().getId());
     }
 
-    @Test
+    @Test@TestSecurity(user = "test", roles = {"Adm"})
     public void testUpdate() {
         CidadeRequestDTO dto = new CidadeRequestDTO("Muricilandia", 1l);
         long id = cidadeService.create(dto).getId();
@@ -91,6 +97,7 @@ public class CidadeResourceTest {
     }  
 
     @Test
+    @TestSecurity(user = "test", roles = {"Adm"})
     public void testDelete() {
         CidadeRequestDTO dto = new CidadeRequestDTO("Muricilandia", 1l);
         Long id = cidadeService.create(dto).getId();
@@ -100,12 +107,11 @@ public class CidadeResourceTest {
                 .delete("/cidades/" + id)
             .then().statusCode(204);
 
-        Cidade cidade = cidadeService.findById(id);
-        assertNull(cidade);
-
+        assertThrows(ValidationException.class, () -> cidadeService.findById(id));
     }
 
     @Test
+    @TestSecurity(user = "test", roles = {"Adm"})
     @TestHTTPEndpoint(CidadeResource.class)
     public void testFindAll2(){
         given()

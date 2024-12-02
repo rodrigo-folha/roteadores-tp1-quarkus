@@ -32,5 +32,7 @@ public interface FuncionarioService {
     void updateTelefone(Long id, List<TelefoneRequestDTO> dto);
 
     void delete(Long id);
+
+    Funcionario gerarFuncionarioFromCliente(String email);
     
 }

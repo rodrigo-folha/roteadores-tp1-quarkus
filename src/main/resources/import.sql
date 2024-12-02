@@ -164,4 +164,4 @@ insert into cliente(id_usuario, datacadastro) values (2, '2024-10-19');
 -- inserindo usuario com permissao apenas de adm
 insert into usuario(nome, cpf, dataNascimento, email, senha) values ('gerente','11223344556','1985-02-25', 'gerente@email.com', '0cctg7WgpEz7kC/AzVC+KX+bZLPXDtgJDqWWZWnmzHH+7Na2YVxYYSFPxcf7ImAjqfNckx0aT4n5qKM7WEoeEQ==');
 insert into perfil_usuario(perfis, id_usuario) values (1, 3);
-insert into cliente(id_usuario, datacadastro) values (3, '2024-10-16');
+insert into funcionario(id_usuario, salario) values (3, 4500);

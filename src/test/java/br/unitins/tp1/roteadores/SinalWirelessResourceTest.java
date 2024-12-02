@@ -12,6 +12,7 @@ import br.unitins.tp1.roteadores.dto.roteador.SinalWirelessRequestDTO;
 import br.unitins.tp1.roteadores.model.roteador.SinalWireless;
 import br.unitins.tp1.roteadores.service.roteador.SinalWirelessService;
 import io.quarkus.test.junit.QuarkusTest;
+import io.quarkus.test.security.TestSecurity;
 import io.restassured.http.ContentType;
 import jakarta.inject.Inject;
 
@@ -22,6 +23,7 @@ public class SinalWirelessResourceTest {
     public SinalWirelessService sinalWirelessService;
 
     @Test
+    @TestSecurity(user = "test", roles = {"Adm", "User"})
     public void testFindById() {
         given()
             .when().get("/sinalwireless/1")
@@ -30,6 +32,7 @@ public class SinalWirelessResourceTest {
     }
 
     @Test
+    @TestSecurity(user = "test", roles = {"Adm", "User"})
     public void testFindByNome() {
         given()
             .when().pathParam("nome", "Wi-Fi 5")
@@ -39,6 +42,7 @@ public class SinalWirelessResourceTest {
     }
 
     @Test
+    @TestSecurity(user = "test", roles = {"Adm", "User"})
     public void testFindAll() {
         given()
             .when().get("/sinalwireless")
@@ -46,6 +50,7 @@ public class SinalWirelessResourceTest {
     }
 
     @Test
+    @TestSecurity(user = "test", roles = {"Adm"})
     public void testCreate() {
         SinalWirelessRequestDTO dto = new SinalWirelessRequestDTO("Wi-Fi 7");
 
@@ -63,6 +68,7 @@ public class SinalWirelessResourceTest {
     }
 
     @Test
+    @TestSecurity(user = "test", roles = {"Adm"})
     public void testUpdate() {
         SinalWirelessRequestDTO dto = new SinalWirelessRequestDTO("Wi-Fi 7");
         long id = sinalWirelessService.create(dto).getId();
@@ -86,6 +92,7 @@ public class SinalWirelessResourceTest {
     }  
 
     @Test
+    @TestSecurity(user = "test", roles = {"Adm"})
     public void testDelete() {
         SinalWirelessRequestDTO dto = new SinalWirelessRequestDTO("Wi-Fi 7");
         Long id = sinalWirelessService.create(dto).getId();

@@ -12,6 +12,7 @@ import br.unitins.tp1.roteadores.dto.roteador.SistemaOperacionalRequestDTO;
 import br.unitins.tp1.roteadores.model.roteador.SistemaOperacional;
 import br.unitins.tp1.roteadores.service.roteador.SistemaOperacionalService;
 import io.quarkus.test.junit.QuarkusTest;
+import io.quarkus.test.security.TestSecurity;
 import io.restassured.http.ContentType;
 import jakarta.inject.Inject;
 
@@ -22,6 +23,7 @@ public class SistemaOperacionalResourceTest {
     public SistemaOperacionalService sistemaOperacionalService;
 
     @Test
+    @TestSecurity(user = "test", roles = {"Adm", "User"})
     public void testFindById() {
         given()
             .when().get("/sistemasoperacionais/1")
@@ -30,6 +32,7 @@ public class SistemaOperacionalResourceTest {
     }
 
     @Test
+    @TestSecurity(user = "test", roles = {"Adm", "User"})
     public void testFindByNome() {
         given()
             .when().pathParam("nome", "RouterOS")
@@ -39,6 +42,7 @@ public class SistemaOperacionalResourceTest {
     }
 
     @Test
+    @TestSecurity(user = "test", roles = {"Adm", "User"})
     public void testFindAll() {
         given()
             .when().get("/sistemasoperacionais")
@@ -46,6 +50,7 @@ public class SistemaOperacionalResourceTest {
     }
 
     @Test
+    @TestSecurity(user = "test", roles = {"Adm"})
     public void testCreate() {
         SistemaOperacionalRequestDTO dto = new SistemaOperacionalRequestDTO("Windows XP");
 
@@ -63,6 +68,7 @@ public class SistemaOperacionalResourceTest {
     }
 
     @Test
+    @TestSecurity(user = "test", roles = {"Adm"})
     public void testUpdate() {
         SistemaOperacionalRequestDTO dto = new SistemaOperacionalRequestDTO("Windows XP");
         long id = sistemaOperacionalService.create(dto).getId();
@@ -86,6 +92,7 @@ public class SistemaOperacionalResourceTest {
     }  
 
     @Test
+    @TestSecurity(user = "test", roles = {"Adm"})
     public void testDelete() {
         SistemaOperacionalRequestDTO dto = new SistemaOperacionalRequestDTO("Windows XP");
         Long id = sistemaOperacionalService.create(dto).getId();

@@ -15,6 +15,7 @@ import br.unitins.tp1.roteadores.resource.BandaFrequenciaResource;
 import br.unitins.tp1.roteadores.service.roteador.BandaFrequenciaService;
 import io.quarkus.test.common.http.TestHTTPEndpoint;
 import io.quarkus.test.junit.QuarkusTest;
+import io.quarkus.test.security.TestSecurity;
 import io.restassured.http.ContentType;
 import jakarta.inject.Inject;
 
@@ -25,6 +26,7 @@ public class BandaFrequenciaResourceTest {
     public BandaFrequenciaService bandaFrequenciaService;
 
     @Test
+    @TestSecurity(user = "test", roles = {"Adm", "User"})
     public void testFindById() {
         given()
             .when().get("/bandafrequencias/1")
@@ -33,6 +35,7 @@ public class BandaFrequenciaResourceTest {
     }
 
     @Test
+    @TestSecurity(user = "test", roles = {"Adm", "User"})
     public void testFindByNome() {
         given()
             .when().pathParam("nome", "Quad-Band")
@@ -42,6 +45,7 @@ public class BandaFrequenciaResourceTest {
     }
 
     @Test
+    @TestSecurity(user = "test", roles = {"Adm", "User"})
     public void testFindAll() {
         given()
             .when().get("/bandafrequencias")
@@ -49,6 +53,7 @@ public class BandaFrequenciaResourceTest {
     }
 
     @Test
+    @TestSecurity(user = "test", roles = {"Adm"})
     public void testCreate() {
         BandaFrequenciaRequestDTO dto = new BandaFrequenciaRequestDTO("Five-Band");
 
@@ -66,6 +71,7 @@ public class BandaFrequenciaResourceTest {
     }
 
     @Test
+    @TestSecurity(user = "test", roles = {"Adm"})
     public void testUpdate() {
         BandaFrequenciaRequestDTO dto = new BandaFrequenciaRequestDTO("Six-Band");
         long id = bandaFrequenciaService.create(dto).getId();
@@ -89,6 +95,7 @@ public class BandaFrequenciaResourceTest {
     }  
 
     @Test
+    @TestSecurity(user = "test", roles = {"Adm"})
     public void testDelete() {
         BandaFrequenciaRequestDTO dto = new BandaFrequenciaRequestDTO("Seven-Band");
         Long id = bandaFrequenciaService.create(dto).getId();
@@ -104,6 +111,7 @@ public class BandaFrequenciaResourceTest {
     }
 
     @Test
+    @TestSecurity(user = "test", roles = {"Adm", "User"})
     @TestHTTPEndpoint(BandaFrequenciaResource.class)
     public void testFindAll2(){
         given()

@@ -133,6 +133,9 @@ public class PedidoServiceImpl implements PedidoService {
 
         pedido.setEnderecoEntrega(getEnderecoEntrega(pedido.getCliente(), dto.idEndereco()));
 
+        if (pedido.getEnderecoEntrega() == null)
+            throw new ValidationException("idEndereco", "endereco nao encontrado");
+
         // eh importante validar se o total enviado via dto eh o mesmo gerado pelos
         // produtos
 

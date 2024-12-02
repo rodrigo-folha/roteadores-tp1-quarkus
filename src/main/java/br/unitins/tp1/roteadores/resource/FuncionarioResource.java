@@ -85,6 +85,16 @@ public class FuncionarioResource {
 
     @POST
     @RolesAllowed({"Adm"})
+    @Path("/gerarfuncionario/{email}")
+    public Response gerarFuncionarioFromCliente(@PathParam("email") String email) {
+        LOG.info("Execucao do metodo gerarClienteFromFuncionario");
+        return Response.status(Status.CREATED)
+            .entity(FuncionarioResponseDTO.valueOf(funcionarioService.gerarFuncionarioFromCliente(email)))
+            .build();
+    }
+
+    @POST
+    @RolesAllowed({"Adm"})
     public Response create(@Valid FuncionarioRequestDTO dto) {
         LOG.info("Execucao do metodo create");
         return Response.status(Status.CREATED)
