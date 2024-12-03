@@ -9,10 +9,10 @@ import jakarta.enterprise.context.ApplicationScoped;
 @ApplicationScoped
 public class FuncionarioRepository implements PanacheRepository<Funcionario> {
     public List<Funcionario> findByNome (String nome) {
-        return find("SELECT c FROM Funcionario c JOIN c.usuario u WHERE u.nome LIKE ?1", "%" + nome + "%").list();
+        return find("SELECT f FROM Funcionario f JOIN f.usuario u WHERE u.nome LIKE ?1", "%" + nome + "%").list();
     }   
     
     public Funcionario findByUsuario (String email) {
-        return find("SELECT c FROM Funcionario c JOIN c.usuario u WHERE u.email = ?1", email).firstResult();
+        return find("SELECT f FROM Funcionario f JOIN f.usuario u WHERE u.email = ?1", email).firstResult();
     }   
 }

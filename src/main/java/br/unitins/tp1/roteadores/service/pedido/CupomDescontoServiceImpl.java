@@ -34,7 +34,15 @@ public class CupomDescontoServiceImpl implements CupomDescontoService {
     @Override
     @Transactional
     public CupomDesconto create(CupomDescontoRequestDTO dto) {
+        if (dto == null)
+            throw new ValidationException("dto", "Informe os campos necessarios");
         // buscando o estado a partir de um id do cupomdesconto
+        if (cupomdescontoRepository.findByCodigo(dto.codigo()) != null)
+            throw new ValidationException("codigo", "O cupom com este codigo ja existe, cadastre outro");
+
+        if (dto.percentualDesconto() < 0)
+            throw new ValidationException("percentualDesconto", "O percentual de desconto nao pode ser negativo");
+
         CupomDesconto cupomdesconto = new CupomDesconto();
         cupomdesconto.setCodigo(dto.codigo());
         cupomdesconto.setPercentualDesconto(dto.percentualDesconto());
@@ -49,11 +57,20 @@ public class CupomDescontoServiceImpl implements CupomDescontoService {
     @Override
     @Transactional
     public CupomDesconto update(Long id, CupomDescontoRequestDTO dto) {
+        if (dto == null)
+            throw new ValidationException("dto", "Informe os campos necessarios");
+
         CupomDesconto cupomdesconto = cupomdescontoRepository.findById(id);
 
         if (cupomdesconto == null)
             throw new ValidationException("id", "Id nao encontrado");
-        
+
+        if (cupomdescontoRepository.findByCodigo(dto.codigo()) != null && (!dto.codigo().equals(cupomdesconto.getCodigo())))
+            throw new ValidationException("codigo", "O cupom com este codigo ja existe, cadastre outro");
+
+        if (dto.percentualDesconto() < 0)
+            throw new ValidationException("percentualDesconto", "O percentual de desconto nao pode ser negativo");
+            
         cupomdesconto.setCodigo(dto.codigo());
         cupomdesconto.setPercentualDesconto(dto.percentualDesconto());
         cupomdesconto.setValidade(dto.validade());

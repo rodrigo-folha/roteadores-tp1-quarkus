@@ -10,9 +10,11 @@ import br.unitins.tp1.roteadores.dto.TelefoneRequestDTO;
 import br.unitins.tp1.roteadores.dto.endereco.EnderecoRequestDTO;
 import br.unitins.tp1.roteadores.dto.usuario.FuncionarioRequestDTO;
 import br.unitins.tp1.roteadores.dto.usuario.FuncionarioResponseDTO;
+import br.unitins.tp1.roteadores.dto.usuario.FuncionarioUpdateRequestDTO;
 import br.unitins.tp1.roteadores.form.ImageForm;
 import br.unitins.tp1.roteadores.service.usuario.FuncionarioFileServiceImpl;
 import br.unitins.tp1.roteadores.service.usuario.FuncionarioService;
+import br.unitins.tp1.roteadores.service.usuario.UsuarioService;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
@@ -41,6 +43,9 @@ public class FuncionarioResource {
     public FuncionarioService funcionarioService;
 
     @Inject
+    public UsuarioService usuarioService;
+
+    @Inject
     public FuncionarioFileServiceImpl funcionarioFileService;
 
     @GET
@@ -64,13 +69,13 @@ public class FuncionarioResource {
 
     @GET
     @RolesAllowed({"Adm"})
-    @Path("/search/{email}")
-    public Response findByUsuario(@PathParam("email") String email) {
+    @Path("/search/email/{email}")
+    public Response findByEmail(@PathParam("email") String email) {
         LOG.info("Execucao do metodo findByEmail. Email: " + email);
-        return Response.ok(funcionarioService.findByNome(email)
-                .stream()
-                .map(FuncionarioResponseDTO::valueOf)
-                .toList()).build();
+        return Response.ok(funcionarioService.findByNome(usuarioService.findByEmail(email).getNome())
+            .stream()
+            .map(FuncionarioResponseDTO::valueOf)
+            .toList()).build();
     }
 
     @GET
@@ -105,7 +110,7 @@ public class FuncionarioResource {
     @PUT
     @RolesAllowed({"Adm"})
     @Path("/{id}")
-    public Response update(@PathParam("id") Long id, FuncionarioRequestDTO funcionario) {
+    public Response update(@PathParam("id") Long id, FuncionarioUpdateRequestDTO funcionario) {
         LOG.info("Execucao do metodo update. Id do Funcionario: " + id);
         funcionarioService.update(id, funcionario);
         return Response.noContent().build();

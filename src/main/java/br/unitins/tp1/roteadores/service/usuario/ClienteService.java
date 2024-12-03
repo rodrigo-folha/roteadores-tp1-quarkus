@@ -6,6 +6,9 @@ import br.unitins.tp1.roteadores.dto.TelefoneRequestDTO;
 import br.unitins.tp1.roteadores.dto.endereco.EnderecoRequestDTO;
 import br.unitins.tp1.roteadores.dto.usuario.ClienteBasicoRequestDTO;
 import br.unitins.tp1.roteadores.dto.usuario.ClienteRequestDTO;
+import br.unitins.tp1.roteadores.dto.usuario.ClienteUpdateRequestDTO;
+import br.unitins.tp1.roteadores.dto.usuario.patches.CpfPatchRequestDTO;
+import br.unitins.tp1.roteadores.dto.usuario.patches.DataNascimentoPatchRequestDTO;
 import br.unitins.tp1.roteadores.dto.usuario.patches.EmailPatchRequestDTO;
 import br.unitins.tp1.roteadores.dto.usuario.patches.NomePatchRequestDTO;
 import br.unitins.tp1.roteadores.dto.usuario.patches.SenhaPatchRequestDTO;
@@ -24,19 +27,19 @@ public interface ClienteService {
     
     Cliente create(ClienteRequestDTO dto);
     
-    Cliente update(Long id, ClienteRequestDTO dto);
+    // Cliente update(Long id, ClienteRequestDTO dto);
     
-    Cliente updateNomeImagem(Long id, String nomeImagem);
+    // Cliente updateNomeImagem(Long id, String nomeImagem);
     
     void delete(Long id);
     
-    void updateEnderecoEspecifico(Long id, Long idEndereco, EnderecoRequestDTO dto);
+    // void updateEnderecoEspecifico(Long id, Long idEndereco, EnderecoRequestDTO dto);
     
-    void updateEndereco(Long id, List<EnderecoRequestDTO> dto);
+    // void updateEndereco(Long id, List<EnderecoRequestDTO> dto);
     
-    void updateTelefoneEspecifico(Long id, Long idTelefone, TelefoneRequestDTO dto);
+    // void updateTelefoneEspecifico(Long id, Long idTelefone, TelefoneRequestDTO dto);
     
-    void updateTelefone(Long id, List<TelefoneRequestDTO> dto);
+    // void updateTelefone(Long id, List<TelefoneRequestDTO> dto);
     
     void adicionarProdutoListaDesejo(String email, Long idProduto);
     
@@ -48,7 +51,7 @@ public interface ClienteService {
     
     // metodos para o cliente utilizar
     Cliente getMinhasInformacoess(String email);
-    Cliente update(String email, ClienteRequestDTO dto);
+    Cliente update(String email, ClienteUpdateRequestDTO dto);
     void updateSenha(String email, SenhaPatchRequestDTO dto);
     void updateNome(String email, NomePatchRequestDTO dto);
     void updateEmail(String email, EmailPatchRequestDTO dto);
@@ -58,4 +61,6 @@ public interface ClienteService {
     void updateTelefone(String email, List<TelefoneRequestDTO> dto);
     Cliente updateNomeImagem(String email, String nomeImagem);
     Cliente gerarClienteFromFuncionario(String email);
+    void updateCpf(String email, CpfPatchRequestDTO dto);
+    void updateDataNascimento(String email, DataNascimentoPatchRequestDTO dto);
 }

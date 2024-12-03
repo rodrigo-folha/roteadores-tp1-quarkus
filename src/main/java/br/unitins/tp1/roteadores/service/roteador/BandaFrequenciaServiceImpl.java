@@ -34,6 +34,9 @@ public class BandaFrequenciaServiceImpl implements BandaFrequenciaService{
     @Override
     @Transactional
     public BandaFrequencia create(BandaFrequenciaRequestDTO dto) {
+        if (dto == null)
+            throw new ValidationException("dto", "Informe os campos necessarios");
+            
         BandaFrequencia bandaFrequencia = new BandaFrequencia();
         bandaFrequencia.setNome(dto.nome());
 
@@ -44,6 +47,9 @@ public class BandaFrequenciaServiceImpl implements BandaFrequenciaService{
     @Override
     @Transactional
     public BandaFrequencia update(Long id, BandaFrequenciaRequestDTO dto) {
+        if (dto == null)
+            throw new ValidationException("dto", "Informe os campos necessarios");
+            
         if (bandaFrequenciaRepository.findById(id) == null)
             throw new ValidationException("id", "Id nao encontrado");
             

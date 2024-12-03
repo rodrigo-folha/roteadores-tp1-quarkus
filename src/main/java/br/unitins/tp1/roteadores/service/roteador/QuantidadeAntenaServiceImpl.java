@@ -34,6 +34,9 @@ public class QuantidadeAntenaServiceImpl implements QuantidadeAntenaService {
     @Override
     @Transactional
     public QuantidadeAntena create(QuantidadeAntenaRequestDTO dto) {
+        if (dto == null)
+            throw new ValidationException("dto", "Informe os campos necessarios");
+            
         QuantidadeAntena quantidadeAntena = new QuantidadeAntena();
         quantidadeAntena.setQuantidade(dto.quantidade());
 
@@ -45,6 +48,9 @@ public class QuantidadeAntenaServiceImpl implements QuantidadeAntenaService {
     @Override
     @Transactional
     public QuantidadeAntena update(Long id, QuantidadeAntenaRequestDTO dto) {
+        if (dto == null)
+            throw new ValidationException("dto", "Informe os campos necessarios");
+            
         if (quantidadeAntenaRepository.findById(id) == null)
             throw new ValidationException("id", "Id nao encontrado");
             

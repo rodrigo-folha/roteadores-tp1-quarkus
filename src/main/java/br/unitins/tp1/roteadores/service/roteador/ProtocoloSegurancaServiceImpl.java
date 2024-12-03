@@ -34,6 +34,9 @@ public class ProtocoloSegurancaServiceImpl implements ProtocoloSegurancaService{
     @Override
     @Transactional
     public ProtocoloSeguranca create(ProtocoloSegurancaRequestDTO dto) {
+        if (dto == null)
+            throw new ValidationException("dto", "Informe os campos necessarios");
+            
         ProtocoloSeguranca protocoloSeguranca = new ProtocoloSeguranca();
         protocoloSeguranca.setNome(dto.nome());
 
@@ -45,6 +48,9 @@ public class ProtocoloSegurancaServiceImpl implements ProtocoloSegurancaService{
     @Override
     @Transactional
     public ProtocoloSeguranca update(Long id, ProtocoloSegurancaRequestDTO dto) {
+        if (dto == null)
+            throw new ValidationException("dto", "Informe os campos necessarios");
+            
         if (protocoloSegurancaRepository.findById(id) == null)
             throw new ValidationException("id", "Id nao encontrado");
 

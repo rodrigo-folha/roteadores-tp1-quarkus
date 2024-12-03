@@ -110,51 +110,6 @@ public class ClienteResource {
             .build();
     }
 
-    // @PUT
-    // @RolesAllowed({"Adm"})
-    // @Path("/{id}")
-    // public Response update(@PathParam("id") Long id, ClienteRequestDTO cliente) {
-    //     LOG.info("Execucao do metodo update. Id do Cliente: " + id);
-    //     clienteService.update(id, cliente);
-    //     return Response.noContent().build();
-    // }
-
-    // @PATCH
-    // @RolesAllowed({"Adm"})
-    // @Path("/{id}/enderecos/{idEndereco}")
-    // public Response updateEnderecoEspecifico(@PathParam("id") Long id, @PathParam("idEndereco") Long idEndereco, @Valid EnderecoRequestDTO endereco) {
-    //     LOG.info("Execucao do metodo updateEnderecoEspecifico. Id do cliente: " + id + ", id do endereco: " + idEndereco);
-    //     clienteService.updateEnderecoEspecifico(id, idEndereco, endereco);
-    //     return Response.noContent().build();
-    // }
-
-    // @PATCH
-    // @RolesAllowed({"Adm"})
-    // @Path("/{id}/enderecos")
-    // public Response updateEndereco(@PathParam("id") Long id, @Valid List<EnderecoRequestDTO> endereco) {
-    //     LOG.info("Execucao do metodo updateEndereco. Id do cliente: " + id);
-    //     clienteService.updateEndereco(id, endereco);
-    //     return Response.noContent().build();
-    // }
-
-    // @PATCH
-    // @RolesAllowed({"Adm"})
-    // @Path("/{id}/telefones/{idTelefone}")
-    // public Response updateTelefoneEspecifico(@PathParam("id") Long id, @PathParam("idTelefone") Long idTelefone, @Valid TelefoneRequestDTO telefone) {
-    //     LOG.info("Execucao do metodo updateTelefoneEspecifico. Id do cliente: " + id + ", id do telefone: " + idTelefone);
-    //     clienteService.updateTelefoneEspecifico(id, idTelefone, telefone);
-    //     return Response.noContent().build();
-    // }
-    
-    // @PATCH
-    // @RolesAllowed({"Adm"})
-    // @Path("/{id}/telefones")
-    // public Response updateTelefone(@PathParam("id") Long id, @Valid List<TelefoneRequestDTO> telefone) {
-    //     LOG.info("Execucao do metodo updateTelefone. Id do cliente: " + id);
-    //     clienteService.updateTelefone(id, telefone);
-    //     return Response.noContent().build();
-    // }
-
     @DELETE
     @RolesAllowed({"Adm"})
     @Path("/{id}")
@@ -163,33 +118,5 @@ public class ClienteResource {
         clienteService.delete(id);
         return Response.noContent().build();
     }
-
-    // @PATCH
-    // @RolesAllowed({"Adm"})
-    // @Path("/{id}/upload/imagem")
-    // @Consumes(MediaType.MULTIPART_FORM_DATA)
-    // public Response uploadImage(@PathParam("id") Long id, @MultipartForm ImageForm form) {
-    //     LOG.info("Execucao do metodo uploadImage. Id do cliente: " + id);
-
-    //     try {
-    //         String nomeImagem = clienteFileService.save(form.getNomeImagem(), form.getImagem());
-
-    //         clienteService.updateNomeImagem(id, nomeImagem);
-    //     } catch (IOException e) {
-    //         Response.status(500).build();
-    //     }
-    //     return Response.noContent().build();
-    // }
-
-    // @GET
-    // @RolesAllowed({"Adm"})
-    // @Path("/download/imagem/{nomeImagem}")
-    // @Produces(MediaType.APPLICATION_OCTET_STREAM)
-    // public Response downloadImage(@PathParam("nomeImagem") String nomeImagem) {
-    //     LOG.info("Execucao do metodo DownloadImage.");
-    //     ResponseBuilder response = Response.ok(clienteFileService.find(nomeImagem));
-    //     response.header("Content-Disposition", "attachment; filename=" + nomeImagem);
-    //     return response.build();
-    // }
-
+    
 }

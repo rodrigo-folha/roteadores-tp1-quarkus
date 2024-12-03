@@ -5,6 +5,7 @@ import java.util.List;
 import br.unitins.tp1.roteadores.dto.TelefoneRequestDTO;
 import br.unitins.tp1.roteadores.dto.endereco.EnderecoRequestDTO;
 import br.unitins.tp1.roteadores.dto.usuario.FuncionarioRequestDTO;
+import br.unitins.tp1.roteadores.dto.usuario.FuncionarioUpdateRequestDTO;
 import br.unitins.tp1.roteadores.model.usuario.Funcionario;
 
 public interface FuncionarioService {
@@ -19,7 +20,7 @@ public interface FuncionarioService {
 
     Funcionario create(FuncionarioRequestDTO dto);
 
-    Funcionario update(Long id, FuncionarioRequestDTO dto);
+    Funcionario update(Long id, FuncionarioUpdateRequestDTO dto);
 
     Funcionario updateNomeImagem(Long id, String nomeImagem);
 

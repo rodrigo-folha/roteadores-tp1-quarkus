@@ -6,6 +6,7 @@ import java.util.List;
 import br.unitins.tp1.roteadores.dto.TelefoneRequestDTO;
 import br.unitins.tp1.roteadores.dto.endereco.EnderecoRequestDTO;
 import br.unitins.tp1.roteadores.dto.usuario.FuncionarioRequestDTO;
+import br.unitins.tp1.roteadores.dto.usuario.FuncionarioUpdateRequestDTO;
 import br.unitins.tp1.roteadores.model.Telefone;
 import br.unitins.tp1.roteadores.model.endereco.Endereco;
 import br.unitins.tp1.roteadores.model.usuario.Cliente;
@@ -41,6 +42,8 @@ public class FuncionarioServiceImpl implements FuncionarioService {
 
     @Override
     public Funcionario findById(Long id) {
+        if (funcionarioRepository.findById(id) == null)
+            throw new ValidationException("id", "Funcionario nao encontrado");
         return funcionarioRepository.findById(id);
     }
 
@@ -51,6 +54,8 @@ public class FuncionarioServiceImpl implements FuncionarioService {
 
     @Override
     public Funcionario findByUsuario(String email) {
+        if (funcionarioRepository.findByUsuario(email) == null)
+            throw new ValidationException("email", "Funcionario nao encontrado");
         return funcionarioRepository.findByUsuario(email);
     }
 
@@ -62,6 +67,9 @@ public class FuncionarioServiceImpl implements FuncionarioService {
     @Override
     @Transactional
     public Funcionario create(FuncionarioRequestDTO dto) {
+        if (dto == null)
+            throw new ValidationException("dto", "Informe os campos necessarios");
+
         if (usuarioRepository.findByEmail(dto.usuario().email()) != null)
             throw new ValidationException("email", "email já cadastrado.");
 
@@ -120,32 +128,30 @@ public class FuncionarioServiceImpl implements FuncionarioService {
 
     @Override
     @Transactional
-    public Funcionario update(Long id, FuncionarioRequestDTO dto) {
+    public Funcionario update(Long id, FuncionarioUpdateRequestDTO dto) {
+        if (dto == null)
+            throw new ValidationException("dto", "Informe os campos necessarios");
+
         if (funcionarioRepository.findById(id) == null)
             throw new ValidationException("id", "Id nao encontrado");
 
-        if (usuarioRepository.findByEmail(dto.usuario().email()) != null)
-            throw new ValidationException("email", "email já cadastrado.");
-
-        if (usuarioRepository.findByCpf(dto.usuario().cpf()) != null)
-            throw new ValidationException("cpf", "cpf já cadastrado.");
-
         Funcionario funcionario = funcionarioRepository.findById(id);
         Usuario usuario = funcionario.getUsuario();
+
+        if (usuarioRepository.findByCpf(dto.cpf()) != null && (!dto.cpf().equals(usuario.getCpf())))
+            throw new ValidationException("cpf", "cpf já cadastrado.");   
         
-        usuario.setNome(dto.usuario().nome());
-        usuario.setCpf(dto.usuario().cpf());
-        usuario.setDataNascimento(dto.usuario().dataNascimento());
-        usuario.setEmail(dto.usuario().email());
-        usuario.setSenha(hashService.getHashSenha(dto.usuario().senha()));
+        usuario.setNome(dto.nome());
+        usuario.setCpf(dto.cpf());
+        usuario.setDataNascimento(dto.dataNascimento());
         if (usuario.getPerfis() == null)
             usuario.setPerfis(new ArrayList<>());
-        usuario.getPerfis().add(Perfil.ADM);
-        // usuario.setPerfil(Perfil.ADM);
-        updateTelefones(usuario, dto.usuario().telefones());
-        updateEnderecos(usuario, dto.usuario().enderecos());
         
-        funcionario.setSalario(dto.salario());
+        if (!usuario.getPerfis().contains(Perfil.ADM))
+            usuario.getPerfis().add(Perfil.ADM);
+        // usuario.setPerfil(Perfil.ADM);
+        updateTelefones(usuario, dto.telefones());
+        updateEnderecos(usuario, dto.enderecos());
         
         return funcionario;
     }
@@ -162,6 +168,9 @@ public class FuncionarioServiceImpl implements FuncionarioService {
     @Override
     @Transactional
     public void updateEnderecoEspecifico(Long id, Long idEndereco, EnderecoRequestDTO dto) {
+        if (dto == null)
+            throw new ValidationException("dto", "Informe os campos necessarios");
+        
         Funcionario funcionario = funcionarioRepository.findById(id);
 
         if (funcionario == null)
@@ -184,6 +193,9 @@ public class FuncionarioServiceImpl implements FuncionarioService {
     @Override
     @Transactional
     public void updateEndereco(Long id, List<EnderecoRequestDTO> dto) {
+        if (dto == null)
+            throw new ValidationException("dto", "Informe os campos necessarios");
+        
         Funcionario funcionario = funcionarioRepository.findById(id);
 
         if (funcionario == null)
@@ -195,6 +207,9 @@ public class FuncionarioServiceImpl implements FuncionarioService {
     @Override
     @Transactional
     public void updateTelefoneEspecifico(Long id, Long idTelefone, TelefoneRequestDTO dto) {
+        if (dto == null)
+            throw new ValidationException("dto", "Informe os campos necessarios");
+        
         Funcionario funcionario = funcionarioRepository.findById(id);
 
         if (funcionario == null)
@@ -213,6 +228,9 @@ public class FuncionarioServiceImpl implements FuncionarioService {
     @Override
     @Transactional
     public void updateTelefone(Long id, List<TelefoneRequestDTO> dto) {
+        if (dto == null)
+            throw new ValidationException("dto", "Informe os campos necessarios");
+        
         Funcionario funcionario = funcionarioRepository.findById(id);
 
         if (funcionario == null)

@@ -57,6 +57,9 @@ public class LoteServiceImpl implements LoteService {
     @Override
     @Transactional
     public Lote create(LoteRequestDTO dto) {
+        if (dto == null)
+            throw new ValidationException("dto", "Informe os campos necessarios");
+            
         if (loteRepository.findByIdRoteador(dto.idRoteador()) == null)
             throw new ValidationException("idRoteador", "id do roteador nao encontrado.");
 

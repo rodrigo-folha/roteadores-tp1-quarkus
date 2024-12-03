@@ -80,6 +80,9 @@ public class RoteadorServiceImpl implements RoteadorService {
     @Override
     @Transactional
     public Roteador create(RoteadorRequestDTO dto) {
+        if (dto == null)
+            throw new ValidationException("dto", "Informe os campos necessarios");
+            
         Roteador roteador = new Roteador();
         roteador.setNome(dto.nome());
         roteador.setDescricao(dto.descricao());
@@ -97,6 +100,9 @@ public class RoteadorServiceImpl implements RoteadorService {
     @Override
     @Transactional
     public Roteador update(Long id, RoteadorRequestDTO dto) {
+        if (dto == null)
+            throw new ValidationException("dto", "Informe os campos necessarios");
+            
         if (roteadorRepository.findById(id) == null)
             throw new ValidationException("id", "Id nao encontrado");
             

@@ -34,6 +34,9 @@ public class SistemaOperacionalServiceImpl implements SistemaOperacionalService 
     @Override
     @Transactional
     public SistemaOperacional create(SistemaOperacionalRequestDTO dto) {
+        if (dto == null)
+            throw new ValidationException("dto", "Informe os campos necessarios");
+            
         SistemaOperacional sistemaOperacional = new SistemaOperacional();
         sistemaOperacional.setNome(dto.nome());
     
@@ -45,6 +48,9 @@ public class SistemaOperacionalServiceImpl implements SistemaOperacionalService 
     @Override
     @Transactional
     public SistemaOperacional update(Long id, SistemaOperacionalRequestDTO dto) {
+        if (dto == null)
+            throw new ValidationException("dto", "Informe os campos necessarios");
+            
         if (sistemaOperacionalRepository.findById(id) == null)
             throw new ValidationException("id", "Id nao encontrado");
             

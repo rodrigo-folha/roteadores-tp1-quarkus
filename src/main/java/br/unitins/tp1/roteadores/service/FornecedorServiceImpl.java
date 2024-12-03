@@ -11,6 +11,7 @@ import br.unitins.tp1.roteadores.model.Telefone;
 import br.unitins.tp1.roteadores.model.endereco.Endereco;
 import br.unitins.tp1.roteadores.repository.FornecedorRepository;
 import br.unitins.tp1.roteadores.service.endereco.CidadeService;
+import br.unitins.tp1.roteadores.service.usuario.UsuarioService;
 import br.unitins.tp1.roteadores.validation.ValidationException;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -21,6 +22,9 @@ public class FornecedorServiceImpl implements FornecedorService {
 
     @Inject
     public FornecedorRepository fornecedorRepository;
+
+    @Inject
+    public UsuarioService usuarioService;
 
     @Inject
     public CidadeService cidadeService;
@@ -53,13 +57,20 @@ public class FornecedorServiceImpl implements FornecedorService {
     @Override
     @Transactional
     public Fornecedor create(FornecedorRequestDTO dto) {
-        if (!fornecedorRepository.findByCnpj(dto.cnpj()).isEmpty())
+        if (dto == null)
+            throw new ValidationException("dto", "Informe os campos necessarios");
+        
+        Fornecedor fornecedor = new Fornecedor();
+
+        if (fornecedorRepository.findByCnpj(dto.cnpj()) != null && (!dto.cnpj().equals(fornecedor.getCnpj())))
             throw new ValidationException("cnpj", "cnpj já cadastrado.");
 
-        if (!fornecedorRepository.findByEmail(dto.email()).isEmpty())
+        if (fornecedorRepository.findByEmail(dto.email()) != null && (!dto.email().equals(fornecedor.getEmail())))
             throw new ValidationException("email", "email já cadastrado.");
 
-        Fornecedor fornecedor = new Fornecedor();
+        if (usuarioService.findByEmail(dto.email()) != null)
+            throw new ValidationException("email", "email já cadastrado.");
+
         fornecedor.setNome(dto.nome());
         fornecedor.setCnpj(dto.cnpj());
         fornecedor.setEmail(dto.email());
@@ -74,10 +85,16 @@ public class FornecedorServiceImpl implements FornecedorService {
     @Override
     @Transactional
     public Fornecedor update(Long id, FornecedorRequestDTO dto) {
+        if (dto == null)
+            throw new ValidationException("dto", "Informe os campos necessarios");
+        
         if (!fornecedorRepository.findByCnpj(dto.cnpj()).isEmpty())
             throw new ValidationException("cnpj", "cnpj já cadastrado.");
 
         if (!fornecedorRepository.findByEmail(dto.email()).isEmpty())
+            throw new ValidationException("email", "email já cadastrado.");
+
+        if (usuarioService.findByEmail(dto.email()) != null)
             throw new ValidationException("email", "email já cadastrado.");
             
         Fornecedor fornecedor = fornecedorRepository.findById(id);
@@ -93,6 +110,9 @@ public class FornecedorServiceImpl implements FornecedorService {
     @Override
     @Transactional
     public void updateEnderecoEspecifico(Long id, Long idEndereco, EnderecoRequestDTO dto) {
+        if (dto == null)
+            throw new ValidationException("dto", "Informe os campos necessarios");
+        
         Fornecedor fornecedor = fornecedorRepository.findById(id);
 
         if (fornecedor == null)
@@ -115,6 +135,9 @@ public class FornecedorServiceImpl implements FornecedorService {
     @Override
     @Transactional
     public void updateEndereco(Long id, List<EnderecoRequestDTO> dto) {
+        if (dto == null)
+            throw new ValidationException("dto", "Informe os campos necessarios");
+        
         Fornecedor fornecedor = fornecedorRepository.findById(id);
 
         if (fornecedor == null)
@@ -126,6 +149,9 @@ public class FornecedorServiceImpl implements FornecedorService {
     @Override
     @Transactional
     public void updateTelefoneEspecifico(Long id, Long idTelefone, TelefoneRequestDTO dto) {
+        if (dto == null)
+            throw new ValidationException("dto", "Informe os campos necessarios");
+        
         Fornecedor fornecedor = fornecedorRepository.findById(id);
 
         if (fornecedor == null)
@@ -144,6 +170,9 @@ public class FornecedorServiceImpl implements FornecedorService {
     @Override
     @Transactional
     public void updateTelefone(Long id, List<TelefoneRequestDTO> dto) {
+        if (dto == null)
+            throw new ValidationException("dto", "Informe os campos necessarios");
+        
         Fornecedor fornecedor = fornecedorRepository.findById(id);
 
         if (fornecedor == null)

@@ -1,0 +1,10 @@
+<configuration>
+    <appender name="GELF" class="de.siegmar.logbackgelf.GelfUdpAppender">
+        <host>127.0.0.1</host> <!-- Ou o IP do seu servidor Graylog -->
+        <port>12201</port> <!-- Certifique-se de que a porta está correta -->
+    </appender>
+
+    <root level="INFO">
+        <appender-ref ref="GELF" />
+    </root>
+</configuration>

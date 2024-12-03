@@ -28,9 +28,5 @@ public interface PedidoService {
     void cancelarPedido(Long idPedido);
 
     void devolverPedido(Long idPedido);
-    
-    // implementar os patches
-
-    // pensar no cancelar
 
 }

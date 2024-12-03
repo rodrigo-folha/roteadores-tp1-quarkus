@@ -117,8 +117,17 @@ public class PedidoResource {
     @RolesAllowed("User")
     @Path("/cancelar/{idPedido}")
     public Response cancelarPedido(@PathParam("idPedido") Long idPedido) {
-        LOG.info("Execucao do metodo cancelar pedido. IdPedido: " + idPedido); 
+        LOG.info("Execucao do metodo cancelarPedido. IdPedido: " + idPedido); 
         pedidoService.cancelarPedido(idPedido);
+        return Response.status(Status.NO_CONTENT).build();
+    }
+
+    @PATCH
+    @RolesAllowed("User")
+    @Path("/devolver/{idPedido}")
+    public Response devolverPedido(@PathParam("idPedido") Long idPedido) {
+        LOG.info("Execucao do metodo devolverPedido. IdPedido: " + idPedido); 
+        pedidoService.devolverPedido(idPedido);
         return Response.status(Status.NO_CONTENT).build();
     }
     

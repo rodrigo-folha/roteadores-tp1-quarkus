@@ -34,6 +34,9 @@ public class SinalWirelessServiceImpl implements SinalWirelessService {
     @Override
     @Transactional
     public SinalWireless create(SinalWirelessRequestDTO dto) {
+        if (dto == null)
+            throw new ValidationException("dto", "Informe os campos necessarios");
+            
         SinalWireless sinalwireless = new SinalWireless();
         sinalwireless.setNome(dto.nome());
 
@@ -44,6 +47,9 @@ public class SinalWirelessServiceImpl implements SinalWirelessService {
     @Override
     @Transactional
     public SinalWireless update(Long id, SinalWirelessRequestDTO dto) {
+        if (dto == null)
+            throw new ValidationException("dto", "Informe os campos necessarios");
+            
         if (sinalwirelessRepository.findById(id) == null)
             throw new ValidationException("id", "Id nao encontrado");
         SinalWireless sinalwireless = sinalwirelessRepository.findById(id);

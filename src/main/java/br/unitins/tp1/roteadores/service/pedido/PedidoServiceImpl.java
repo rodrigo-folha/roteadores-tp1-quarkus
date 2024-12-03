@@ -84,6 +84,8 @@ public class PedidoServiceImpl implements PedidoService {
     @Override
     @Transactional
     public Pedido create(PedidoRequestDTO dto, String email) {
+        if (dto == null)
+            throw new ValidationException("dto", "Informe os campos necessarios");
 
         Pedido pedido = new Pedido();
         pedido.setData(LocalDateTime.now());
@@ -120,8 +122,6 @@ public class PedidoServiceImpl implements PedidoService {
     
                 pedido.getListaItemPedido().add(item);
             }
-           
-
         }
 
         String cupom = dto.cupomDesconto();
@@ -279,8 +279,6 @@ public class PedidoServiceImpl implements PedidoService {
             throw new ValidationException("validade", "Data de validade expirada.");
         }
         
-        // pedido.setPagamento(pagamentoRepository.findById(idBoleto));
-
         StatusPedido statusPedido = new StatusPedido();
         statusPedido.setDataAtualizacao(LocalDateTime.now());
         statusPedido.setSituacaoPedido(SituacaoPedido.PAGAMENTO_AUTORIZADO);
@@ -309,8 +307,6 @@ public class PedidoServiceImpl implements PedidoService {
             devolverEstoque(idPedido);
             throw new ValidationException("validade", "Data de validade expirada.");
         }
-
-        // pedido.setPagamento(pagamentoRepository.findById(idPix));
 
         StatusPedido statusPedido = new StatusPedido();
         statusPedido.setDataAtualizacao(LocalDateTime.now());
@@ -353,6 +349,9 @@ public class PedidoServiceImpl implements PedidoService {
     @Override
     @Transactional
     public void updateStatusPedido(Long idPedido, StatusPedidoRequestDTO statusPedido) {
+        if (statusPedido == null)
+            throw new ValidationException("statusPedido", "Informe os campos necessarios");
+            
         Pedido pedido = pedidoRepository.findById(idPedido);
 
         pedido.getStatusPedido().add(converterStatusPedido(statusPedido));

@@ -11,9 +11,11 @@ import br.unitins.tp1.roteadores.dto.TelefoneRequestDTO;
 import br.unitins.tp1.roteadores.dto.endereco.EnderecoRequestDTO;
 import br.unitins.tp1.roteadores.dto.usuario.ClienteBasicoRequestDTO;
 import br.unitins.tp1.roteadores.dto.usuario.ClienteBasicoResponseDTO;
-import br.unitins.tp1.roteadores.dto.usuario.ClienteRequestDTO;
 import br.unitins.tp1.roteadores.dto.usuario.ClienteResponseDTO;
+import br.unitins.tp1.roteadores.dto.usuario.ClienteUpdateRequestDTO;
 import br.unitins.tp1.roteadores.dto.usuario.ListaDesejoResponseDTO;
+import br.unitins.tp1.roteadores.dto.usuario.patches.CpfPatchRequestDTO;
+import br.unitins.tp1.roteadores.dto.usuario.patches.DataNascimentoPatchRequestDTO;
 import br.unitins.tp1.roteadores.dto.usuario.patches.EmailPatchRequestDTO;
 import br.unitins.tp1.roteadores.dto.usuario.patches.NomePatchRequestDTO;
 import br.unitins.tp1.roteadores.dto.usuario.patches.SenhaPatchRequestDTO;
@@ -76,7 +78,7 @@ public class ClienteBasicoResource {
     @PUT
     @RolesAllowed({"User"})
     @Path("/update")
-    public Response update(ClienteRequestDTO cliente) {
+    public Response update(ClienteUpdateRequestDTO cliente) {
         LOG.info("Execucao do metodo update");
         String email = jsonWebToken.getSubject();
 
@@ -103,6 +105,28 @@ public class ClienteBasicoResource {
         String email = jsonWebToken.getSubject();
 
         clienteService.updateNome(email, dto);
+        return Response.noContent().build();
+    }
+
+    @PATCH
+    @RolesAllowed({"User"})
+    @Path("/update/cpf")
+    public Response updateCpf(CpfPatchRequestDTO dto) {
+        LOG.info("Execucao do metodo updateCpf");
+        String email = jsonWebToken.getSubject();
+
+        clienteService.updateCpf(email, dto);
+        return Response.noContent().build();
+    }
+
+    @PATCH
+    @RolesAllowed({"User"})
+    @Path("/update/datanascimento")
+    public Response updateDataNascimento(DataNascimentoPatchRequestDTO dto) {
+        LOG.info("Execucao do metodo updateDataNascimento");
+        String email = jsonWebToken.getSubject();
+
+        clienteService.updateDataNascimento(email, dto);
         return Response.noContent().build();
     }
 

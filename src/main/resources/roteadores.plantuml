@@ -78,7 +78,7 @@ class StatusPedido {
     - dataAtualizacao: LocalDate
 }
 
-enum Status {
+enum SituacaoPedido {
     + AGUARDANDO_PAGAMENTO: int
     + PAGAMENTO_AUTORIZADO: int
     + PAGAMENTO_EXPIRADO: int
@@ -184,11 +184,11 @@ Cidade "*" o--> "1" Estado
 Pedido "*" --> "1" Cliente
 Pedido "1" *--> "*" ItemPedido
 Pedido "1" *--> "1" EnderecoEntrega
-Pedido "1" --> "1" Pagamento
+Pedido "1" *--> "1" Pagamento
 Pedido "1" *--> "*" StatusPedido
 Pedido "*" o--> "1" CupomDesconto
 
-StatusPedido "*" --> "1" Status
+StatusPedido "*" --> "1" SituacaoPedido
 
 ItemPedido "*" --> "1" Lote
 

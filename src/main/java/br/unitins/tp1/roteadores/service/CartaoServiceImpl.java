@@ -48,6 +48,9 @@ public class CartaoServiceImpl implements CartaoService {
     @Override
     @Transactional
     public Cartao create(String email, CartaoRequestDTO dto) {
+        if (dto == null)
+            throw new ValidationException("dto", "Informe os campos necessarios");
+        
         Cliente cliente = clienteService.findByUsuario(email);
         if (cliente == null)
             throw new ValidationException("email", "Cliente nao encontrado");
@@ -71,6 +74,9 @@ public class CartaoServiceImpl implements CartaoService {
     @Override
     @Transactional
     public void update(String email, Long idCartao, CartaoRequestDTO dto) {
+        if (dto == null)
+            throw new ValidationException("dto", "Informe os campos necessarios");
+        
         Cliente cliente = clienteService.findByUsuario(email);
 
         if (cliente == null)
