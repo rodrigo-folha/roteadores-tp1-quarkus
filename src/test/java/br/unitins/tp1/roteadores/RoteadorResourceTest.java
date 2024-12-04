@@ -7,13 +7,14 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.lessThanOrEqualTo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import org.junit.jupiter.api.Test;
 
 import br.unitins.tp1.roteadores.dto.roteador.RoteadorRequestDTO;
 import br.unitins.tp1.roteadores.model.roteador.Roteador;
 import br.unitins.tp1.roteadores.service.roteador.RoteadorService;
+import br.unitins.tp1.roteadores.validation.ValidationException;
 import io.quarkus.test.junit.QuarkusTest;
 import io.quarkus.test.security.TestSecurity;
 import io.restassured.http.ContentType;
@@ -223,9 +224,7 @@ public class RoteadorResourceTest {
                 .delete("/roteadores/" + id)
                 .then().statusCode(204);
 
-        Roteador roteador = roteadorService.findById(id);
-        assertNull(roteador);
-
+        assertThrows(ValidationException.class, () -> roteadorService.findById(id));
     }
 
 }
