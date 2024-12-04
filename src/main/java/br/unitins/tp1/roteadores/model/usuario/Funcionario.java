@@ -7,7 +7,7 @@ import jakarta.persistence.OneToOne;
 
 @Entity
 public class Funcionario extends DefaultEntity {
-    private Double salario;
+    private Double altura;
 
     @OneToOne
     @JoinColumn(name = "id_usuario", unique = true)
@@ -15,12 +15,12 @@ public class Funcionario extends DefaultEntity {
 
     private String nomeImagem;
 
-    public Double getSalario() {
-        return salario;
+    public Double getAltura() {
+        return altura;
     }
 
-    public void setSalario(Double salario) {
-        this.salario = salario;
+    public void setAltura(Double altura) {
+        this.altura = altura;
     }
 
     public Usuario getUsuario() {

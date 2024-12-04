@@ -92,51 +92,6 @@ insert into telefone_fornecedor(id_fornecedor, telefones_id) values (1, 2);
 insert into telefone_fornecedor(id_fornecedor, telefones_id) values (1, 3);
 insert into telefone_fornecedor(id_fornecedor, telefones_id) values (2, 4);
 
--- -- Inserindo Cliente
--- insert into usuario(nome, cpf, dataNascimento, email, senha, perfil) values ('miguel','12345678900','1995-03-18', 'miguel@cliente.com', '0cctg7WgpEz7kC/AzVC+KX+bZLPXDtgJDqWWZWnmzHH+7Na2YVxYYSFPxcf7ImAjqfNckx0aT4n5qKM7WEoeEQ==', 2);
--- insert into usuario(nome, cpf, dataNascimento, email, senha, perfil) values ('joao','34567891200','2004-01-12', 'joao@cliente.com', '0cctg7WgpEz7kC/AzVC+KX+bZLPXDtgJDqWWZWnmzHH+7Na2YVxYYSFPxcf7ImAjqfNckx0aT4n5qKM7WEoeEQ==', 2);
-
--- insert into cliente(id_usuario, datacadastro) values (1, '01-10-2024');
--- insert into cliente(id_usuario, datacadastro) values (2, '02-10-2024');
-
--- insert into telefone(codigoarea, numero) values ('63', '92001122');
--- insert into telefone(codigoarea, numero) values ('63', '92001133');
--- insert into telefone(codigoarea, numero) values ('63', '99224466');
--- insert into telefone(codigoarea, numero) values ('63', '99224477');
-
--- insert into telefone_usuario(id_usuario, telefones_id) values (1, 5);
--- insert into telefone_usuario(id_usuario, telefones_id) values (1, 6);
--- insert into telefone_usuario(id_usuario, telefones_id) values (2, 7);
--- insert into telefone_usuario(id_usuario, telefones_id) values (2, 8);
-
--- insert into endereco(logradouro, bairro, numero, cep, complemento, id_cidade) values ('906 Sul, Alameda 11', 'Plano Diretor Sul', '01', '77000111', 'S/C', 1);
--- insert into endereco(logradouro, bairro, numero, cep, complemento, id_cidade) values ('506 Sul, Alameda 10', 'Plano Diretor Sul', '01', '77000222', 'S/C', 1);
-
--- insert into endereco_usuario(id_usuario, enderecos_id) values (1, 3);
--- insert into endereco_usuario(id_usuario, enderecos_id) values (2, 4);
-
--- -- Inserindo Funcionario
--- insert into usuario(nome, cpf, dataNascimento, email, senha, perfil) values ('rodrigo','55566677788800','1997-04-28', 'rodrigo@email.com', '0cctg7WgpEz7kC/AzVC+KX+bZLPXDtgJDqWWZWnmzHH+7Na2YVxYYSFPxcf7ImAjqfNckx0aT4n5qKM7WEoeEQ==', 1);
--- insert into usuario(nome, cpf, dataNascimento, email, senha, perfil) values ('thiago','11122233344400','1999-03-02', 'thiago@email.com', '0cctg7WgpEz7kC/AzVC+KX+bZLPXDtgJDqWWZWnmzHH+7Na2YVxYYSFPxcf7ImAjqfNckx0aT4n5qKM7WEoeEQ==', 1);
-
--- insert into funcionario(id_usuario, salario) values (3, '12000.00');
--- insert into funcionario(id_usuario, salario) values (4, '6000');
-
--- insert into telefone(codigoarea, numero) values ('63', '52665544');
--- insert into telefone(codigoarea, numero) values ('63', '52665533');
-
--- insert into telefone_usuario(id_usuario, telefones_id) values (3, 9);
--- insert into telefone_usuario(id_usuario, telefones_id) values (4, 10);
-
--- insert into endereco(logradouro, bairro, numero, cep, complemento, id_cidade) values ('106 Sul, Alameda 05', 'Plano Diretor Sul', '01', '77000333', 'S/C', 1);
--- insert into endereco(logradouro, bairro, numero, cep, complemento, id_cidade) values ('206 Sul, Alameda 06', 'Plano Diretor Sul', '01', '77000444', 'S/C', 1);
-
--- insert into endereco_usuario(id_usuario, enderecos_id) values (3, 5);
--- insert into endereco_usuario(id_usuario, enderecos_id) values (4, 6);
-
--- cadastrar cartao
--- insert into cartao(titular, numero, cvc, cpfcartao, id_cliente, modalidadecartao, datavalidade) values ('Miguel Ferreira', '5530 2919 5703 9335', '675', '24772815007', 1, 1, '2029-02-02');
-
 -- inserindo cupom de desconto
 insert into cupomdesconto(codigo, percentualDesconto, validade) values ('10OFF', 0.10, '2025-12-31');
 insert into cupomdesconto(codigo, percentualDesconto, validade) values ('15OFF', 0.15, '2025-01-01');
@@ -145,7 +100,7 @@ insert into cupomdesconto(codigo, percentualDesconto, validade) values ('15OFF',
 insert into usuario(nome, cpf, dataNascimento, email, senha) values ('admin','12345678900','1995-03-18', 'admin@email.com', '0cctg7WgpEz7kC/AzVC+KX+bZLPXDtgJDqWWZWnmzHH+7Na2YVxYYSFPxcf7ImAjqfNckx0aT4n5qKM7WEoeEQ==');
 insert into perfil_usuario(perfis, id_usuario) values (1, 1);
 insert into perfil_usuario(perfis, id_usuario) values (2, 1);
-insert into funcionario(id_usuario, salario) values (1, 12000);
+insert into funcionario(id_usuario, altura) values (1, 1.78);
 insert into cliente(id_usuario, datacadastro) values (1, '2024-01-16');
 insert into telefone(codigoarea, numero) values ('63', '92001122');
 insert into telefone(codigoarea, numero) values ('63', '92001133');
@@ -155,7 +110,6 @@ insert into endereco(logradouro, bairro, numero, cep, complemento, id_cidade) va
 insert into endereco_usuario(id_usuario, enderecos_id) values (1, 3);
 insert into cartao(titular, numero, cvc, cpfcartao, id_cliente, modalidadecartao, datavalidade) values ('Administrador da Silva', '5530 2919 5703 9335', '675', '12345678900', 1, 1, '2029-02-02');
 
-
 -- inserindo usuario com permissao apenas de user
 insert into usuario(nome, cpf, dataNascimento, email, senha) values ('cliente','98765432100','2005-06-28', 'cliente@email.com', '0cctg7WgpEz7kC/AzVC+KX+bZLPXDtgJDqWWZWnmzHH+7Na2YVxYYSFPxcf7ImAjqfNckx0aT4n5qKM7WEoeEQ==');
 insert into perfil_usuario(perfis, id_usuario) values (2, 2);
@@ -164,4 +118,4 @@ insert into cliente(id_usuario, datacadastro) values (2, '2024-10-19');
 -- inserindo usuario com permissao apenas de adm
 insert into usuario(nome, cpf, dataNascimento, email, senha) values ('gerente','11223344556','1985-02-25', 'gerente@email.com', '0cctg7WgpEz7kC/AzVC+KX+bZLPXDtgJDqWWZWnmzHH+7Na2YVxYYSFPxcf7ImAjqfNckx0aT4n5qKM7WEoeEQ==');
 insert into perfil_usuario(perfis, id_usuario) values (1, 3);
-insert into funcionario(id_usuario, salario) values (3, 4500);
+insert into funcionario(id_usuario, altura) values (3, 1.75);

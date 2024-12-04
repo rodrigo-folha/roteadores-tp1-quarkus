@@ -1,7 +1,7 @@
 package br.unitins.tp1.roteadores.dto.usuario;
 
 public record FuncionarioRequestDTO(
-    Double salario,
+    Double altura,
     UsuarioRequestDTO usuario
 ) {
     

@@ -9,7 +9,7 @@ class Fornecedor {
 class Lote {
     - codigo: String
     - quantidade: Integer
-    - dataFabricacao: LocalDate
+    - data: LocalDate
 }
 
 class Roteador {
@@ -43,7 +43,7 @@ class Cliente {
 }
 
 class Funcionario {
-    - salario: Double
+    - altura: Double
 }
 
 class Usuario {
@@ -70,18 +70,19 @@ class Pedido {
 }
 
 class ItemPedido {
-    - quantidade: int
+    - quantidade: Integer
     - preco: Double
 }
 
 class StatusPedido {
-    - dataAtualizacao: LocalDate
+    - dataAtualizacao: LocalDateTime
 }
 
 enum SituacaoPedido {
     + AGUARDANDO_PAGAMENTO: int
     + PAGAMENTO_AUTORIZADO: int
     + PAGAMENTO_EXPIRADO: int
+    + CANCELADO: int
     + ENVIADO: int
     + ENTREGUE: int
     + DEVOLVIDO: int
@@ -101,6 +102,7 @@ class Cidade {
 
 class Estado {
     - nome: String
+    - sigla: String
 }
 
 class EnderecoEntrega {
@@ -141,7 +143,7 @@ class Cartao {
     - cvc: String
 }
 
-enum Modalidade {
+enum ModalidadeCartao {
     + CREDITO: int
     + DEBITO: int
 }
@@ -195,8 +197,8 @@ ItemPedido "*" --> "1" Lote
 Pix --|> Pagamento
 Boleto --|> Pagamento
 CartaoPagamento --|> Pagamento
-CartaoPagamento "*" --> "1" Modalidade
+CartaoPagamento "*" --> "1" ModalidadeCartao
 
-Cartao "*" -down-|> "1" Modalidade
+Cartao "*" -down-|> "1" ModalidadeCartao
 
 @enduml

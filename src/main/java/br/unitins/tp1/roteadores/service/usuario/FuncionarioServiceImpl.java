@@ -103,7 +103,7 @@ public class FuncionarioServiceImpl implements FuncionarioService {
 
         usuarioRepository.persist(usuario);
         funcionario.setUsuario(usuario);
-        funcionario.setSalario(dto.salario());
+        funcionario.setAltura(dto.altura());
         ;
         funcionarioRepository.persist(funcionario);
 
@@ -131,7 +131,7 @@ public class FuncionarioServiceImpl implements FuncionarioService {
 
         usuario.getPerfis().add(Perfil.ADM);
         // funcionario.getUsuario().setPerfil(Perfil.ADM);
-        funcionario.setSalario(3000.0);
+        funcionario.setAltura(1.75);
 
         funcionarioRepository.persist(funcionario);
 

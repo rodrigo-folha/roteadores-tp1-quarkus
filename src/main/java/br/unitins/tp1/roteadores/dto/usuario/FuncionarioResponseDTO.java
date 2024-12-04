@@ -4,7 +4,7 @@ import br.unitins.tp1.roteadores.model.usuario.Funcionario;
 
 public record FuncionarioResponseDTO(
     Long id,
-    Double salario,
+    Double altura,
     String nomeImagem,
     UsuarioResponseDTO usuario
 ) {
@@ -12,7 +12,7 @@ public record FuncionarioResponseDTO(
     public static FuncionarioResponseDTO valueOf(Funcionario funcionario) {
         return new FuncionarioResponseDTO(
             funcionario.getId(),
-            funcionario.getSalario(),
+            funcionario.getAltura(),
             funcionario.getNomeImagem(),
             UsuarioResponseDTO.valueOf(funcionario.getUsuario()));
     }

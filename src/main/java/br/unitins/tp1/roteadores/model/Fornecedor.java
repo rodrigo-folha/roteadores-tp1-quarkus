@@ -21,10 +21,6 @@ public class Fornecedor extends DefaultEntity {
     @Column(unique = true)
     private String email;
 
-    // @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
-    // @JoinTable(name = "telefone_usuario", joinColumns = @JoinColumn(name = "id_usuario"))
-    // private List<Telefone> telefones;
-
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinTable(name = "telefone_fornecedor", joinColumns = @JoinColumn(name = "id_fornecedor"))
     private List<Telefone> telefones;
