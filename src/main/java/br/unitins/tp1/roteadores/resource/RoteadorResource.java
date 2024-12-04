@@ -12,6 +12,7 @@ import br.unitins.tp1.roteadores.service.roteador.RoteadorFileServiceImpl;
 import br.unitins.tp1.roteadores.service.roteador.RoteadorService;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
+import jakarta.validation.Valid;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.DELETE;
 import jakarta.ws.rs.GET;
@@ -136,7 +137,7 @@ public class RoteadorResource {
 
     @POST
     @RolesAllowed({"Adm"})
-    public Response create(RoteadorRequestDTO dto) {
+    public Response create(@Valid RoteadorRequestDTO dto) {
         LOG.info("Execucao do metodo create");
         return Response.status(Status.CREATED)
             .entity(RoteadorResponseDTO.valueOf(roteadorService.create(dto)))
@@ -146,7 +147,7 @@ public class RoteadorResource {
     @PUT
     @RolesAllowed({"Adm"})
     @Path("/{id}")
-    public Response update(@PathParam("id") Long id, RoteadorRequestDTO roteador) {
+    public Response update(@PathParam("id") Long id, @Valid RoteadorRequestDTO roteador) {
         LOG.info("Execucao do metodo update. Id do roteador: " + id);
         roteadorService.update(id, roteador);
         return Response.noContent().build();

@@ -6,6 +6,11 @@ import br.unitins.tp1.roteadores.dto.TelefoneRequestDTO;
 import br.unitins.tp1.roteadores.dto.endereco.EnderecoRequestDTO;
 import br.unitins.tp1.roteadores.dto.usuario.FuncionarioRequestDTO;
 import br.unitins.tp1.roteadores.dto.usuario.FuncionarioUpdateRequestDTO;
+import br.unitins.tp1.roteadores.dto.usuario.patches.CpfPatchRequestDTO;
+import br.unitins.tp1.roteadores.dto.usuario.patches.DataNascimentoPatchRequestDTO;
+import br.unitins.tp1.roteadores.dto.usuario.patches.EmailPatchRequestDTO;
+import br.unitins.tp1.roteadores.dto.usuario.patches.NomePatchRequestDTO;
+import br.unitins.tp1.roteadores.dto.usuario.patches.SenhaPatchRequestDTO;
 import br.unitins.tp1.roteadores.model.usuario.Funcionario;
 
 public interface FuncionarioService {
@@ -35,5 +40,15 @@ public interface FuncionarioService {
     void delete(Long id);
 
     Funcionario gerarFuncionarioFromCliente(String email);
+
+    void updateSenha(String email, SenhaPatchRequestDTO dto);
+
+    void updateNome(String email, NomePatchRequestDTO dto);
+
+    void updateEmail(String email, EmailPatchRequestDTO dto);
+
+    void updateCpf(String email, CpfPatchRequestDTO dto);
+
+    void updateDataNascimento(String email, DataNascimentoPatchRequestDTO dto);
     
 }

@@ -11,6 +11,7 @@ public record CupomDescontoRequestDTO(
     String codigo,
     @NotNull(message = "O campo percentual de desconto deve ser informado")
     Double percentualDesconto,
+    @NotNull
     @FutureOrPresent(message = "A data de validade não pode ser uma data antiga.")
     LocalDate validade
 ) {

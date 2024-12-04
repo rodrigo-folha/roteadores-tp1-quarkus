@@ -78,7 +78,7 @@ public class ClienteBasicoResource {
     @PUT
     @RolesAllowed({"User"})
     @Path("/update")
-    public Response update(ClienteUpdateRequestDTO cliente) {
+    public Response update(@Valid ClienteUpdateRequestDTO cliente) {
         LOG.info("Execucao do metodo update");
         String email = jsonWebToken.getSubject();
 
@@ -89,7 +89,7 @@ public class ClienteBasicoResource {
     @PATCH
     @RolesAllowed({"User"})
     @Path("/update/senha")
-    public Response updateSenha(SenhaPatchRequestDTO dto) {
+    public Response updateSenha(@Valid SenhaPatchRequestDTO dto) {
         LOG.info("Execucao do metodo updateSenha");
         String email = jsonWebToken.getSubject();
 
@@ -100,7 +100,7 @@ public class ClienteBasicoResource {
     @PATCH
     @RolesAllowed({"User"})
     @Path("/update/nome")
-    public Response updateNome(NomePatchRequestDTO dto) {
+    public Response updateNome(@Valid NomePatchRequestDTO dto) {
         LOG.info("Execucao do metodo updateNome");
         String email = jsonWebToken.getSubject();
 
@@ -111,7 +111,7 @@ public class ClienteBasicoResource {
     @PATCH
     @RolesAllowed({"User"})
     @Path("/update/cpf")
-    public Response updateCpf(CpfPatchRequestDTO dto) {
+    public Response updateCpf(@Valid CpfPatchRequestDTO dto) {
         LOG.info("Execucao do metodo updateCpf");
         String email = jsonWebToken.getSubject();
 
@@ -122,7 +122,7 @@ public class ClienteBasicoResource {
     @PATCH
     @RolesAllowed({"User"})
     @Path("/update/datanascimento")
-    public Response updateDataNascimento(DataNascimentoPatchRequestDTO dto) {
+    public Response updateDataNascimento(@Valid DataNascimentoPatchRequestDTO dto) {
         LOG.info("Execucao do metodo updateDataNascimento");
         String email = jsonWebToken.getSubject();
 
@@ -133,7 +133,7 @@ public class ClienteBasicoResource {
     @PATCH
     @RolesAllowed({"User"})
     @Path("/update/email")
-    public Response updateEmail(EmailPatchRequestDTO dto) {
+    public Response updateEmail(@Valid EmailPatchRequestDTO dto) {
         LOG.info("Execucao do metodo updateEmail");
         String email = jsonWebToken.getSubject();
 

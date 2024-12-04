@@ -7,6 +7,11 @@ import br.unitins.tp1.roteadores.dto.TelefoneRequestDTO;
 import br.unitins.tp1.roteadores.dto.endereco.EnderecoRequestDTO;
 import br.unitins.tp1.roteadores.dto.usuario.FuncionarioRequestDTO;
 import br.unitins.tp1.roteadores.dto.usuario.FuncionarioUpdateRequestDTO;
+import br.unitins.tp1.roteadores.dto.usuario.patches.CpfPatchRequestDTO;
+import br.unitins.tp1.roteadores.dto.usuario.patches.DataNascimentoPatchRequestDTO;
+import br.unitins.tp1.roteadores.dto.usuario.patches.EmailPatchRequestDTO;
+import br.unitins.tp1.roteadores.dto.usuario.patches.NomePatchRequestDTO;
+import br.unitins.tp1.roteadores.dto.usuario.patches.SenhaPatchRequestDTO;
 import br.unitins.tp1.roteadores.model.Telefone;
 import br.unitins.tp1.roteadores.model.endereco.Endereco;
 import br.unitins.tp1.roteadores.model.usuario.Cliente;
@@ -90,10 +95,11 @@ public class FuncionarioServiceImpl implements FuncionarioService {
         // usuario.setPerfil(Perfil.ADM);
         usuario.setTelefones(dto.usuario().telefones().stream().map(this::converterTelefone).toList());
         usuario.setEnderecos(dto.usuario().enderecos().stream().map(this::converterEndereco).toList());
-        
+
         usuarioRepository.persist(usuario);
         funcionario.setUsuario(usuario);
-        funcionario.setSalario(dto.salario());;
+        funcionario.setSalario(dto.salario());
+        ;
         funcionarioRepository.persist(funcionario);
 
         return funcionario;
@@ -106,9 +112,10 @@ public class FuncionarioServiceImpl implements FuncionarioService {
 
         if (verificarFuncionario != null)
             throw new ValidationException("email", "Ja existe um funcionario cadastrado para esse usuario");
-        
+
         if (clienteRepository.findByUsuario(email) == null)
-            throw new ValidationException("email", "Nao existe nenhum cliente cadastrado com esse email. Crie uma conta nova");
+            throw new ValidationException("email",
+                    "Nao existe nenhum cliente cadastrado com esse email. Crie uma conta nova");
 
         Cliente cliente = clienteRepository.findByUsuario(email);
         Funcionario funcionario = new Funcionario();
@@ -139,20 +146,20 @@ public class FuncionarioServiceImpl implements FuncionarioService {
         Usuario usuario = funcionario.getUsuario();
 
         if (usuarioRepository.findByCpf(dto.cpf()) != null && (!dto.cpf().equals(usuario.getCpf())))
-            throw new ValidationException("cpf", "cpf já cadastrado.");   
-        
+            throw new ValidationException("cpf", "cpf já cadastrado.");
+
         usuario.setNome(dto.nome());
         usuario.setCpf(dto.cpf());
         usuario.setDataNascimento(dto.dataNascimento());
         if (usuario.getPerfis() == null)
             usuario.setPerfis(new ArrayList<>());
-        
+
         if (!usuario.getPerfis().contains(Perfil.ADM))
             usuario.getPerfis().add(Perfil.ADM);
         // usuario.setPerfil(Perfil.ADM);
         updateTelefones(usuario, dto.telefones());
         updateEnderecos(usuario, dto.enderecos());
-        
+
         return funcionario;
     }
 
@@ -170,7 +177,7 @@ public class FuncionarioServiceImpl implements FuncionarioService {
     public void updateEnderecoEspecifico(Long id, Long idEndereco, EnderecoRequestDTO dto) {
         if (dto == null)
             throw new ValidationException("dto", "Informe os campos necessarios");
-        
+
         Funcionario funcionario = funcionarioRepository.findById(id);
 
         if (funcionario == null)
@@ -195,7 +202,7 @@ public class FuncionarioServiceImpl implements FuncionarioService {
     public void updateEndereco(Long id, List<EnderecoRequestDTO> dto) {
         if (dto == null)
             throw new ValidationException("dto", "Informe os campos necessarios");
-        
+
         Funcionario funcionario = funcionarioRepository.findById(id);
 
         if (funcionario == null)
@@ -209,7 +216,7 @@ public class FuncionarioServiceImpl implements FuncionarioService {
     public void updateTelefoneEspecifico(Long id, Long idTelefone, TelefoneRequestDTO dto) {
         if (dto == null)
             throw new ValidationException("dto", "Informe os campos necessarios");
-        
+
         Funcionario funcionario = funcionarioRepository.findById(id);
 
         if (funcionario == null)
@@ -218,7 +225,7 @@ public class FuncionarioServiceImpl implements FuncionarioService {
         Telefone telefone = funcionario.getUsuario().getTelefones().stream().filter(a -> a.getId().equals((idTelefone)))
                 .findFirst()
                 .orElseThrow(() -> new ValidationException("idEndereco", "Endereco nao encontrado"));
-        
+
         telefone.setCodigoArea(dto.codigoArea());
         telefone.setNumero(dto.numero());
 
@@ -230,7 +237,7 @@ public class FuncionarioServiceImpl implements FuncionarioService {
     public void updateTelefone(Long id, List<TelefoneRequestDTO> dto) {
         if (dto == null)
             throw new ValidationException("dto", "Informe os campos necessarios");
-        
+
         Funcionario funcionario = funcionarioRepository.findById(id);
 
         if (funcionario == null)
@@ -245,6 +252,92 @@ public class FuncionarioServiceImpl implements FuncionarioService {
         funcionarioRepository.deleteById(id);
     }
 
+    @Override
+    @Transactional
+    public void updateSenha(String email, SenhaPatchRequestDTO dto) {
+        if (dto == null)
+            throw new ValidationException("dto", "Informe os campos necessarios");
+
+        Usuario usuario = usuarioRepository.findByEmail(email);
+        if (usuario == null)
+            throw new ValidationException("email", "usuario nao encontrado");
+
+        if (usuario.getSenha().equals(hashService.getHashSenha(dto.senhaAtual())) == false)
+            throw new ValidationException("senhaAtual", "A senha atual esta invalida");
+
+        if (!dto.novaSenha().equals(dto.repetirNovaSenha()))
+            throw new ValidationException("repetirNovaSenha", "as senhas nao conferem");
+
+        usuario.setSenha(hashService.getHashSenha(dto.novaSenha()));
+    }
+
+    @Override
+    @Transactional
+    public void updateNome(String email, NomePatchRequestDTO dto) {
+        if (dto == null)
+            throw new ValidationException("dto", "Informe os campos necessarios");
+
+        Usuario usuario = usuarioRepository.findByEmail(email);
+        if (usuario == null)
+            throw new ValidationException("email", "usuario nao encontrado");
+
+        if (!(dto.novoNome().length() > 0))
+            throw new ValidationException("nome", "O nome nao pode estar vazio");
+
+        usuario.setNome(dto.novoNome());
+    }
+
+    @Override
+    @Transactional
+    public void updateEmail(String email, EmailPatchRequestDTO dto) {
+        if (dto == null)
+            throw new ValidationException("dto", "Informe os campos necessarios");
+
+        Usuario usuario = usuarioRepository.findByEmail(email);
+        if (usuario == null)
+            throw new ValidationException("email", "usuario nao encontrado");
+
+        if (dto.novoEmail().equals(usuario.getEmail()))
+            throw new ValidationException("email", "O novo email nao pode ser igual ao atual");
+
+        if (usuarioRepository.findByEmail(dto.novoEmail()) != null && (!dto.novoEmail().equals(usuario.getEmail())))
+            throw new ValidationException("novoEmail", "Email ja cadastrado");
+
+        usuario.setEmail(dto.novoEmail());
+    }
+
+    @Override
+    @Transactional
+    public void updateCpf(String email, CpfPatchRequestDTO dto) {
+        if (dto == null)
+            throw new ValidationException("dto", "Informe os campos necessarios");
+
+        Usuario usuario = usuarioRepository.findByEmail(email);
+        if (usuario == null)
+            throw new ValidationException("email", "usuario nao encontrado");
+
+        if (dto.cpf().equals(usuario.getCpf()))
+            throw new ValidationException("cpf", "O novo cpf nao pode ser igual ao atual");
+
+        if (usuarioRepository.findByCpf(dto.cpf()) != null && (!dto.cpf().equals(usuario.getCpf())))
+            throw new ValidationException("cpf", "Cpf ja cadastrado");
+
+        usuario.setCpf(dto.cpf());
+    }
+
+    @Override
+    @Transactional
+    public void updateDataNascimento(String email, DataNascimentoPatchRequestDTO dto) {
+        if (dto == null)
+            throw new ValidationException("dto", "Informe os campos necessarios");
+
+        Usuario usuario = usuarioRepository.findByEmail(email);
+        if (usuario == null)
+            throw new ValidationException("email", "usuario nao encontrado");
+
+        usuario.setDataNascimento(dto.dataNascimento());
+    }
+
     private Endereco converterEndereco(EnderecoRequestDTO enderecoDto) {
         Endereco endereco = new Endereco();
         endereco.setLogradouro(enderecoDto.logradouro());
@@ -255,7 +348,7 @@ public class FuncionarioServiceImpl implements FuncionarioService {
         endereco.setCidade(cidadeService.findById(enderecoDto.idCidade()));
         return endereco;
     }
-    
+
     private Telefone converterTelefone(TelefoneRequestDTO telefoneDto) {
         Telefone telefone = new Telefone();
         telefone.setCodigoArea(telefoneDto.codigoArea());
@@ -265,19 +358,17 @@ public class FuncionarioServiceImpl implements FuncionarioService {
 
     private void updateTelefones(Usuario usuario, List<TelefoneRequestDTO> novosTelefonesDTO) {
         List<Telefone> telefonesExistentes = usuario.getTelefones();
-    
-        telefonesExistentes.removeIf(telefone -> 
-            novosTelefonesDTO.stream().noneMatch(dto -> 
-                dto.codigoArea().equals(telefone.getCodigoArea()) && dto.numero().equals(telefone.getNumero()))
-        );
-    
+
+        telefonesExistentes.removeIf(telefone -> novosTelefonesDTO.stream().noneMatch(
+                dto -> dto.codigoArea().equals(telefone.getCodigoArea()) && dto.numero().equals(telefone.getNumero())));
+
         // Adicionar ou atualizar telefones
         for (TelefoneRequestDTO dto : novosTelefonesDTO) {
             Telefone telefoneExistente = telefonesExistentes.stream()
-                .filter(t -> t.getCodigoArea().equals(dto.codigoArea()) && t.getNumero().equals(dto.numero()))
-                .findFirst()
-                .orElse(null);
-    
+                    .filter(t -> t.getCodigoArea().equals(dto.codigoArea()) && t.getNumero().equals(dto.numero()))
+                    .findFirst()
+                    .orElse(null);
+
             if (telefoneExistente == null) {
                 Telefone novoTelefone = new Telefone();
                 novoTelefone.setCodigoArea(dto.codigoArea());
@@ -289,21 +380,19 @@ public class FuncionarioServiceImpl implements FuncionarioService {
             }
         }
     }
-    
+
     private void updateEnderecos(Usuario usuario, List<EnderecoRequestDTO> novosEnderecosDTO) {
         List<Endereco> enderecosExistentes = usuario.getEnderecos();
-    
-        enderecosExistentes.removeIf(endereco -> 
-            novosEnderecosDTO.stream().noneMatch(dto -> 
-                dto.logradouro().equals(endereco.getLogradouro()) && dto.numero().equals(endereco.getNumero()))
-        );
-    
+
+        enderecosExistentes.removeIf(endereco -> novosEnderecosDTO.stream().noneMatch(
+                dto -> dto.logradouro().equals(endereco.getLogradouro()) && dto.numero().equals(endereco.getNumero())));
+
         for (EnderecoRequestDTO dto : novosEnderecosDTO) {
             Endereco enderecoExistente = enderecosExistentes.stream()
-                .filter(e -> e.getLogradouro().equals(dto.logradouro()) && e.getNumero().equals(dto.numero()))
-                .findFirst()
-                .orElse(null);
-    
+                    .filter(e -> e.getLogradouro().equals(dto.logradouro()) && e.getNumero().equals(dto.numero()))
+                    .findFirst()
+                    .orElse(null);
+
             if (enderecoExistente == null) {
                 Endereco novoEndereco = new Endereco();
                 novoEndereco.setLogradouro(dto.logradouro());
@@ -323,5 +412,5 @@ public class FuncionarioServiceImpl implements FuncionarioService {
             }
         }
     }
-    
+
 }

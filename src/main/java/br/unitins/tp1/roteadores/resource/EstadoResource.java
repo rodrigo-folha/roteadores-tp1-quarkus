@@ -71,7 +71,7 @@ public class EstadoResource {
     @PUT
     @RolesAllowed({"Adm"})
     @Path("/{id}")
-    public Response update(@PathParam("id") Long id, EstadoRequestDTO estado) {
+    public Response update(@PathParam("id") Long id, @Valid EstadoRequestDTO estado) {
         LOG.info("Execucao do metodo update. Id do estado: " + id);
         estadoService.update(id, estado);
         return Response.noContent().build();

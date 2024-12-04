@@ -107,7 +107,7 @@ public class PedidoResource {
     @PATCH
     @RolesAllowed("Adm")
     @Path("/statuspedido/{idPedido}")
-    public Response updateStatusPedido(@PathParam("idPedido")Long idPedido, StatusPedidoRequestDTO statusPedido) {
+    public Response updateStatusPedido(@PathParam("idPedido")Long idPedido, @Valid StatusPedidoRequestDTO statusPedido) {
         LOG.info("Execucao do metodo updateStatusPedido. Id do pedido: " + idPedido);  
         pedidoService.updateStatusPedido(idPedido, statusPedido);
         return Response.status(Status.NO_CONTENT).build();
