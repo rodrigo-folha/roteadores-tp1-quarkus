@@ -86,7 +86,7 @@ public class ClienteServiceImpl implements ClienteService {
     public Cliente getMinhasInformacoess(String email) {
         Cliente cliente = clienteRepository.findByUsuario(email);
         if (cliente == null)
-            throw new ValidationException("email", "cliente nao encontardo");
+            throw new ValidationException("email", "cliente nao encontrado");
         return cliente;
     }
 

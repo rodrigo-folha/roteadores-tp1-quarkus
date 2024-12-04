@@ -388,6 +388,9 @@ public class PedidoServiceImpl implements PedidoService {
         if (pedido.getStatusPedido().stream().anyMatch(e -> e.getSituacaoPedido().equals(SituacaoPedido.ENVIADO)))
             throw new ValidationException("Status Pedido", "Nao é possivel cancelar, pois o pedido ja foi enviado");
 
+        if (pedido.getStatusPedido().stream().anyMatch(e -> e.getSituacaoPedido().equals(SituacaoPedido.CANCELADO)))
+            throw new ValidationException("Status Pedido", "Nao é possivel cancelar, pois o pedido ja foi cancelado");
+
         StatusPedido statusPedido = new StatusPedido();
         statusPedido.setDataAtualizacao(LocalDateTime.now());
         statusPedido.setSituacaoPedido(SituacaoPedido.CANCELADO);
@@ -406,6 +409,9 @@ public class PedidoServiceImpl implements PedidoService {
 
         if (!(pedido.getStatusPedido().stream().anyMatch(e -> e.getSituacaoPedido().equals(SituacaoPedido.ENTREGUE))))
             throw new ValidationException("Status Pedido", "Nao é possivel devolver, pois o pedido ainda não foi entregue");
+
+            if (!(pedido.getStatusPedido().stream().anyMatch(e -> e.getSituacaoPedido().equals(SituacaoPedido.DEVOLVIDO))))
+            throw new ValidationException("Status Pedido", "Nao é possivel devolver, pois o pedido ja foi devolvido");
 
         StatusPedido statusPedido = new StatusPedido();
         statusPedido.setDataAtualizacao(LocalDateTime.now());
