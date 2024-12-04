@@ -16,6 +16,9 @@ public class SistemaOperacionalServiceImpl implements SistemaOperacionalService 
     @Inject
     public SistemaOperacionalRepository sistemaOperacionalRepository;
 
+    @Inject
+    public RoteadorService roteadorService;
+
     @Override
     public SistemaOperacional findById(Long id) {
         return sistemaOperacionalRepository.findById(id);
@@ -64,6 +67,13 @@ public class SistemaOperacionalServiceImpl implements SistemaOperacionalService 
     @Override
     @Transactional
     public void delete(Long id) {
+        // List<Roteador> roteadores = roteadorService.findBySistemaOperacional(id);
+        // if (!roteadores.isEmpty())
+        //     throw new ValidationException("id", "O idSistemaOperacional esta sendo utilizado por outras tabelas, nao é possivel deletar");
+
+        // if (sistemaOperacionalRepository.findById(id) == null)
+        //     throw new ValidationException("id", "id nao encontrado");
+            
         sistemaOperacionalRepository.deleteById(id);
     }
     

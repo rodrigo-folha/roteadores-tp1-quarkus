@@ -62,10 +62,10 @@ public class FornecedorServiceImpl implements FornecedorService {
         
         Fornecedor fornecedor = new Fornecedor();
 
-        if (fornecedorRepository.findByCnpj(dto.cnpj()) != null && (!dto.cnpj().equals(fornecedor.getCnpj())))
+        if ((!fornecedorRepository.findByCnpj(dto.cnpj()).isEmpty()))
             throw new ValidationException("cnpj", "cnpj já cadastrado.");
 
-        if (fornecedorRepository.findByEmail(dto.email()) != null && (!dto.email().equals(fornecedor.getEmail())))
+        if (!fornecedorRepository.findByEmail(dto.email()).isEmpty())
             throw new ValidationException("email", "email já cadastrado.");
 
         if (usuarioService.findByEmail(dto.email()) != null)
@@ -88,16 +88,19 @@ public class FornecedorServiceImpl implements FornecedorService {
         if (dto == null)
             throw new ValidationException("dto", "Informe os campos necessarios");
         
-        if (!fornecedorRepository.findByCnpj(dto.cnpj()).isEmpty())
+        Fornecedor fornecedor = fornecedorRepository.findById(id);
+        if (fornecedor == null)
+            throw new ValidationException("id", "fornecedor nao encontrado");
+        
+        if (!fornecedorRepository.findByCnpj(dto.cnpj()).isEmpty() && !dto.cnpj().equals(fornecedor.getCnpj()))
             throw new ValidationException("cnpj", "cnpj já cadastrado.");
 
-        if (!fornecedorRepository.findByEmail(dto.email()).isEmpty())
+        if (!fornecedorRepository.findByEmail(dto.email()).isEmpty() && !dto.email().equals(fornecedor.getEmail()))
             throw new ValidationException("email", "email já cadastrado.");
 
         if (usuarioService.findByEmail(dto.email()) != null)
             throw new ValidationException("email", "email já cadastrado.");
             
-        Fornecedor fornecedor = fornecedorRepository.findById(id);
         fornecedor.setNome(dto.nome());
         fornecedor.setCnpj(dto.cnpj());
         fornecedor.setEmail(dto.email());

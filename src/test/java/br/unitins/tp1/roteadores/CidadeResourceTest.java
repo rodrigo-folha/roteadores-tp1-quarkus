@@ -73,7 +73,8 @@ public class CidadeResourceTest {
         cidadeService.delete(cidadeService.findByNome("Tocantinopolis").getFirst().getId());
     }
 
-    @Test@TestSecurity(user = "test", roles = {"Adm"})
+    @Test
+    @TestSecurity(user = "test", roles = {"Adm"})
     public void testUpdate() {
         CidadeRequestDTO dto = new CidadeRequestDTO("Muricilandia", 1l);
         long id = cidadeService.create(dto).getId();

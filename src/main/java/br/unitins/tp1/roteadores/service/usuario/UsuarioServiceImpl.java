@@ -27,8 +27,8 @@ public class UsuarioServiceImpl implements UsuarioService {
 
     @Override
     public Usuario findByEmail(String email) {
-        if (usuarioRepository.findByEmail(email) == null)
-            throw new ValidationException("email", "email nao encontrado");
+        // if (usuarioRepository.findByEmail(email) == null)
+        //     throw new ValidationException("email", "email nao encontrado");
         return usuarioRepository.findByEmail(email);
     }
 
