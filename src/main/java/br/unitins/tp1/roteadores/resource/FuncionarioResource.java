@@ -81,7 +81,7 @@ public class FuncionarioResource {
     @Path("/search/email/{email}")
     public Response findByEmail(@PathParam("email") String email) {
         LOG.info("Execucao do metodo findByEmail. Email: " + email);
-        return Response.ok(funcionarioService.findByNome(usuarioService.findByEmail(email).getNome())
+        return Response.ok(funcionarioService.findByEmail(email)
                 .stream()
                 .map(FuncionarioResponseDTO::valueOf)
                 .toList()).build();

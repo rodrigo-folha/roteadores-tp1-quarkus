@@ -73,6 +73,11 @@ public class ClienteServiceImpl implements ClienteService {
     }
 
     @Override
+    public List<Cliente> findByEmail(String email) {        
+        return clienteRepository.findByEmail(email);
+    }
+
+    @Override
     public List<Cliente> findAll() {
         return clienteRepository.findAll().list();
     }

@@ -65,7 +65,7 @@ public class ClienteResource {
     @Path("/search/email/{email}")
     public Response findByEmail(@PathParam("email") String email) {
         LOG.info("Execucao do metodo findByEmail. Email: " + email);
-        return Response.ok(clienteService.findByNome(usuarioService.findByEmail(email).getNome())
+        return Response.ok(clienteService.findByEmail(email)
                 .stream()
                 .map(ClienteResponseDTO::valueOf)
                 .toList()).build();

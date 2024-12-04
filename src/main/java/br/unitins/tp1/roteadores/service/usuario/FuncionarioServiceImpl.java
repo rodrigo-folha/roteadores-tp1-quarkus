@@ -65,6 +65,11 @@ public class FuncionarioServiceImpl implements FuncionarioService {
     }
 
     @Override
+    public List<Funcionario> findByEmail(String email) {
+        return funcionarioRepository.findByEmail(email);
+    }
+
+    @Override
     public List<Funcionario> findAll() {
         return funcionarioRepository.findAll().list();
     }

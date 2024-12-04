@@ -29,4 +29,8 @@ public interface PedidoService {
 
     void devolverPedido(Long idPedido);
 
+    // administrativo
+    Pedido findById(Long id);
+    List<Pedido> findAll();
+
 }

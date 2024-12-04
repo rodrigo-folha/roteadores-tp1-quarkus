@@ -34,6 +34,9 @@ public class RoteadorServiceImpl implements RoteadorService {
 
     @Override
     public Roteador findById(Long id) {
+        if (roteadorRepository.findById(id) == null)
+            throw new ValidationException("id", "id nao encontrado");
+            
         return roteadorRepository.findById(id);
     }
 

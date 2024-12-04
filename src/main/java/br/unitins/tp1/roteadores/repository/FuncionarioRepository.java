@@ -15,4 +15,8 @@ public class FuncionarioRepository implements PanacheRepository<Funcionario> {
     public Funcionario findByUsuario (String email) {
         return find("SELECT f FROM Funcionario f JOIN f.usuario u WHERE u.email = ?1", email).firstResult();
     }   
+
+    public List<Funcionario> findByEmail (String email) {
+        return find("SELECT f FROM Funcionario f JOIN f.usuario u WHERE u.email LIKE ?1", "%" + email + "%").list();
+    }  
 }

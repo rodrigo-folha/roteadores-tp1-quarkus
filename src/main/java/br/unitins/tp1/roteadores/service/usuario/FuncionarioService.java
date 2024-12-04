@@ -50,5 +50,7 @@ public interface FuncionarioService {
     void updateCpf(String email, CpfPatchRequestDTO dto);
 
     void updateDataNascimento(String email, DataNascimentoPatchRequestDTO dto);
+
+    List<Funcionario> findByEmail(String email);
     
 }

@@ -77,6 +77,19 @@ public class PedidoServiceImpl implements PedidoService {
     }
 
     @Override
+    public Pedido findById(Long id) {
+        if (pedidoRepository.findById(id) == null)
+            throw new ValidationException("id", "id nao encontrado");
+            
+        return pedidoRepository.findById(id);
+    }
+
+    @Override
+    public List<Pedido> findAll() {
+        return pedidoRepository.findAll().list();
+    }
+
+    @Override
     public List<Pedido> findByEmail(String email) {
         return pedidoRepository.findByEmail(email);
     }

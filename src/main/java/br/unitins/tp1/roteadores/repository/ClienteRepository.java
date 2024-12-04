@@ -14,5 +14,9 @@ public class ClienteRepository implements PanacheRepository<Cliente> {
     
     public Cliente findByUsuario (String email) {
         return find("SELECT c FROM Cliente c JOIN c.usuario u WHERE u.email = ?1", email).firstResult();
+    }
+    
+    public List<Cliente> findByEmail (String email) {
+        return find("SELECT c FROM Cliente c JOIN c.usuario u WHERE u.email LIKE ?1", "%" + email + "%").list();
     }   
 }

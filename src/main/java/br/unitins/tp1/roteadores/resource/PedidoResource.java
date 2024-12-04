@@ -51,7 +51,7 @@ public class PedidoResource {
 
     @GET
     @RolesAllowed("User")
-    @Path("/resumido")
+    @Path("/resumo")
     public Response findByEmailResumido() {
         LOG.info("Execucao do metodo findByEmailResumido");
 
@@ -71,6 +71,25 @@ public class PedidoResource {
         LOG.info("Execucao do metodo findById. Id: " + id);
         String email = jwt.getSubject();
         return Response.ok(PedidoResponseDTO.valueOf(pedidoService.findById(email, id))).build();
+    }
+
+    @GET
+    @RolesAllowed({"Adm"})
+    @Path("/search/{id}")
+    public Response findByIdAdm(@PathParam("id") Long id) {
+        LOG.info("Execucao do metodo findByIdAdm. Id: " + id);
+        return Response.ok(PedidoResponseDTO.valueOf(pedidoService.findById(id))).build();
+    }
+
+    @GET
+    @RolesAllowed({"Adm"})
+    @Path("/search/all")
+    public Response findAll() {
+        LOG.info("Execucao do metodo findAll");
+        return Response.ok(pedidoService.findAll()
+                    .stream()
+                    .map(PedidoResponseDTO::valueOf)
+                    .toList()).build();
     }
 
     @POST
