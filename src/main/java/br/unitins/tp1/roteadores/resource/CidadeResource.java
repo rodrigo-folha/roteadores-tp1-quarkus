@@ -5,7 +5,6 @@ import org.jboss.logging.Logger;
 import br.unitins.tp1.roteadores.dto.endereco.CidadeRequestDTO;
 import br.unitins.tp1.roteadores.dto.endereco.CidadeResponseDTO;
 import br.unitins.tp1.roteadores.service.endereco.CidadeService;
-import io.quarkus.logging.Log;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
@@ -64,7 +63,7 @@ public class CidadeResource {
     @POST
     @RolesAllowed({"Adm"})
     public Response create(@Valid CidadeRequestDTO dto) {
-        Log.info("Execucao do metodo create");
+        LOG.info("Execucao do metodo create");
         return Response.status(Status.CREATED)
                 .entity(CidadeResponseDTO.valueOf(cidadeService.create(dto)))
                 .build();
