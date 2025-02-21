@@ -20,7 +20,7 @@ import br.unitins.tp1.roteadores.dto.usuario.patches.EmailPatchRequestDTO;
 import br.unitins.tp1.roteadores.dto.usuario.patches.NomePatchRequestDTO;
 import br.unitins.tp1.roteadores.dto.usuario.patches.SenhaPatchRequestDTO;
 import br.unitins.tp1.roteadores.form.ImageForm;
-import br.unitins.tp1.roteadores.service.usuario.ClienteFileServiceImpl;
+import br.unitins.tp1.roteadores.service.file.ClienteFileServiceImpl;
 import br.unitins.tp1.roteadores.service.usuario.ClienteService;
 import br.unitins.tp1.roteadores.service.usuario.UsuarioService;
 import jakarta.annotation.security.RolesAllowed;

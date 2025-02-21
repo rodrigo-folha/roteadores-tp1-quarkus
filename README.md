@@ -1,78 +1,78 @@
-# roteadores-tp1-quarkus
 
-This project uses Quarkus, the Supersonic Subatomic Java Framework.
+# Roteadores
 
-If you want to learn more about Quarkus, please visit its website: <https://quarkus.io/>.
+Um projeto destinado ao desenvolvimento de uma API que simula um ecommerce de roteadores. Englobando e interagindo com recursos de clientes, produtos e pedidos. 
 
-## Running the application in dev mode
+## UML
 
-You can run your application in dev mode that enables live coding using:
+Diagrama de classes representando as classes, relacionamentos e mutiplicidades.
 
-```shell script
-./mvnw compile quarkus:dev
+![uml projeto](https://raw.githubusercontent.com/rodrigo-folha/roteadores-tp1-quarkus/refs/heads/main/src/main/resources/uml/UML%20-%20Roteadores.png)
+
+## Stack utilizada
+
+<span>
+    <img src="https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=black" alt="Java">
+    <img src="https://img.shields.io/badge/quarkus-%234794EB.svg?style=for-the-badge&logo=quarkus&logoColor=white" alt="Quarkus">
+    <img src="https://img.shields.io/badge/postgres-%23316192.svg?style=for-the-badge&logo=postgresql&logoColor=white" alt="Postgres">
+    <img src="https://img.shields.io/badge/Visual%20Studio%20Code-0078d7.svg?style=for-the-badge&logo=visual-studio-code&logoColor=white" alt="Visual Studio Code">
+</span>
+
+## Rodando localmente  🖥️
+
+Para instalar o projeto, siga os passos abaixo:
+
+### Pré-requisitos
+
+- Java JDK (versão 21 ou superior)
+- Maven (versão 3.9.7 ou superior)
+
+### Passos
+
+[Guia Quarkus](https://github.com/rodrigo-folha/roteadores-tp1-quarkus/blob/main/README.md)
+
+1. Clone o repositório:
+
+   ```sh
+   git clone https://github.com/rodrigo-folha/roteadores-tp1-quarkus.git
+   ```
+
+2. Entre no diretório do repositório:
+
+   ```sh
+   cd roteadores-tp1-quarkus
+   ```
+
+3. Baixe as dependências:
+
+   ```sh
+   mvn clean install
+   ```
+
+4. Rode a aplicação localmente:
+
+   ```sh
+   ./mvnw compile quarkus:dev   
+   ```
+## Aprendizados
+
+Durante o desenvolvimento da API, tive um aprendizado constante e explorei os principais recursos para sua criação:
+
+- Padrão MVC
+- Verbos HTTP
+- JPA e Hibernate
+- Validação de dados
+- Modelagem UML
+
+## Estrutura de Pastas
+
 ```
+/main 
+    /src
+        /dto                 # Responsável por modelar Responses e Requests
+        /model               # Responsável por modelar as entidades
+        /repository          # Responsável pelo acesso ao banco de dados
+        /resource            # Responsável pelo controle das rotas HTTP
+        /service             # Responsável pelo intermédio entre repository e resource
 
-> **_NOTE:_**  Quarkus now ships with a Dev UI, which is available in dev mode only at <http://localhost:8080/q/dev/>.
-
-## Packaging and running the application
-
-The application can be packaged using:
-
-```shell script
-./mvnw package
 ```
-
-It produces the `quarkus-run.jar` file in the `target/quarkus-app/` directory.
-Be aware that it’s not an _über-jar_ as the dependencies are copied into the `target/quarkus-app/lib/` directory.
-
-The application is now runnable using `java -jar target/quarkus-app/quarkus-run.jar`.
-
-If you want to build an _über-jar_, execute the following command:
-
-```shell script
-./mvnw package -Dquarkus.package.jar.type=uber-jar
-```
-
-The application, packaged as an _über-jar_, is now runnable using `java -jar target/*-runner.jar`.
-
-## Creating a native executable
-
-You can create a native executable using:
-
-```shell script
-./mvnw package -Dnative
-```
-
-Or, if you don't have GraalVM installed, you can run the native executable build in a container using:
-
-```shell script
-./mvnw package -Dnative -Dquarkus.native.container-build=true
-```
-
-You can then execute your native executable with: `./target/roteadores-tp1-quarkus-1.0.0-SNAPSHOT-runner`
-
-If you want to learn more about building native executables, please consult <https://quarkus.io/guides/maven-tooling>.
-
-## Related Guides
-
-- SmallRye OpenAPI ([guide](https://quarkus.io/guides/openapi-swaggerui)): Document your REST APIs with OpenAPI - comes with Swagger UI
-- Hibernate ORM with Panache ([guide](https://quarkus.io/guides/hibernate-orm-panache)): Simplify your persistence code for Hibernate ORM via the active record or the repository pattern
-- RESTEasy Classic ([guide](https://quarkus.io/guides/resteasy)): REST endpoint framework implementing Jakarta REST and more
-- JDBC Driver - PostgreSQL ([guide](https://quarkus.io/guides/datasource)): Connect to the PostgreSQL database via JDBC
-
-## Provided Code
-
-### Hibernate ORM
-
-Create your first JPA entity
-
-[Related guide section...](https://quarkus.io/guides/hibernate-orm)
-
-[Related Hibernate with Panache section...](https://quarkus.io/guides/hibernate-orm-panache)
-
-
-### RESTEasy JAX-RS
-
-Easily start your RESTful Web Services
-
-[Related guide section...](https://quarkus.io/guides/getting-started#the-jax-rs-resources)

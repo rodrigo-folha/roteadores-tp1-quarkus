@@ -8,7 +8,7 @@ import org.jboss.resteasy.annotations.providers.multipart.MultipartForm;
 import br.unitins.tp1.roteadores.dto.roteador.RoteadorRequestDTO;
 import br.unitins.tp1.roteadores.dto.roteador.RoteadorResponseDTO;
 import br.unitins.tp1.roteadores.form.ImageForm;
-import br.unitins.tp1.roteadores.service.roteador.RoteadorFileServiceImpl;
+import br.unitins.tp1.roteadores.service.file.RoteadorFileServiceImpl;
 import br.unitins.tp1.roteadores.service.roteador.RoteadorService;
 import jakarta.annotation.security.RolesAllowed;
 import jakarta.inject.Inject;

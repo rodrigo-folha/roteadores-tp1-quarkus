@@ -5,7 +5,7 @@ import org.jboss.logging.Logger;
 
 import br.unitins.tp1.roteadores.dto.usuario.ClienteRequestDTO;
 import br.unitins.tp1.roteadores.dto.usuario.ClienteResponseDTO;
-import br.unitins.tp1.roteadores.service.usuario.ClienteFileServiceImpl;
+import br.unitins.tp1.roteadores.service.file.ClienteFileServiceImpl;
 import br.unitins.tp1.roteadores.service.usuario.ClienteService;
 import br.unitins.tp1.roteadores.service.usuario.UsuarioService;
 import jakarta.annotation.security.RolesAllowed;

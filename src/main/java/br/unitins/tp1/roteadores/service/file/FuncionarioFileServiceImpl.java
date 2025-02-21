@@ -1,4 +1,4 @@
-package br.unitins.tp1.roteadores.service.usuario;
+package br.unitins.tp1.roteadores.service.file;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -10,7 +10,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
-import br.unitins.tp1.roteadores.service.file.FileService;
 import br.unitins.tp1.roteadores.validation.ValidationException;
 import jakarta.enterprise.context.ApplicationScoped;
 
@@ -18,6 +17,12 @@ import jakarta.enterprise.context.ApplicationScoped;
 public class FuncionarioFileServiceImpl implements FileService {
 
     private final String PATH_FUNCIONARIO = "D:\\Arquivos\\quarkus\\ecommerce-roteadores\\funcionario\\";
+    // private final String PATH_FUNCIONARIO = System.getProperty("user.home")
+    //         + File.separator + "quarkus"
+    //         + File.separator + "roteadores"
+    //         + File.separator + "images"
+    //         + File.separator + "funcionario"
+    //         + File.separator;
 
     private static final List<String> SUPPORTED_MIME_TYPES = Arrays.asList("image/jpeg", "image/jpg", "image/png",
             "image/gif");
